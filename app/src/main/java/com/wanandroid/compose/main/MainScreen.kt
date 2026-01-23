@@ -1,10 +1,12 @@
 package com.wanandroid.compose.main
 
+import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -29,6 +31,7 @@ fun MainScreen(
 ) {
     val backStack = rememberNavBackStack(Route.Main.Home)
     val selected = backStack.last()
+    val context = LocalContext.current
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
@@ -36,16 +39,26 @@ fun MainScreen(
                 modifier = modifier,
                 selected = selected,
                 onClick = {
-                    if (backStack.contains(it)) {
+                    if (!backStack.contains(it)) {
+                        backStack.add(it)
+                    } else {
                         backStack.remove(it)
+                        backStack.add(it)
                     }
-                    backStack.add(it)
                 })
         }
     ) { innerPadding ->
         NavDisplay(
             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
             backStack = backStack,
+            onBack = {
+                if (selected == Route.Main.Home) {
+                    (context as Activity).finish()
+                } else {
+                    backStack.remove(selected)
+                    backStack.add(Route.Main.Home)
+                }
+            },
             entryDecorators = listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator()
