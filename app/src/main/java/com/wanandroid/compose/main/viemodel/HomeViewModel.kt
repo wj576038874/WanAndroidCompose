@@ -77,6 +77,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         }
     }
 
+    @Suppress("UNUSED")
     fun getBannerList() {
         _homeUiState.value = _homeUiState.value.copy(isLoading = true)
         viewModelScope.launch {
@@ -94,6 +95,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         }
     }
 
+    @Suppress("UNUSED")
     fun getArticleList(pageNum: Int) {
 //        _homeUiState.value = _homeUiState.value.copy(isLoading = true)
         viewModelScope.launch {

@@ -31,7 +31,7 @@ class QuestionAnswerPagingSource(
                 val data = response.data ?: return LoadResult.Error(Exception("No data field"))
                 val items = data.datas ?: return LoadResult.Error(Exception("No datas field"))
                 // 关键：使用 over 来决定是否还有下一页
-                val nextKey = if (page == 2) {
+                val nextKey = if (data.over) {
                     null
                 } else {
                     page + 1

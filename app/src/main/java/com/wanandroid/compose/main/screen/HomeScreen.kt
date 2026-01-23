@@ -1,7 +1,7 @@
 package com.wanandroid.compose.main.screen
 
 import android.util.Log
-import androidx.compose.foundation.Image
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,16 +34,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
@@ -51,7 +51,6 @@ import com.wanandroid.compose.bean.BannerItem
 import com.wanandroid.compose.http.ApiService
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.HomeRepository
-import com.wanandroid.compose.main.state.HomeUiState
 import com.wanandroid.compose.main.viemodel.HomeViewModel
 import kotlinx.coroutines.delay
 
@@ -64,6 +63,7 @@ fun HomeScreen(
     innerPadding: PaddingValues,
     onArticleItemClick: (ArticleItem) -> Unit
 ) {
+    Log.e("asd", "HomeScreen$innerPadding")
     val viewModel = viewModel {
         val apiService = RetrofitHelper.create(ApiService::class.java)
         val homeRepository = HomeRepository(apiService = apiService)
@@ -155,6 +155,7 @@ fun ArticleItemCard(
     modifier: Modifier = Modifier,
     onArticleItemClick: (ArticleItem) -> Unit
 ) {
+    var like by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -202,13 +203,26 @@ fun ArticleItemCard(
         }
         IconButton(
             modifier = Modifier.align(Alignment.BottomEnd), onClick = {
-
+                like = !like
             }) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
+            AnimatedContent(
+                targetState = like
+            ) {
+                if (it) {
+                    Icon(
+                        imageVector = Icons.Outlined.Favorite,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.FavoriteBorder,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+
+            }
         }
     }
 }
