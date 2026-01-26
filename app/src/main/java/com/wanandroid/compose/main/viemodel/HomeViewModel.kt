@@ -57,14 +57,11 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
                 val newData = homeRepository.getArticleList(pageNum).data?.datas ?: emptyList()
                 if (newData.isEmpty()) {
                     _homeUiState.value.copy(
-                        noMoreData = true,
-                        isLoading = false
+                        noMoreData = true, isLoading = false
                     )
                 } else {
                     _homeUiState.value.copy(
-                        articleList = oldData + newData,
-                        isLoading = false,
-                        noMoreData = false
+                        articleList = oldData + newData, isLoading = false, noMoreData = false
                     )
                 }
             }.onSuccess {
@@ -77,7 +74,60 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         }
     }
 
-    @Suppress("UNUSED")
+    fun collectArticle(id: Int) {
+        viewModelScope.launch {
+            runCatching {
+                homeRepository.collectArticle(id)
+            }.onSuccess { response ->
+                if (response.isSuccess) {
+                    _homeUiState.value = _homeUiState.value.copy(
+                        articleList = _homeUiState.value.articleList?.map {
+                            if (it.id == id) {
+                                it.copy(collect = true)
+                            } else {
+                                it
+                            }
+                        })
+                } else {
+                    _homeUiState.value = _homeUiState.value.copy(
+                        errorMsg = response.message ?: "收藏文章失败", isLoading = false
+                    )
+                }
+            }.onFailure {
+                _homeUiState.value = _homeUiState.value.copy(
+                    errorMsg = it.message ?: "收藏文章失败", isLoading = false
+                )
+            }
+        }
+    }
+
+    fun unCollectArticle(id: Int) {
+        viewModelScope.launch {
+            runCatching {
+                homeRepository.unCollectArticle(id)
+            }.onSuccess { response ->
+                if (response.isSuccess) {
+                    _homeUiState.value = _homeUiState.value.copy(
+                        articleList = _homeUiState.value.articleList?.map {
+                            if (it.id == id) {
+                                it.copy(collect = false)
+                            } else {
+                                it
+                            }
+                        })
+                } else {
+                    _homeUiState.value = _homeUiState.value.copy(
+                        errorMsg = response.message ?: "取消收藏文章失败", isLoading = false
+                    )
+                }
+            }.onFailure {
+                _homeUiState.value = _homeUiState.value.copy(
+                    errorMsg = it.message ?: "取消收藏文章失败", isLoading = false
+                )
+            }
+        }
+    }
+
     fun getBannerList() {
         _homeUiState.value = _homeUiState.value.copy(isLoading = true)
         viewModelScope.launch {
@@ -95,7 +145,6 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         }
     }
 
-    @Suppress("UNUSED")
     fun getArticleList(pageNum: Int) {
 //        _homeUiState.value = _homeUiState.value.copy(isLoading = true)
         viewModelScope.launch {

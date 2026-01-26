@@ -24,4 +24,8 @@ class QuestionAnswerRepository(private val questionAnswerApi: QuestionAnswerApi)
                 QuestionAnswerPagingSource(questionAnswerApi)
             }).flow
     }
+
+    suspend fun collectArticle(id: Int) = questionAnswerApi.collectArticle(id)
+
+    suspend fun unCollectArticle(id: Int) = questionAnswerApi.unCollectArticle(id)
 }

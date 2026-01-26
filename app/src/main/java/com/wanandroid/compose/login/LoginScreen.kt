@@ -5,7 +5,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,16 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
@@ -36,23 +31,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,8 +56,8 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.http.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.main.state.LoginResult
 import com.wanandroid.compose.main.state.LoginState
+import com.wanandroid.compose.route.Route
 
 /**
  * Created by wenjie on 2026/01/26.
@@ -93,17 +84,20 @@ fun LoginSector(
 ) {
     val loginViewModel = viewModel {
         val loginApi = RetrofitHelper.create(LoginApi::class.java)
-        val loginRepository = LoginRepository(loginApi = loginApi)
-        LoginViewModel(loginRepository = loginRepository)
+        LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))
     }
-    val authViewModel = LocalAuthViewModel.current
     val backStack = LocalBackStack.current
     var userName by remember { mutableStateOf("wj576038874") }
     var password by remember { mutableStateOf("1rujiwang") }
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
-    val loginResult = loginState.loginResult
-    when (loginResult) {
-        is LoginResult.Loading -> {
+
+    LaunchedEffect(loginState) {
+        if (loginState is LoginState.Success) {
+            backStack.removeLastOrNull()
+        }
+    }
+    when (loginState) {
+        is LoginState.Loading -> {
             BasicAlertDialog(
                 properties = DialogProperties(
                     dismissOnClickOutside = false,
@@ -137,18 +131,15 @@ fun LoginSector(
             }
         }
 
-        is LoginResult.Success -> {
-            authViewModel.login()
-            backStack.removeLastOrNull()
-        }
-
-        is LoginResult.Failure -> {
+        is LoginState.Failure -> {
             Toast.makeText(
                 WanAndroidApplication.context,
-                "loginState.errorMsg",
+                (loginState as LoginState.Failure).errorMsg,
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        else -> {}
     }
     Column(
         modifier = modifier.fillMaxSize()

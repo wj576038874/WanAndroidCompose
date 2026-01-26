@@ -40,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -111,7 +112,16 @@ fun HomeScreen(
                         }
                     ) { item ->
                         ArticleItemCard(
-                            articleItem = item, onArticleItemClick = onArticleItemClick
+                            articleItem = item,
+                            modifier = Modifier,
+                            onArticleItemClick = onArticleItemClick,
+                            onCollectClick = {
+                                if (it) {
+                                    viewModel.collectArticle(id = item.id)
+                                } else {
+                                    viewModel.unCollectArticle(id = item.id)
+                                }
+                            }
                         )
                     }
                     item {
@@ -153,9 +163,9 @@ fun HomeScreen(
 fun ArticleItemCard(
     articleItem: ArticleItem,
     modifier: Modifier = Modifier,
-    onArticleItemClick: (ArticleItem) -> Unit
+    onArticleItemClick: (ArticleItem) -> Unit,
+    onCollectClick: (Boolean) -> Unit
 ) {
-    var like by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -202,26 +212,19 @@ fun ArticleItemCard(
             )
         }
         IconButton(
-            modifier = Modifier.align(Alignment.BottomEnd), onClick = {
-                like = !like
-            }) {
+            modifier = Modifier.align(Alignment.BottomEnd),
+            onClick = {
+                onCollectClick(!articleItem.collect)
+            }
+        ) {
             AnimatedContent(
-                targetState = like
+                targetState = articleItem.collect
             ) {
-                if (it) {
-                    Icon(
-                        imageVector = Icons.Outlined.Favorite,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
-
+                Icon(
+                    imageVector = if (it) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = null,
+                    tint = Color.Red
+                )
             }
         }
     }
@@ -245,7 +248,8 @@ fun ArticleItemCardPreview() {
             superChapterName = "广场Tab",
             chapterName = "自助",
             collect = false,
-        ), modifier = Modifier, onArticleItemClick = {})
+        ), modifier = Modifier, onArticleItemClick = {}, onCollectClick = {}
+    )
 }
 
 

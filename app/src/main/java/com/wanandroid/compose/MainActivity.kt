@@ -7,19 +7,43 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.wanandroid.compose.AuthViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.wanandroid.compose.http.LoginApi
+import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val authViewModel: AuthViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels {
+        val loginApi = RetrofitHelper.create(LoginApi::class.java)
+        val loginRepository = LoginRepository(loginApi)
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return AuthViewModel(loginRepository) as T
+            }
+        }
+    }
+
+    private val splashViewModel: SplashViewModel by viewModels {
+        val loginApi = RetrofitHelper.create(LoginApi::class.java)
+        val loginRepository = LoginRepository(loginApi)
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return SplashViewModel(loginRepository) as T
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authViewModel.checkLogin()
+        splashViewModel.checkLogin()
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                !authViewModel.isReady.value
+                !splashViewModel.isReady.value
             }
             setOnExitAnimationListener {
                 it.remove()

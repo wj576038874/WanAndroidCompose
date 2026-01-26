@@ -5,6 +5,7 @@ import com.wanandroid.compose.bean.BannerItem
 import com.wanandroid.compose.bean.BasePageData
 import com.wanandroid.compose.bean.BaseResponse
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 /**
@@ -17,4 +18,10 @@ interface ApiService {
 
     @GET("article/list/{pageNum}/json")
     suspend fun getArticleList(@Path("pageNum") pageNum: Int): BaseResponse<BasePageData<ArticleItem>>
+
+    @POST("lg/collect/{id}/json")
+    suspend fun collectArticle(@Path("id") id: Int): BaseResponse<Any>
+
+    @POST("lg/uncollect_originId/{id}/json")
+    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any>
 }

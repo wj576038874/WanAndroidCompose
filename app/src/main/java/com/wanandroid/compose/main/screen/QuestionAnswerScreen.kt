@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -28,12 +29,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -49,8 +53,7 @@ import com.wanandroid.compose.main.viemodel.QuestionAnswerViewModel
  */
 @Composable
 fun QuestionAnswerScreen(
-    modifier: Modifier = Modifier,
-    innerPadding: PaddingValues
+    modifier: Modifier = Modifier, innerPadding: PaddingValues
 ) {
     val viewModel = viewModel {
         val questionAnswerApi = RetrofitHelper.create(QuestionAnswerApi::class.java)
@@ -59,7 +62,10 @@ fun QuestionAnswerScreen(
     }
     val itemList = viewModel.questionAnswerList.collectAsLazyPagingItems()
     val isRefreshing = itemList.loadState.refresh is LoadState.Loading
-
+    val collectedIds by viewModel.collectedIds.collectAsStateWithLifecycle()
+//    LaunchedEffect(collectIds) {
+//        itemList.refresh()
+//    }
     PullToRefreshBox(
         modifier = Modifier.fillMaxSize(),
         isRefreshing = isRefreshing,
@@ -68,11 +74,11 @@ fun QuestionAnswerScreen(
         if (itemList.loadState.refresh is LoadState.Error) {
             Log.e("asd", "refresh error2")
             Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = (itemList.loadState.refresh as LoadState.Error).error.message ?: "refresh error",
+                    text = (itemList.loadState.refresh as LoadState.Error).error.message
+                        ?: "refresh error",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -92,10 +98,18 @@ fun QuestionAnswerScreen(
                 count = itemList.itemCount,
                 key = itemList.itemKey {
                     it.id
-                }
-            ) { index ->
-                itemList[index]?.let {
-                    QuestionAnswerItem(item = it)
+                }) { index ->
+                itemList[index]?.let { item ->
+                    // 实时计算当前收藏状态（合并服务器原始 + 本地操作）
+                    val isCollected = collectedIds.contains(item.id)
+                    QuestionAnswerItem(
+                        item = item, isCollected = isCollected, onCollectClick = {
+                            if (it) {
+                                viewModel.collectArticle(item.id)
+                            } else {
+                                viewModel.unCollectArticle(item.id)
+                            }
+                        })
                 }
             }
             itemList.loadState.apply {
@@ -129,15 +143,13 @@ fun QuestionAnswerScreen(
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 CircularProgressIndicator(
-                                    modifier = Modifier
-                                        .size(24.dp)
+                                    modifier = Modifier.size(24.dp)
                                 )
                                 Text(
                                     text = "Loading...",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.secondary,
-                                    modifier = Modifier
-                                        .padding(8.dp)
+                                    modifier = Modifier.padding(8.dp)
                                 )
                             }
                         }
@@ -177,16 +189,19 @@ fun QuestionAnswerScreen(
 }
 
 @Composable
-fun QuestionAnswerItem(item: QuestionAnswerItem, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .clickable {
-                Log.e("asd", "click item ${item.id}")
-            }
-            .padding(16.dp)
-    ) {
+fun QuestionAnswerItem(
+    item: QuestionAnswerItem,
+    isCollected: Boolean,
+    onCollectClick: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .clickable {
+            Log.e("asd", "click item ${item.id}")
+        }
+        .padding(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
@@ -247,12 +262,12 @@ fun QuestionAnswerItem(item: QuestionAnswerItem, modifier: Modifier = Modifier) 
             )
             IconButton(
                 onClick = {
-
+                    onCollectClick(!isCollected)
                 }) {
                 Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
+                    imageVector = if (isCollected) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = null,
-                    tint = if (item.collect) Color.Red else Color.Gray
+                    tint = Color.Red
                 )
             }
         }
@@ -275,7 +290,9 @@ fun QuestionAnswerItemPreview() {
             superChapterName = "Kotlin",
             chapterName = "Kotlin 基础",
             collect = false,
-            niceDate = "2023-05-31"
-        )
+            niceDate = "2023-05-31",
+        ),
+        onCollectClick = {},
+        isCollected = false,
     )
 }

@@ -51,6 +51,14 @@ class OkHttpHelper private constructor() {
         mHttpClient = builder.build()
     }
 
+
+    fun clearCookies() {
+        val cookieJar = mHttpClient.cookieJar
+        if (cookieJar is PersistentCookieJar) {
+            cookieJar.clear()
+        }
+    }
+
     fun getOkHttpClient(): OkHttpClient {
         return mHttpClient
     }

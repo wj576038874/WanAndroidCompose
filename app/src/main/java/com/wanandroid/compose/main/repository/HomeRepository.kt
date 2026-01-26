@@ -10,4 +10,8 @@ class HomeRepository(private val apiService: ApiService) {
     suspend fun getBannerList() = apiService.getBannerList()
 
     suspend fun getArticleList(pageNum: Int) = apiService.getArticleList(pageNum)
+
+    suspend fun collectArticle(id: Int) = apiService.collectArticle(id)
+
+     suspend fun unCollectArticle(id: Int) = apiService.unCollectArticle(id)
 }

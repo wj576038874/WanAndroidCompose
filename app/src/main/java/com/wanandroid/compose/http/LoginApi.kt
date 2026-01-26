@@ -20,6 +20,8 @@ interface LoginApi {
         @Field("password") password: String
     ): BaseResponse<UserInfo>
 
+    @GET("user/logout/json")
+    suspend fun logout(): BaseResponse<Any>
 
     @GET("user/lg/userinfo/json")
     suspend fun getUserCoinInfo(): BaseResponse<UserInfoData>

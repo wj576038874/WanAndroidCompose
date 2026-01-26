@@ -41,9 +41,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalAuthViewModel
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
+import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.http.LoginApi
+import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.login.LoginRepository
+import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.main.state.LoginState
 import com.wanandroid.compose.route.Route
 import kotlinx.coroutines.flow.StateFlow
@@ -53,14 +59,14 @@ import kotlinx.coroutines.flow.StateFlow
  */
 
 private val ITEMS = listOf(
-    Icons.Outlined.StarOutline to "我的积分",
-    Icons.Outlined.Share to "我的分享",
-    Icons.Outlined.FavoriteBorder to "我的收藏",
-    Icons.Outlined.Bookmarks to "我的书签",
-    Icons.Outlined.History to "阅读历史",
-    Icons.Outlined.Grass to "开源项目",
-    Icons.Outlined.Info to "关于作者",
-    Icons.Outlined.Settings to "系统设置",
+    Triple(0, Icons.Outlined.StarOutline, "我的积分"),
+    Triple(1, Icons.Outlined.Share, "我的分享"),
+    Triple(2, Icons.Outlined.FavoriteBorder, "我的收藏"),
+    Triple(3, Icons.Outlined.Bookmarks, "我的书签"),
+    Triple(4, Icons.Outlined.History, "阅读历史"),
+    Triple(5, Icons.Outlined.Grass, "开源项目"),
+    Triple(6, Icons.Outlined.Info, "关于作者"),
+    Triple(7, Icons.Outlined.Settings, "系统设置"),
 )
 
 @Composable
@@ -87,27 +93,36 @@ fun ProfileScreen(
 @Composable
 fun ProfileItemPreview(modifier: Modifier = Modifier) {
     ProfileItem(
-        modifier = modifier, item = Icons.Outlined.Info to "我的积分"
+        modifier = modifier, item = Triple(0, Icons.Outlined.Info, "我的积分")
     )
 }
 
 @Composable
 fun ProfileItem(
-    modifier: Modifier = Modifier, item: Pair<ImageVector, String>
+    modifier: Modifier = Modifier, item: Triple<Int, ImageVector, String>
 ) {
+    val backStack = LocalBackStack.current
+    val loginViewModel = viewModel {
+        val loginApi = RetrofitHelper.create(LoginApi::class.java)
+        LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))
+    }
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.surface)
             .clickable {
-
+                when (item.first) {
+                    7 -> {
+                        loginViewModel.logout()
+                    }
+                }
             }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = modifier.size(24.dp),
-            imageVector = item.first,
+            imageVector = item.second,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
         )
@@ -116,7 +131,7 @@ fun ProfileItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            text = item.second,
+            text = item.third,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -132,12 +147,10 @@ fun ProfileItem(
 @Preview(showBackground = true)
 @Composable
 fun Header(
-    modifier: Modifier = Modifier,
-    innerPadding: PaddingValues = PaddingValues(0.dp)
+    modifier: Modifier = Modifier, innerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    val authViewModel = LocalAuthViewModel.current
-    val isLogin by authViewModel.isLogin.collectAsStateWithLifecycle()
-    val userInfo by authViewModel.userInfo.collectAsStateWithLifecycle()
+    val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
+    val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
     val backStack = LocalBackStack.current
     Column(
         modifier = modifier
