@@ -260,30 +260,30 @@ fun LoginSector(
     }
 }
 
-@Composable
-fun Sector(
-    startAngle: Float,         // 起始角度（度）
-    sweepAngle: Float,         // 扇形角度（度）
-    color: Color,
-) {
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-    ) {
-        val canvasWidth = size.width
-        val canvasHeight = size.height
-        val radius = minOf(canvasWidth, canvasHeight) / 2f
-        val center = Offset(canvasWidth / 6f, canvasHeight / 2f)
-
-        // 画扇形（最核心的一行）
-        drawArc(
-            color = color,
-            startAngle = startAngle,
-            sweepAngle = sweepAngle,
-            useCenter = true,           // true = 从圆心开始画扇形
-            topLeft = Offset(center.x - radius, center.y - radius),
-            size = Size(radius * 3, radius * 2)
-        )
-    }
-}
+//@Composable
+//fun Sector(
+//    startAngle: Float,         // 起始角度（度）
+//    sweepAngle: Float,         // 扇形角度（度）
+//    color: Color,
+//) {
+//    Canvas(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(200.dp)
+//    ) {
+//        val canvasWidth = size.width
+//        val canvasHeight = size.height
+//        val radius = minOf(canvasWidth, canvasHeight) / 2f
+//        val center = Offset(canvasWidth / 6f, canvasHeight / 2f)
+//
+//        // 画扇形（最核心的一行）
+//        drawArc(
+//            color = color,
+//            startAngle = startAngle,
+//            sweepAngle = sweepAngle,
+//            useCenter = true,           // true = 从圆心开始画扇形
+//            topLeft = Offset(center.x - radius, center.y - radius),
+//            size = Size(radius * 3, radius * 2)
+//        )
+//    }
+//}

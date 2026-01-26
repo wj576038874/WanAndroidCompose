@@ -98,7 +98,6 @@ fun ProfileItemPreview(modifier: Modifier = Modifier) {
 fun ProfileItem(
     modifier: Modifier = Modifier, item: Triple<Int, ImageVector, String>
 ) {
-    val backStack = LocalBackStack.current
     val loginViewModel = viewModel {
         val loginApi = RetrofitHelper.create(LoginApi::class.java)
         LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))

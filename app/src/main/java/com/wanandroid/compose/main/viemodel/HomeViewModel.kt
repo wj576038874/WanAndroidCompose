@@ -139,36 +139,36 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         }
     }
 
-    fun getBannerList() {
-        _homeUiState.value = _homeUiState.value.copy(isLoading = true)
-        viewModelScope.launch {
-            runCatching {
-                delay(2000)
-                homeRepository.getBannerList()
-            }.onSuccess {
-                _homeUiState.value =
-                    _homeUiState.value.copy(bannerList = it.data, isLoading = false)
-            }.onFailure {
-                _homeUiState.value = _homeUiState.value.copy(
-                    errorMsg = it.message ?: "获取banner列表失败", isLoading = false
-                )
-            }
-        }
-    }
-
-    fun getArticleList(pageNum: Int) {
+//    fun getBannerList() {
 //        _homeUiState.value = _homeUiState.value.copy(isLoading = true)
-        viewModelScope.launch {
-            runCatching {
-                delay(2000)
-                homeRepository.getArticleList(pageNum).data?.datas
-            }.onSuccess {
-                _homeUiState.value = _homeUiState.value.copy(articleList = it, isLoading = false)
-            }.onFailure {
-                _homeUiState.value = _homeUiState.value.copy(
-                    errorMsg = it.message ?: "获取文章列表失败", isLoading = false
-                )
-            }
-        }
-    }
+//        viewModelScope.launch {
+//            runCatching {
+//                delay(2000)
+//                homeRepository.getBannerList()
+//            }.onSuccess {
+//                _homeUiState.value =
+//                    _homeUiState.value.copy(bannerList = it.data, isLoading = false)
+//            }.onFailure {
+//                _homeUiState.value = _homeUiState.value.copy(
+//                    errorMsg = it.message ?: "获取banner列表失败", isLoading = false
+//                )
+//            }
+//        }
+//    }
+//
+//    fun getArticleList(pageNum: Int) {
+////        _homeUiState.value = _homeUiState.value.copy(isLoading = true)
+//        viewModelScope.launch {
+//            runCatching {
+//                delay(2000)
+//                homeRepository.getArticleList(pageNum).data?.datas
+//            }.onSuccess {
+//                _homeUiState.value = _homeUiState.value.copy(articleList = it, isLoading = false)
+//            }.onFailure {
+//                _homeUiState.value = _homeUiState.value.copy(
+//                    errorMsg = it.message ?: "获取文章列表失败", isLoading = false
+//                )
+//            }
+//        }
+//    }
 }
