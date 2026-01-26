@@ -2,12 +2,17 @@ package com.wanandroid.compose.main.viemodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.BannerItem
 import com.wanandroid.compose.main.repository.HomeRepository
 import com.wanandroid.compose.main.state.HomeUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,6 +25,16 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val homeUiState = _homeUiState.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            UserManager.instance.userInfo.collect { userInfo ->
+                _homeUiState.value = _homeUiState.value.copy(
+                    articleList = _homeUiState.value.articleList?.map { article ->
+                        val isCollected = userInfo?.collectIds?.contains(article.id) ?: false
+                        article.copy(collect = isCollected)
+                    }
+                )
+            }
+        }
         getHomeData(0)
     }
 

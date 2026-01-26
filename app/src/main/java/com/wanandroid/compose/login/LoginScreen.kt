@@ -104,7 +104,7 @@ fun LoginSector(
                     dismissOnBackPress = true
                 ),
                 onDismissRequest = {
-
+                    loginViewModel.cancelLogin()
                 }) {
                 Surface(
                     modifier = Modifier
@@ -116,7 +116,7 @@ fun LoginSector(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(28.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CircularProgressIndicator()
