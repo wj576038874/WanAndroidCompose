@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.main.state.LoginState
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +28,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         loginJob = viewModelScope.launch {
             runCatching {
                 _loginState.value = LoginState.Loading
-                delay(300000)
                 loginRepository.login(userName, password)
             }.onSuccess {
                 it.data?.let { userInfo ->
