@@ -42,7 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.wanandroid.compose.LocalAuthViewModel
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
@@ -50,9 +49,7 @@ import com.wanandroid.compose.http.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.login.LoginViewModel
-import com.wanandroid.compose.main.state.LoginState
 import com.wanandroid.compose.route.Route
-import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Created by wenjie on 2026/01/22.

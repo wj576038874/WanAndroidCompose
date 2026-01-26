@@ -45,7 +45,7 @@ class OkHttpHelper private constructor() {
             sslContext.init(null, trustAllCerts, SecureRandom())
             val sslSocketFactory = sslContext.socketFactory
             builder.socketFactory(sslSocketFactory)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             //
         }
         mHttpClient = builder.build()
