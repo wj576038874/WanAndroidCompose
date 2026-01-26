@@ -16,6 +16,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.route.Route
@@ -28,14 +29,19 @@ val LocalBackStack = staticCompositionLocalOf<NavBackStack<NavKey>> {
     error("LocalBackStack")
 }
 
+val LocalAuthViewModel = staticCompositionLocalOf<AuthViewModel> {
+    error("LocalAuthViewModel")
+}
+
 @Composable
-fun WanAndroidApp(modifier: Modifier = Modifier) {
+fun WanAndroidApp(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
         val backStack = rememberNavBackStack(Route.Main)
         CompositionLocalProvider(
             LocalBackStack provides backStack,
+            LocalAuthViewModel provides authViewModel,
         ) {
             innerPadding.calculateBottomPadding()
             NavDisplay(
@@ -56,6 +62,9 @@ fun WanAndroidApp(modifier: Modifier = Modifier) {
                     }
                     entry<Route.ArticleDetail> {
                         ArticleDetailScreen(articleItem = it.articleItem)
+                    }
+                    entry<Route.Login> {
+                        LoginScreen()
                     }
                 }
             )

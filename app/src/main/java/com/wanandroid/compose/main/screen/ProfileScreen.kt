@@ -32,6 +32,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +40,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.wanandroid.compose.LocalAuthViewModel
+import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
+import com.wanandroid.compose.main.state.LoginState
+import com.wanandroid.compose.route.Route
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -58,12 +65,10 @@ private val ITEMS = listOf(
 
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier,
-    innerPadding: PaddingValues
+    modifier: Modifier = Modifier, innerPadding: PaddingValues
 ) {
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         item {
             Header(
@@ -72,8 +77,7 @@ fun ProfileScreen(
         }
         items(ITEMS) {
             ProfileItem(
-                modifier = modifier,
-                item = it
+                modifier = modifier, item = it
             )
         }
     }
@@ -83,15 +87,13 @@ fun ProfileScreen(
 @Composable
 fun ProfileItemPreview(modifier: Modifier = Modifier) {
     ProfileItem(
-        modifier = modifier,
-        item = Icons.Outlined.Info to "我的积分"
+        modifier = modifier, item = Icons.Outlined.Info to "我的积分"
     )
 }
 
 @Composable
 fun ProfileItem(
-    modifier: Modifier = Modifier,
-    item: Pair<ImageVector, String>
+    modifier: Modifier = Modifier, item: Pair<ImageVector, String>
 ) {
     Row(
         modifier = modifier
@@ -133,6 +135,10 @@ fun Header(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
+    val authViewModel = LocalAuthViewModel.current
+    val isLogin by authViewModel.isLogin.collectAsStateWithLifecycle()
+    val userInfo by authViewModel.userInfo.collectAsStateWithLifecycle()
+    val backStack = LocalBackStack.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -149,8 +155,7 @@ fun Header(
             IconButton(
                 onClick = {
 
-                }
-            ) {
+                }) {
                 Icon(
                     modifier = modifier,
                     imageVector = Icons.Outlined.Notifications,
@@ -169,23 +174,23 @@ fun Header(
             contentDescription = null,
         )
         Spacer(modifier = modifier.height(16.dp))
-        val isLogin = false
-        if (isLogin){
+
+        if (isLogin) {
             Text(
-                text = "wenjie",
+                text = userInfo?.username ?: "",
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
             Spacer(modifier = modifier.height(4.dp))
             Text(
-                text = "1234567890",
+                text = userInfo?.email ?: "",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
-        }else{
+        } else {
             Text(
-                modifier = Modifier.clickable{
-
+                modifier = Modifier.clickable {
+                    backStack.add(Route.Login)
                 },
                 text = "未登录",
                 style = MaterialTheme.typography.headlineMedium,

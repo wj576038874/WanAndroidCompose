@@ -5,13 +5,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.wanandroid.compose.AuthViewModel
 import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val authViewModel: AuthViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authViewModel.checkLogin()
         installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                !authViewModel.isReady.value
+            }
             setOnExitAnimationListener {
                 it.remove()
             }
@@ -24,7 +33,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             WanAndroidComposeTheme {
-                WanAndroidApp()
+                WanAndroidApp(authViewModel = authViewModel)
             }
         }
     }

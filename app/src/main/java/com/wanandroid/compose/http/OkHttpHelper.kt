@@ -1,5 +1,6 @@
 package com.wanandroid.compose.http
 
+import com.wanandroid.compose.WanAndroidApplication
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -20,6 +21,7 @@ class OkHttpHelper private constructor() {
             .connectTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
             .readTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
             .writeTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+            .cookieJar(PersistentCookieJar(WanAndroidApplication.context))
 //            .addInterceptor(RequestSignInterceptor())
 //        if (BuildConfig.DEBUG) {
 //            builder.addInterceptor(CurlInterceptor {

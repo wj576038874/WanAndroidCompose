@@ -1,0 +1,300 @@
+package com.wanandroid.compose.login
+
+import android.widget.Toast
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.wanandroid.compose.LocalAuthViewModel
+import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.R
+import com.wanandroid.compose.WanAndroidApplication
+import com.wanandroid.compose.http.LoginApi
+import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.main.state.LoginResult
+import com.wanandroid.compose.main.state.LoginState
+
+/**
+ * Created by wenjie on 2026/01/26.
+ */
+@Preview(
+    showBackground = true,
+)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginScreen(modifier: Modifier = Modifier) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        LoginSector(innerPadding)
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginSector(
+    innerPadding: PaddingValues,
+    modifier: Modifier = Modifier
+) {
+    val loginViewModel = viewModel {
+        val loginApi = RetrofitHelper.create(LoginApi::class.java)
+        val loginRepository = LoginRepository(loginApi = loginApi)
+        LoginViewModel(loginRepository = loginRepository)
+    }
+    val authViewModel = LocalAuthViewModel.current
+    val backStack = LocalBackStack.current
+    var userName by remember { mutableStateOf("wj576038874") }
+    var password by remember { mutableStateOf("1rujiwang") }
+    val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
+    val loginResult = loginState.loginResult
+    when (loginResult) {
+        is LoginResult.Loading -> {
+            BasicAlertDialog(
+                properties = DialogProperties(
+                    dismissOnClickOutside = false,
+                    dismissOnBackPress = true
+                ),
+                onDismissRequest = {
+
+                }) {
+                Surface(
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .wrapContentHeight(),
+                    shape = MaterialTheme.shapes.medium,
+                    tonalElevation = AlertDialogDefaults.TonalElevation
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator()
+                        Text(
+                            text = "Loading...",
+                            modifier = Modifier.padding(start = 16.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+        }
+
+        is LoginResult.Success -> {
+            authViewModel.login()
+            backStack.removeLastOrNull()
+        }
+
+        is LoginResult.Failure -> {
+            Toast.makeText(
+                WanAndroidApplication.context,
+                "loginState.errorMsg",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
+            IconButton(
+                onClick = {
+                    backStack.removeLastOrNull()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            Image(
+                modifier = Modifier
+                    .size(100.dp)
+                    .align(Alignment.CenterHorizontally),
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = null,
+            )
+            Text(
+                text = "欢迎使用",
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 16.dp),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        Spacer(Modifier.height(64.dp))
+        TextField(
+            value = userName,
+            onValueChange = {
+                userName = it
+            },
+            label = {
+                Text(
+                    text = "用户名",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Person,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+            ),
+            maxLines = 1,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 32.dp
+                )
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = password,
+            onValueChange = {
+                password = it
+            },
+            label = {
+                Text(
+                    text = "密码",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Lock,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+            ),
+            maxLines = 1,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 32.dp
+                )
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        Button(
+            onClick = {
+                loginViewModel.login(userName, password)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 32.dp
+                )
+        ) {
+            Text(
+                text = "登录",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    }
+}
+
+@Composable
+fun Sector(
+    startAngle: Float,         // 起始角度（度）
+    sweepAngle: Float,         // 扇形角度（度）
+    color: Color,
+) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+        val canvasWidth = size.width
+        val canvasHeight = size.height
+        val radius = minOf(canvasWidth, canvasHeight) / 2f
+        val center = Offset(canvasWidth / 6f, canvasHeight / 2f)
+
+        // 画扇形（最核心的一行）
+        drawArc(
+            color = color,
+            startAngle = startAngle,
+            sweepAngle = sweepAngle,
+            useCenter = true,           // true = 从圆心开始画扇形
+            topLeft = Offset(center.x - radius, center.y - radius),
+            size = Size(radius * 3, radius * 2)
+        )
+    }
+}
