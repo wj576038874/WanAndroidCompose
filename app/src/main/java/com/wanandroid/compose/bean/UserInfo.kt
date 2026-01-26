@@ -10,6 +10,6 @@ data class UserInfo(
     val email: String,
     val icon: String,
     val type: Int,
-    val collectIds: List<Int>,
+    val collectIds: Set<Int>,
     val coinCount: Int,
 )

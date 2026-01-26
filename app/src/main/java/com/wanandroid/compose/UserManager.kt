@@ -29,4 +29,18 @@ class UserManager private constructor() {
         _userInfo.value = null
         OkHttpHelper.instance.clearCookies()
     }
+
+    fun addCollectId(id: Int) {
+        val current = _userInfo.value ?: return
+        if (id in current.collectIds) return  // 避免重复添加
+        val newIds = current.collectIds + id   // + 操作符创建全新 Set
+        _userInfo.value = current.copy(collectIds = newIds)
+    }
+
+    fun removeCollectId(id: Int) {
+        val current = _userInfo.value ?: return
+        if (id !in current.collectIds) return  // 避免重复移除
+        val newIds = current.collectIds - id   // - 操作符创建全新 Set
+        _userInfo.value = current.copy(collectIds = newIds)
+    }
 }

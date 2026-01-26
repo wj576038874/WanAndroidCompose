@@ -6,7 +6,11 @@ import androidx.paging.cachedIn
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -25,10 +29,13 @@ class QuestionAnswerViewModel(private val questionAnswerRepository: QuestionAnsw
 //        }
         .cachedIn(viewModelScope)
 
-    private val _collectedIds: MutableStateFlow<Collection<Int>> = MutableStateFlow(
-        UserManager.instance.userInfo.value?.collectIds ?: emptySet()
+    val collectedIds: StateFlow<Set<Int>> = UserManager.instance.userInfo.map {
+        it?.collectIds ?: emptySet()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = UserManager.instance.userInfo.value?.collectIds ?: emptySet()
     )
-    val collectedIds = _collectedIds.asStateFlow()
 
     fun collectArticle(id: Int) {
         viewModelScope.launch {
@@ -36,7 +43,7 @@ class QuestionAnswerViewModel(private val questionAnswerRepository: QuestionAnsw
                 questionAnswerRepository.collectArticle(id)
             }.onSuccess { response ->
                 if (response.isSuccess) {
-                    _collectedIds.value += id
+                    UserManager.instance.addCollectId(id)
                 }
             }.onFailure {
 
@@ -48,8 +55,10 @@ class QuestionAnswerViewModel(private val questionAnswerRepository: QuestionAnsw
         viewModelScope.launch {
             runCatching {
                 questionAnswerRepository.unCollectArticle(id)
-            }.onSuccess {
-                _collectedIds.value -= id
+            }.onSuccess { response ->
+                if (response.isSuccess) {
+                    UserManager.instance.removeCollectId(id)
+                }
             }.onFailure {
 
             }
