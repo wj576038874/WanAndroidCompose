@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">WanAndroid</string>
+    <string name="string_home">หน้าหลัก</string>
+    <string name="string_profile">โปรไฟล์</string>
+    <string name="string_qa">ถาม-ตอบ</string>
+    <string name="string_navigation">การนำทาง</string>
+    <string name="string_coin">คะแนน</string>
+    <string name="string_share">แชร์</string>
+    <string name="string_collect">รายการโปรด</string>
+    <string name="string_book_mark">บุ๊กมาร์ก</string>
+    <string name="string_history">ประวัติ</string>
+    <string name="string_code">โค้ด</string>
+    <string name="string_about">เกี่ยวกับ</string>
+    <string name="string_settings">การตั้งค่า</string>
+    <string name="string_change_theme">เปลี่ยนธีม</string>
+    <string name="string_change_language">เปลี่ยนภาษา</string>
+    <string name="string_logout">ออกจากระบบ</string>
+    <string name="string_dark_theme">ธีมมืด</string>
+    <string name="string_light_theme">ธีมสว่าง</string>
+    <string name="string_zh">จีน</string>
+    <string name="string_en">อังกฤษ</string>
+    <string name="string_de">เยอรมัน</string>
+    <string name="string_th">ไทย</string>
+    <string name="string_follow_system">ใช้การตั้งค่าระบบ</string>
+    <string name="string_logout_title">คำแนะนำ</string>
+    <string name="string_logout_content">คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?</string>
+    <string name="string_confirm">ยืนยัน</string>
+    <string name="string_cancel">ยกเลิก</string>
+</resources>

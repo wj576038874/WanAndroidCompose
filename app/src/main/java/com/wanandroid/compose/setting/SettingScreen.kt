@@ -56,6 +56,7 @@ import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.main.state.LoginState
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 /**
  * Created by wenjie on 2026/01/27.
@@ -99,7 +100,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
                     containerColor = MaterialTheme.colorScheme.primary,
                 ), title = {
                     Text(
-                        text = "设置",
+                        text = stringResource(id = R.string.string_settings),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
@@ -285,14 +286,14 @@ private fun LogoutDialog(
         },
         title = {
             Text(
-                text = "温馨提示",
+                text = stringResource(id = R.string.string_logout_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
         },
         text = {
             Text(
-                text = "确认退出登录吗？",
+                text = stringResource(id = R.string.string_logout_content),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -303,7 +304,7 @@ private fun LogoutDialog(
                     confirmClick()
                 }
             ) {
-                Text("确认")
+                Text(stringResource(id = R.string.string_confirm))
             }
         },
         dismissButton = {
@@ -312,7 +313,7 @@ private fun LogoutDialog(
                     cancelClick()
                 }
             ) {
-                Text("取消")
+                Text(stringResource(id = R.string.string_cancel))
             }
         }
     )
@@ -368,6 +369,8 @@ private val languageItems = listOf(
     Pair("system", R.string.string_follow_system),
     Pair("zh", R.string.string_zh),
     Pair("en", R.string.string_en),
+    Pair("de", R.string.string_de),
+    Pair("th", R.string.string_th),
 )
 
 @Preview(

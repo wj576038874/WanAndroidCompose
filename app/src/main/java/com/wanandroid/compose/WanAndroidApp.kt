@@ -7,8 +7,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -21,6 +25,7 @@ import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.route.Route
 import com.wanandroid.compose.setting.SettingScreen
+import java.util.Locale
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -36,6 +41,25 @@ val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
 
 @Composable
 fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
+    /**
+     * 监听语言变化，更新应用语言
+     * 这种方式 dialog和bottomsheet 会使用系统默认语言 因为它们是独立的窗口
+     * 拿到的不是不是新的context（LocalContext） 所以dialog和bottomsheet 会使用系统默认语言
+     */
+    val language by appViewModel.language.collectAsStateWithLifecycle()
+    val configuration = LocalConfiguration.current
+    if (language == "system"){
+        val newLocale = Locale.forLanguageTag(appViewModel.defaultLanguage)
+        Locale.setDefault(newLocale)
+        configuration.setLocale(newLocale)
+    }else{
+        val newLocale = Locale.forLanguageTag(language)
+        Locale.setDefault(newLocale)
+        configuration.setLocale(newLocale)
+    }
+    val context = LocalContext.current
+    val newContext = context.createConfigurationContext(configuration)
+
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
@@ -43,6 +67,7 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
         CompositionLocalProvider(
             LocalBackStack provides backStack,
             LocalAppViewModel provides appViewModel,
+            LocalContext provides newContext,
         ) {
             innerPadding.calculateBottomPadding()
             NavDisplay(

@@ -19,5 +19,11 @@
     <string name="string_light_theme">浅色主题</string>
     <string name="string_zh">中文</string>
     <string name="string_en">英文</string>
+    <string name="string_de">德语</string>
+    <string name="string_th">泰语</string>
     <string name="string_follow_system">跟随系统</string>
+    <string name="string_logout_title">温馨提示</string>
+    <string name="string_logout_content">确定退出登录吗?</string>
+    <string name="string_confirm">确定</string>
+    <string name="string_cancel">取消</string>
 </resources>

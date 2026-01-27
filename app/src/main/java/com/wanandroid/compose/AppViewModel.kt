@@ -4,12 +4,15 @@ import android.app.LocaleManager
 import android.content.Context.MODE_PRIVATE
 import android.content.res.Configuration
 import android.os.LocaleList
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Locale
 
 /**
  * Created by wenjie on 2026/01/26.
@@ -20,6 +23,12 @@ class AppViewModel : ViewModel() {
         WanAndroidApplication.context.getSharedPreferences("MY_THEME", MODE_PRIVATE)
     }
 
+    val defaultLanguage = Locale.getDefault().language
+
+    init {
+        Log.e("asd", defaultLanguage)
+    }
+
     /**
      * 主题模式
      */
@@ -28,6 +37,47 @@ class AppViewModel : ViewModel() {
     )
     val themeMode: StateFlow<Int> = _themeMode.asStateFlow()
 
+    /**
+     * 设置主题模式
+     */
+    fun setThemeMode(themeMode: Int) {
+        _themeMode.value = themeMode
+        sp.edit {
+            putInt("THEME_MODE", themeMode)
+        }
+    }
+
+    private val _language = MutableStateFlow(
+        sp.getString("LANGUAGE", defaultLanguage) ?: defaultLanguage
+    )
+    val language: StateFlow<String> = _language.asStateFlow()
+
+    fun setLanguage(language: String) {
+        _language.value = language
+        sp.edit {
+            putString("LANGUAGE", language)
+        }
+
+//        if (language == "system") {
+//            // 如果选择了系统语言，则使用系统默认语言 设置空集合即可
+//            // 设置之后AppCompatDelegate.getApplicationLocales() 会返回空列表
+////            AppCompatDelegate.setApplicationLocales(
+////                LocaleListCompat.getEmptyLocaleList()
+////            )
+//            WanAndroidApplication.context.getSystemService(LocaleManager::class.java)
+//                .applicationLocales = LocaleList.getEmptyLocaleList()
+//        } else {
+//            //否则直接使用选择的语言
+////            AppCompatDelegate.setApplicationLocales(
+////                LocaleListCompat.forLanguageTags(
+////                    language
+////                )
+////            )
+//            WanAndroidApplication.context.getSystemService(LocaleManager::class.java)
+//                .applicationLocales = LocaleList.forLanguageTags(language)
+//        }
+    }
+
     private val currentLanguage = if (AppCompatDelegate.getApplicationLocales().isEmpty) {
         // 如果没有设置应用语言，则使用系统默认语言
         "system" //用来作为跟随系统语言的标志 设置的时候进行判断，如果选择system 则设置空集合代表跟随系统语言
@@ -35,9 +85,6 @@ class AppViewModel : ViewModel() {
         // 获取应用设置的语言
         AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag() ?: ""
     }
-
-    private val _language = MutableStateFlow(currentLanguage)
-    val language: StateFlow<String> = _language.asStateFlow()
 
     /**
      * 如果没有设置过AppCompatDelegate.setApplicationLocales，则跟随系统语言，
@@ -62,35 +109,26 @@ class AppViewModel : ViewModel() {
      *         Log.e("asd3", AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag().toString())
      *
      */
-    fun setLanguage(language: String) {
+    fun setLanguage2(language: String) {
         _language.value = language
         if (language == "system") {
             // 如果选择了系统语言，则使用系统默认语言 设置空集合即可
             // 设置之后AppCompatDelegate.getApplicationLocales() 会返回空列表
-//            AppCompatDelegate.setApplicationLocales(
-//                LocaleListCompat.getEmptyLocaleList()
-//            )
-            WanAndroidApplication.context.getSystemService(LocaleManager::class.java)
-                .applicationLocales = LocaleList.getEmptyLocaleList()
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.getEmptyLocaleList()
+            )
+//            WanAndroidApplication.context.getSystemService(LocaleManager::class.java)
+//                .applicationLocales = LocaleList.getEmptyLocaleList()
         } else {
             //否则直接使用选择的语言
-//            AppCompatDelegate.setApplicationLocales(
-//                LocaleListCompat.forLanguageTags(
-//                    language
-//                )
-//            )
-            WanAndroidApplication.context.getSystemService(LocaleManager::class.java)
-                .applicationLocales = LocaleList.forLanguageTags(language)
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.forLanguageTags(
+                    language
+                )
+            )
+//            WanAndroidApplication.context.getSystemService(LocaleManager::class.java)
+//                .applicationLocales = LocaleList.forLanguageTags(language)
         }
     }
 
-    /**
-     * 设置主题模式
-     */
-    fun setThemeMode(themeMode: Int) {
-        _themeMode.value = themeMode
-        sp.edit {
-            putInt("THEME_MODE", themeMode)
-        }
-    }
 }

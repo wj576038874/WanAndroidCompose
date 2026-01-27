@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">WanAndroid</string>
+    <string name="string_home">Startseite</string>
+    <string name="string_profile">Profil</string>
+    <string name="string_qa">Fragen &amp; Antworten</string>
+    <string name="string_navigation">Navigation</string>
+    <string name="string_coin">Punkte</string>
+    <string name="string_share">Teilen</string>
+    <string name="string_collect">Favoriten</string>
+    <string name="string_book_mark">Lesezeichen</string>
+    <string name="string_history">Verlauf</string>
+    <string name="string_code">Code</string>
+    <string name="string_about">Über</string>
+    <string name="string_settings">Einstellungen</string>
+    <string name="string_change_theme">Thema ändern</string>
+    <string name="string_change_language">Sprache ändern</string>
+    <string name="string_logout">Abmelden</string>
+    <string name="string_dark_theme">Dunkles Thema</string>
+    <string name="string_light_theme">Helles Thema</string>
+    <string name="string_zh">Chinesisch</string>
+    <string name="string_en">Englisch</string>
+    <string name="string_de">Deutsch</string>
+    <string name="string_th">Thai</string>
+    <string name="string_follow_system">Systemstandard verwenden</string>
+    <string name="string_logout_title">Hinweis</string>
+    <string name="string_logout_content">Möchten Sie sich wirklich abmelden?</string>
+    <string name="string_confirm">Bestätigen</string>
+    <string name="string_cancel">Abbrechen</string>
+</resources>
