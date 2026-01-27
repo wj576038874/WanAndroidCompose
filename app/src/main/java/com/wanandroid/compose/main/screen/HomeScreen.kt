@@ -40,9 +40,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
@@ -52,6 +55,7 @@ import com.wanandroid.compose.http.ApiService
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.HomeRepository
 import com.wanandroid.compose.main.viemodel.HomeViewModel
+import com.wanandroid.compose.utils.launchCustomChromeTab
 import kotlinx.coroutines.delay
 
 /**
@@ -259,6 +263,8 @@ fun Banner(
     val pagerState = rememberPagerState(0) {
         Int.MAX_VALUE
     }
+    val context = LocalContext.current
+    val color = MaterialTheme.colorScheme.primary.toArgb()
     LaunchedEffect(true) {
         while (true) {
             delay(3000)
@@ -277,7 +283,11 @@ fun Banner(
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    Log.d("Banner", "click: ${bannerList[it].url}")
+                    launchCustomChromeTab(
+                        context = context,
+                        uri = bannerList[position].url.toUri(),
+                        toolbarColor = color
+                    )
                 },
             contentScale = ContentScale.Crop
         )

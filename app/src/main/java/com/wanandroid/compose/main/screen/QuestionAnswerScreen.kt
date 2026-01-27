@@ -1,6 +1,11 @@
 package com.wanandroid.compose.main.screen
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
+import androidx.annotation.ColorInt
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,9 +38,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
@@ -46,6 +54,7 @@ import com.wanandroid.compose.http.QuestionAnswerApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import com.wanandroid.compose.main.viemodel.QuestionAnswerViewModel
+import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -194,13 +203,20 @@ fun QuestionAnswerItem(
     onCollectClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .clickable {
-            Log.e("asd", "click item ${item.id}")
-        }
-        .padding(16.dp)) {
+    val context = LocalContext.current
+    val color = MaterialTheme.colorScheme.primary.toArgb()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clickable {
+                launchCustomChromeTab(
+                    context = context,
+                    uri = item.link?.toUri() ?: return@clickable,
+                    toolbarColor = color
+                )
+            }
+            .padding(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
