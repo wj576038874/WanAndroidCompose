@@ -41,24 +41,19 @@ val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
 
 @Composable
 fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
-    /**
-     * 监听语言变化，更新应用语言
-     * 这种方式 dialog和bottomsheet 会使用系统默认语言 因为它们是独立的窗口
-     * 拿到的不是不是新的context（LocalContext） 所以dialog和bottomsheet 会使用系统默认语言
-     */
-    val language by appViewModel.language.collectAsStateWithLifecycle()
-    val configuration = LocalConfiguration.current
-    if (language == "system"){
-        val newLocale = Locale.forLanguageTag(appViewModel.defaultLanguage)
-        Locale.setDefault(newLocale)
-        configuration.setLocale(newLocale)
-    }else{
-        val newLocale = Locale.forLanguageTag(language)
-        Locale.setDefault(newLocale)
-        configuration.setLocale(newLocale)
-    }
-    val context = LocalContext.current
-    val newContext = context.createConfigurationContext(configuration)
+//    val language2 by appViewModel.language2.collectAsStateWithLifecycle()
+//    val configuration = LocalConfiguration.current
+//    if (language2 == "system"){
+//        val newLocale = Locale.forLanguageTag(appViewModel.defaultLanguage)
+//        Locale.setDefault(newLocale)
+//        configuration.setLocale(newLocale)
+//    }else{
+//        val newLocale = Locale.forLanguageTag(language2)
+//        Locale.setDefault(newLocale)
+//        configuration.setLocale(newLocale)
+//    }
+//    val context = LocalContext.current
+//    val newContext = context.createConfigurationContext(configuration)
 
     Scaffold(
         modifier = modifier.fillMaxSize()
@@ -67,7 +62,7 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
         CompositionLocalProvider(
             LocalBackStack provides backStack,
             LocalAppViewModel provides appViewModel,
-            LocalContext provides newContext,
+//            LocalContext provides newContext,
         ) {
             innerPadding.calculateBottomPadding()
             NavDisplay(

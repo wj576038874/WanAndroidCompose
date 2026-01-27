@@ -7,8 +7,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
+import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +21,7 @@ import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val appViewModel: AppViewModel by viewModels()
 
@@ -62,6 +65,13 @@ class MainActivity : ComponentActivity() {
                 WanAndroidApp(appViewModel = appViewModel)
             }
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        AppCompatDelegate.setApplicationLocales(
+            AppCompatDelegate.getApplicationLocales() // 触发内部刷新
+        )
     }
 }
 
