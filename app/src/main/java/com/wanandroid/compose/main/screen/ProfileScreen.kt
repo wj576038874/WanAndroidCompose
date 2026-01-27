@@ -41,14 +41,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
-import com.wanandroid.compose.http.LoginApi
-import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.login.LoginRepository
-import com.wanandroid.compose.login.LoginViewModel
+import com.wanandroid.compose.bean.UserInfo
 import com.wanandroid.compose.route.Route
 
 /**
@@ -68,20 +64,36 @@ private val ITEMS = listOf(
 
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier, innerPadding: PaddingValues
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues
 ) {
+    val backStack = LocalBackStack.current
+    val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
         item {
             Header(
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                toLogin = {
+                    backStack.add(Route.Login)
+                },
+                userInfo = userInfo,
             )
         }
         items(ITEMS) {
             ProfileItem(
-                modifier = modifier, item = it
-            )
+                modifier = modifier, item = it, onClick = {
+                    when (it.first) {
+                        7 -> {
+                            if (userInfo != null) {
+                                backStack.add(Route.Settings)
+                            } else {
+                                backStack.add(Route.Login)
+                            }
+                        }
+                    }
+                })
         }
     }
 }
@@ -90,28 +102,19 @@ fun ProfileScreen(
 @Composable
 fun ProfileItemPreview(modifier: Modifier = Modifier) {
     ProfileItem(
-        modifier = modifier, item = Triple(0, Icons.Outlined.Info, "我的积分")
-    )
+        modifier = modifier, item = Triple(0, Icons.Outlined.Info, "我的积分"), onClick = {})
 }
 
 @Composable
 fun ProfileItem(
-    modifier: Modifier = Modifier, item: Triple<Int, ImageVector, String>
+    modifier: Modifier = Modifier, item: Triple<Int, ImageVector, String>, onClick: () -> Unit
 ) {
-    val loginViewModel = viewModel {
-        val loginApi = RetrofitHelper.create(LoginApi::class.java)
-        LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))
-    }
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.surface)
             .clickable {
-                when (item.first) {
-                    7 -> {
-                        loginViewModel.logout()
-                    }
-                }
+                onClick()
             }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -140,14 +143,13 @@ fun ProfileItem(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun Header(
-    modifier: Modifier = Modifier, innerPadding: PaddingValues = PaddingValues(0.dp)
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues(0.dp),
+    userInfo: UserInfo?,
+    toLogin: () -> Unit
 ) {
-    val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
-    val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
-    val backStack = LocalBackStack.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -184,22 +186,22 @@ fun Header(
         )
         Spacer(modifier = modifier.height(16.dp))
 
-        if (isLogin) {
+        if (userInfo != null) {
             Text(
-                text = userInfo?.username ?: "",
+                text = userInfo.username,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
             Spacer(modifier = modifier.height(4.dp))
             Text(
-                text = userInfo?.email ?: "",
+                text = userInfo.email,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
         } else {
             Text(
                 modifier = Modifier.clickable {
-                    backStack.add(Route.Login)
+                    toLogin()
                 },
                 text = "未登录",
                 style = MaterialTheme.typography.headlineMedium,

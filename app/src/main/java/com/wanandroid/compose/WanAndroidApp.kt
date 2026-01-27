@@ -20,6 +20,7 @@ import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.setting.SettingScreen
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -29,19 +30,19 @@ val LocalBackStack = staticCompositionLocalOf<NavBackStack<NavKey>> {
     error("LocalBackStack")
 }
 
-val LocalAuthViewModel = staticCompositionLocalOf<AuthViewModel> {
+val LocalThemeViewModel = staticCompositionLocalOf<ThemeViewModel> {
     error("LocalAuthViewModel")
 }
 
 @Composable
-fun WanAndroidApp(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
+fun WanAndroidApp(modifier: Modifier = Modifier, themeViewModel: ThemeViewModel) {
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
         val backStack = rememberNavBackStack(Route.Main)
         CompositionLocalProvider(
             LocalBackStack provides backStack,
-            LocalAuthViewModel provides authViewModel,
+            LocalThemeViewModel provides themeViewModel,
         ) {
             innerPadding.calculateBottomPadding()
             NavDisplay(
@@ -65,6 +66,9 @@ fun WanAndroidApp(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
                     }
                     entry<Route.Login> {
                         LoginScreen()
+                    }
+                    entry<Route.Settings> {
+                        SettingScreen()
                     }
                 }
             )

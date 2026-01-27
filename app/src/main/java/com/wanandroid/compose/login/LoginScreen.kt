@@ -50,6 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
+import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.http.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.state.LoginState
@@ -93,37 +94,11 @@ fun LoginSector(
     }
     when (loginState) {
         is LoginState.Loading -> {
-            BasicAlertDialog(
-                properties = DialogProperties(
-                    dismissOnClickOutside = false,
-                    dismissOnBackPress = true
-                ),
+            LoadingDialog(
                 onDismissRequest = {
                     loginViewModel.cancelLogin()
-                }) {
-                Surface(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .wrapContentHeight(),
-                    shape = MaterialTheme.shapes.medium,
-                    tonalElevation = AlertDialogDefaults.TonalElevation
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(28.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CircularProgressIndicator()
-                        Text(
-                            text = "Loading...",
-                            modifier = Modifier.padding(start = 16.dp),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
                 }
-            }
+            )
         }
 
         is LoginState.Failure -> {

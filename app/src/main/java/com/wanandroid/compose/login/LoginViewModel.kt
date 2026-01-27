@@ -20,10 +20,10 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
     private var loginJob: Job? = null
+    private var logoutJob: Job? = null
 
     fun login(
-        userName: String,
-        password: String
+        userName: String, password: String
     ) {
         loginJob = viewModelScope.launch {
             runCatching {
@@ -49,17 +49,26 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         loginJob?.cancel()
     }
 
+    fun cancelLogout() {
+        _loginState.value = LoginState.Nothing
+        logoutJob?.cancel()
+    }
+
+
     fun logout() {
-        viewModelScope.launch {
+        logoutJob = viewModelScope.launch {
             runCatching {
+                _loginState.value = LoginState.Loading
                 loginRepository.logout()
             }.onSuccess {
+                _loginState.value = LoginState.Nothing
                 if (it.isSuccess) {
                     UserManager.instance.logout()
                 } else {
                     _loginState.value = LoginState.Failure(errorMsg = it.message ?: "退出登录失败")
                 }
             }.onFailure {
+                _loginState.value = LoginState.Nothing
                 _loginState.value = LoginState.Failure(errorMsg = it.message ?: "退出登录失败")
             }
         }

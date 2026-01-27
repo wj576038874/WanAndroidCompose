@@ -27,7 +27,7 @@ class QuestionAnswerViewModel(private val questionAnswerRepository: QuestionAnsw
 //        }
         .cachedIn(viewModelScope)
 
-    val collectedIds: StateFlow<Set<Int>> = UserManager.instance.userInfo.map {
+    val collectedIds = UserManager.instance.userInfo.map {
         it?.collectIds ?: emptySet()
     }.stateIn(
         scope = viewModelScope,
