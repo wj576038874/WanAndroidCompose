@@ -2,8 +2,12 @@ package com.wanandroid.compose
 
 import com.wanandroid.compose.bean.UserInfo
 import com.wanandroid.compose.http.OkHttpHelper
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * Created by wenjie on 2026/01/26.
@@ -13,19 +17,24 @@ class UserManager private constructor() {
         val instance: UserManager by lazy { UserManager() }
     }
 
+    private val scope = MainScope()
+
     private val _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo = _userInfo.asStateFlow()
 
-    private val _isLogin = MutableStateFlow(false)
-    val isLogin = _isLogin.asStateFlow()
+    val isLogin = userInfo.map {
+        it != null
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = false
+    )
 
     fun login(userInfo: UserInfo) {
         _userInfo.value = userInfo
-        _isLogin.value = true
     }
 
     fun logout() {
-        _isLogin.value = false
         _userInfo.value = null
         OkHttpHelper.instance.clearCookies()
     }

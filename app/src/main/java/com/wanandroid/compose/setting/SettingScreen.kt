@@ -1,6 +1,7 @@
 package com.wanandroid.compose.setting
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,12 +50,15 @@ import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.LocalAppViewModel
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.http.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.main.state.LoginState
+import com.wanandroid.compose.main.state.LogoutState
+import com.wanandroid.compose.route.Route
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -85,14 +89,12 @@ fun SettingScreen(modifier: Modifier = Modifier) {
     val language by themeViewModel.language.collectAsStateWithLifecycle()
 
     var logoutDialog by remember { mutableStateOf(false) }
-    val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
-    val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
-    LaunchedEffect(isLogin) {
-        if (!isLogin) {
-            backStack.removeLastOrNull()
-        }
-    }
-
+    val logoutState by loginViewModel.logoutState.collectAsStateWithLifecycle()
+//    LaunchedEffect(logoutState) {
+//        if (logoutState is LogoutState.Success) {
+//            backStack.removeLastOrNull()
+//        }
+//    }
     Scaffold(
         modifier = modifier.fillMaxSize(), topBar = {
             CenterAlignedTopAppBar(
@@ -157,6 +159,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
                     logoutDialog = false
                 },
                 confirmClick = {
+                    logoutDialog = false
                     loginViewModel.logout()
                 },
                 cancelClick = {
@@ -165,12 +168,28 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             )
         }
 
-        if (loginState is LoginState.Loading) {
-            LoadingDialog(
-                onDismissRequest = {
-                    loginViewModel.cancelLogout()
-                }
-            )
+        when (logoutState) {
+            is LogoutState.Failure -> {
+                Toast.makeText(
+                    WanAndroidApplication.context,
+                    (logoutState as LogoutState.Failure).errorMsg,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is LogoutState.Success -> {
+                backStack.remove(Route.Settings)
+            }
+
+            is LogoutState.Loading -> {
+                LoadingDialog(
+                    onDismissRequest = {
+                        loginViewModel.cancelLogout()
+                    }
+                )
+            }
+
+            is LogoutState.Nothing -> {}
         }
 
         // Sheet content

@@ -70,6 +70,7 @@ fun ProfileScreen(
 ) {
     val backStack = LocalBackStack.current
     val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
+    val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
@@ -89,7 +90,7 @@ fun ProfileScreen(
                 onClick = {
                     when (it.first) {
                         7 -> {
-                            if (userInfo != null) {
+                            if (isLogin) {
                                 backStack.add(Route.Settings)
                             } else {
                                 backStack.add(Route.Login)
