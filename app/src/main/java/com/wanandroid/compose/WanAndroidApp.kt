@@ -30,19 +30,19 @@ val LocalBackStack = staticCompositionLocalOf<NavBackStack<NavKey>> {
     error("LocalBackStack")
 }
 
-val LocalThemeViewModel = staticCompositionLocalOf<ThemeViewModel> {
+val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
     error("LocalAuthViewModel")
 }
 
 @Composable
-fun WanAndroidApp(modifier: Modifier = Modifier, themeViewModel: ThemeViewModel) {
+fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
         val backStack = rememberNavBackStack(Route.Main)
         CompositionLocalProvider(
             LocalBackStack provides backStack,
-            LocalThemeViewModel provides themeViewModel,
+            LocalAppViewModel provides appViewModel,
         ) {
             innerPadding.calculateBottomPadding()
             NavDisplay(

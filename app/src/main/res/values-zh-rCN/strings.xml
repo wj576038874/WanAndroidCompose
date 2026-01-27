@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">玩安卓</string>
+    <string name="string_home">首页</string>
+    <string name="string_profile">我的</string>
+    <string name="string_qa">问答</string>
+    <string name="string_navigation">导航</string>
+    <string name="string_coin">我的积分</string>
+    <string name="string_share">分享</string>
+    <string name="string_collect">我的收藏</string>
+    <string name="string_book_mark">我的书签</string>
+    <string name="string_history">阅读历史</string>
+    <string name="string_code">开源项目</string>
+    <string name="string_about">关于作者</string>
+    <string name="string_settings">系统设置</string>
+</resources>

@@ -107,7 +107,9 @@ fun ProfileItemPreview(modifier: Modifier = Modifier) {
 
 @Composable
 fun ProfileItem(
-    modifier: Modifier = Modifier, item: Triple<Int, ImageVector, String>, onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    item: Triple<Int, ImageVector, String>,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier

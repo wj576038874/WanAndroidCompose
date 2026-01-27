@@ -8,5 +8,5 @@ import androidx.compose.ui.graphics.vector.ImageVector
  */
 data class BottomBarItem(
     val icon: ImageVector,
-    val label: String
+    val label: Int
 )

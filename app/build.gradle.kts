@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.appcompat)
 
 
     val composeBom = platform(libs.androidx.compose.bom)

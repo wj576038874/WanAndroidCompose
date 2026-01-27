@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
@@ -21,7 +20,7 @@ import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val themeViewModel: ThemeViewModel by viewModels()
+    private val appViewModel: AppViewModel by viewModels()
 
     private val splashViewModel: SplashViewModel by viewModels {
         val loginApi = RetrofitHelper.create(LoginApi::class.java)
@@ -51,17 +50,16 @@ class MainActivity : ComponentActivity() {
             window.isNavigationBarContrastEnforced = false
         }
         setContent {
-            val themeMode by themeViewModel.themeMode.collectAsStateWithLifecycle()
+            val themeMode by appViewModel.themeMode.collectAsStateWithLifecycle()
             val isDarkTheme = when (themeMode) {
                 Configuration.UI_MODE_NIGHT_YES -> false
                 Configuration.UI_MODE_NIGHT_NO -> true
                 else -> isSystemInDarkTheme()
             }
             WanAndroidComposeTheme(
-                darkTheme = isDarkTheme,
-                dynamicColor = false
+                darkTheme = isDarkTheme, dynamicColor = false
             ) {
-                WanAndroidApp(themeViewModel = themeViewModel)
+                WanAndroidApp(appViewModel = appViewModel)
             }
         }
     }

@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">WanAndroid</string>
+    <string name="string_home">Home</string>
+    <string name="string_profile">Profile</string>
+    <string name="string_qa">Q&amp;A</string>
+    <string name="string_navigation">Navigation</string>
+    <string name="string_coin">Coin</string>
+    <string name="string_share">Share</string>
+    <string name="string_collect">Collect</string>
+    <string name="string_book_mark">BookMark</string>
+    <string name="string_history">History</string>
+    <string name="string_code">Code</string>
+    <string name="string_about">About</string>
+    <string name="string_settings">Settings</string>
+
 </resources>
