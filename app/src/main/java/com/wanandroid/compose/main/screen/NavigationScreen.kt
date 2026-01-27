@@ -22,7 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.bean.ArticleItem
@@ -30,6 +33,7 @@ import com.wanandroid.compose.http.NavigationApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.NavigationRepository
 import com.wanandroid.compose.main.viemodel.NavigationViewModel
+import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -97,6 +101,8 @@ fun NavigationScreen(
 fun NavigationItem(
     modifier: Modifier = Modifier, articles: List<ArticleItem>
 ) {
+    val context = LocalContext.current
+    val color = MaterialTheme.colorScheme.primary.toArgb()
     FlowRow(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -109,9 +115,16 @@ fun NavigationItem(
                 colors = FilterChipDefaults.filterChipColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     labelColor = MaterialTheme.colorScheme.onSecondary,
-                ), selected = false, onClick = {
-
-                }, label = {
+                ),
+                selected = false,
+                onClick = {
+                    launchCustomChromeTab(
+                        context = context,
+                        uri = articleItem.link.toUri(),
+                        toolbarColor = color
+                    )
+                },
+                label = {
                     Text(text = articleItem.title)
                 },
                 shape = RoundedCornerShape(8.dp)

@@ -89,6 +89,13 @@ fun ProfileScreen(
                 item = it,
                 onClick = {
                     when (it.first) {
+                        0 ->{
+                            if (isLogin) {
+                                backStack.add(Route.Coin)
+                            } else {
+                                backStack.add(Route.Login)
+                            }
+                        }
                         7 -> {
                             if (isLogin) {
                                 backStack.add(Route.Settings)

@@ -20,6 +20,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.wanandroid.compose.coin.CoinScreen
 import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
@@ -89,6 +90,9 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     }
                     entry<Route.Settings> {
                         SettingScreen()
+                    }
+                    entry<Route.Coin> {
+                        CoinScreen()
                     }
                 }
             )

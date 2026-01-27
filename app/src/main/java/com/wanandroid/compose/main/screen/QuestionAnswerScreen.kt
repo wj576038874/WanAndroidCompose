@@ -3,6 +3,7 @@ package com.wanandroid.compose.main.screen
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
@@ -49,6 +50,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.wanandroid.compose.WanAndroidApplication
+import com.wanandroid.compose.WanAndroidApplication.Companion.context
 import com.wanandroid.compose.bean.QuestionAnswerItem
 import com.wanandroid.compose.http.QuestionAnswerApi
 import com.wanandroid.compose.http.RetrofitHelper
@@ -126,22 +129,14 @@ fun QuestionAnswerScreen(
                         Log.e("asd", "refresh loading")
                     }
 
-//                    refresh is LoadState.Error -> {
-//                        Log.e("asd", "refresh error")
-//                        item {
-//                            Box(
-//                                modifier = Modifier.fillMaxSize()
-//                                    .background(Color.Red),
-//                                contentAlignment = Alignment.Center
-//                            ) {
-//                                Text(
-//                                    text = (refresh as LoadState.Error).error.message ?: "refresh error",
-//                                    style = MaterialTheme.typography.bodyMedium,
-//                                    color = MaterialTheme.colorScheme.error
-//                                )
-//                            }
-//                        }
-//                    }
+                    refresh is LoadState.Error -> {
+                        Log.e("asd", "refresh error")
+                        Toast.makeText(
+                            context,
+                            (refresh as LoadState.Error).error.message ?: "refresh error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
                     append is LoadState.Loading -> {
                         Log.e("asd", "append loading")
