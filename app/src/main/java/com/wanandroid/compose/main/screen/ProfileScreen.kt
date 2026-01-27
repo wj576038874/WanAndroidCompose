@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,14 +53,14 @@ import com.wanandroid.compose.route.Route
  */
 
 private val ITEMS = listOf(
-    Triple(0, Icons.Outlined.StarOutline, "我的积分"),
-    Triple(1, Icons.Outlined.Share, "我的分享"),
-    Triple(2, Icons.Outlined.FavoriteBorder, "我的收藏"),
-    Triple(3, Icons.Outlined.Bookmarks, "我的书签"),
-    Triple(4, Icons.Outlined.History, "阅读历史"),
-    Triple(5, Icons.Outlined.Grass, "开源项目"),
-    Triple(6, Icons.Outlined.Info, "关于作者"),
-    Triple(7, Icons.Outlined.Settings, "系统设置"),
+    Triple(0, Icons.Outlined.StarOutline, R.string.string_coin),
+    Triple(1, Icons.Outlined.Share, R.string.string_share),
+    Triple(2, Icons.Outlined.FavoriteBorder, R.string.string_collect),
+    Triple(3, Icons.Outlined.Bookmarks, R.string.string_book_mark),
+    Triple(4, Icons.Outlined.History, R.string.string_history),
+    Triple(5, Icons.Outlined.Grass, R.string.string_code),
+    Triple(6, Icons.Outlined.Info, R.string.string_about),
+    Triple(7, Icons.Outlined.Settings, R.string.string_settings),
 )
 
 @Composable
@@ -83,7 +84,9 @@ fun ProfileScreen(
         }
         items(ITEMS) {
             ProfileItem(
-                modifier = modifier, item = it, onClick = {
+                modifier = modifier,
+                item = it,
+                onClick = {
                     when (it.first) {
                         7 -> {
                             if (userInfo != null) {
@@ -93,7 +96,8 @@ fun ProfileScreen(
                             }
                         }
                     }
-                })
+                }
+            )
         }
     }
 }
@@ -102,13 +106,15 @@ fun ProfileScreen(
 @Composable
 fun ProfileItemPreview(modifier: Modifier = Modifier) {
     ProfileItem(
-        modifier = modifier, item = Triple(0, Icons.Outlined.Info, "我的积分"), onClick = {})
+        modifier = modifier,
+        item = Triple(0, Icons.Outlined.Info, R.string.string_code),
+        onClick = {})
 }
 
 @Composable
 fun ProfileItem(
     modifier: Modifier = Modifier,
-    item: Triple<Int, ImageVector, String>,
+    item: Triple<Int, ImageVector, Int>,
     onClick: () -> Unit
 ) {
     Row(
@@ -132,7 +138,7 @@ fun ProfileItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            text = item.third,
+            text = stringResource(id = item.third),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )

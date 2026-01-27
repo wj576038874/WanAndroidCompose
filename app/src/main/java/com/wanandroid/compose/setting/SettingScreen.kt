@@ -40,12 +40,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.LocalAppViewModel
+import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.http.LoginApi
@@ -121,7 +123,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
         ) {
             item {
                 SettingItem(
-                    item = Pair(0, "主题模式"),
+                    item = Pair(0, R.string.string_change_theme),
                     icon = true,
                     onClick = {
                         openBottomSheetTheme = !openBottomSheetTheme
@@ -130,7 +132,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             }
             item {
                 SettingItem(
-                    item = Pair(2, "语言"),
+                    item = Pair(2, R.string.string_change_language),
                     icon = true,
                     onClick = {
                         openBottomSheetLanguage = !openBottomSheetLanguage
@@ -139,7 +141,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             }
             item {
                 SettingItem(
-                    item = Pair(1, "退出登录"),
+                    item = Pair(1, R.string.string_logout),
                     icon = false,
                     onClick = {
                         logoutDialog = !logoutDialog
@@ -181,7 +183,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
                 LazyColumn {
                     items(themeItems) { item ->
                         BottomSheetItem(
-                            text = item.second,
+                            text = stringResource(id = item.second),
                             isSelected = item.first == themeMode,
                             onClick = {
                                 scope.launch {
@@ -210,7 +212,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
                 LazyColumn {
                     items(languageItems) { item ->
                         BottomSheetItem(
-                            text = item.second,
+                            text = stringResource(id = item.second),
                             isSelected = item.first == language,
                             onClick = {
                                 scope.launch {
@@ -320,7 +322,7 @@ private fun LogoutDialog(
 @Composable
 fun SettingItem(
     modifier: Modifier = Modifier,
-    item: Pair<Int, String>,
+    item: Pair<Int, Int>,
     icon: Boolean = true,
     onClick: () -> Unit,
 ) {
@@ -339,7 +341,7 @@ fun SettingItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            text = item.second,
+            text = stringResource(id = item.second),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -357,15 +359,15 @@ fun SettingItem(
 }
 
 private val themeItems = listOf(
-    Pair(0, "跟随系统"),
-    Pair(Configuration.UI_MODE_NIGHT_NO, "深色主题"),
-    Pair(Configuration.UI_MODE_NIGHT_YES, "浅色主题"),
+    Pair(0, R.string.string_follow_system),
+    Pair(Configuration.UI_MODE_NIGHT_NO, R.string.string_dark_theme),
+    Pair(Configuration.UI_MODE_NIGHT_YES, R.string.string_light_theme),
 )
 
 private val languageItems = listOf(
-    Pair("system", "跟随系统"),
-    Pair("zh", "中文"),
-    Pair("en", "英文"),
+    Pair("system", R.string.string_follow_system),
+    Pair("zh", R.string.string_zh),
+    Pair("en", R.string.string_en),
 )
 
 @Preview(
@@ -375,7 +377,7 @@ private val languageItems = listOf(
 fun SettingItemPreview(modifier: Modifier = Modifier) {
     SettingItem(
         modifier = modifier,
-        item = Pair(0, "设置"),
+        item = Pair(0, R.string.string_settings),
         onClick = {},
     )
 }
@@ -389,6 +391,6 @@ fun BottomSheetItemPreview(modifier: Modifier = Modifier) {
         modifier = modifier,
         isSelected = true,
         onClick = {},
-        text = "跟随系统",
+        text = stringResource(id = R.string.string_follow_system),
     )
 }
