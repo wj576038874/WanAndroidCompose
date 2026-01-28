@@ -17,4 +17,6 @@ class CollectRepository(private val collectApi: CollectApi) {
             prefetchDistance = 1,
         )
     )
+
+    suspend fun unCollectArticle(id: Int) = collectApi.unCollectArticle(id)
 }

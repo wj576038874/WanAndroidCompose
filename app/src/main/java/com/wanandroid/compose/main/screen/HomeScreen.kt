@@ -251,6 +251,7 @@ fun ArticleItemCardPreview() {
             superChapterName = "广场Tab",
             chapterName = "自助",
             desc = "",
+            originId = 0,
             collect = false,
         ), modifier = Modifier, onArticleItemClick = {}, onCollectClick = {}
     )

@@ -15,6 +15,7 @@ data class ArticleItem(
     val shareUser: String,
     val shareDate: Long,
     val desc: String,
+    val originId: Int,
     val niceShareDate: String,
     val superChapterName: String,
     val chapterName: String,

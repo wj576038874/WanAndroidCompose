@@ -2,6 +2,11 @@ package com.wanandroid.compose.collect
 
 import android.text.Html
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,18 +14,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,14 +32,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -47,6 +58,7 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
  * Created by wenjie on 2026/01/28.
@@ -57,6 +69,8 @@ import com.wanandroid.compose.http.RetrofitHelper
 @Composable
 fun CollectScreen(modifier: Modifier = Modifier) {
     val backStack = LocalBackStack.current
+    val context = LocalContext.current
+    val toolbarColor = MaterialTheme.colorScheme.primary
     val viewmodel = viewModel {
         CollectViewModel(
             collectRepository = CollectRepository(
@@ -67,6 +81,7 @@ fun CollectScreen(modifier: Modifier = Modifier) {
         )
     }
     val lazyPagingItems = viewmodel.collectList.collectAsLazyPagingItems()
+    val unCollectId by viewmodel.unCollectIdState.collectAsStateWithLifecycle()
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -104,15 +119,45 @@ fun CollectScreen(modifier: Modifier = Modifier) {
                     item.id
                 }) { index ->
                 val item = lazyPagingItems[index] ?: return@items
-                CollectionItem(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    articleItem = item,
-                    onArticleItemClick = {
-
-                    },
-                    onCollectClick = {
-
-                    })
+                var animateDelete by rememberSaveable(item.originId) { mutableStateOf(false) }
+                LaunchedEffect(unCollectId) {
+                    if (unCollectId == item.originId) {
+                        animateDelete = true
+                    }
+                }
+                AnimatedVisibility(
+                    visible = !animateDelete,
+                    exit = shrinkVertically(
+                        shrinkTowards = Alignment.Top,
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearOutSlowInEasing
+                        )
+                    ) + fadeOut(animationSpec = tween(300)),
+                ) {
+                    CollectionItem(
+                        modifier = Modifier
+//                        .animateItem(
+//                            fadeInSpec = tween(400),
+//                            fadeOutSpec = tween(500, easing = LinearOutSlowInEasing),
+//                            placementSpec = spring(
+//                                dampingRatio = Spring.DampingRatioNoBouncy,
+//                                stiffness = Spring.StiffnessMedium
+//                            )
+//                        )
+                            .padding(horizontal = 16.dp),
+                        articleItem = item,
+                        onArticleItemClick = {
+                            launchCustomChromeTab(
+                                context = context,
+                                uri = item.link.toUri(),
+                                toolbarColor = toolbarColor.toArgb()
+                            )
+                        },
+                        onCollectClick = {
+                            viewmodel.unCollectArticle(item.originId)
+                        })
+                }
             }
         }
     }
@@ -184,7 +229,7 @@ fun CollectionItem(
                     )
                     if (articleItem.desc.isNotBlank()) {
                         Text(
-                            text = Html.fromHtml(articleItem.desc).toString(),
+                            text = Html.fromHtml(articleItem.desc , 0).toString(),
                             color = MaterialTheme.colorScheme.secondary,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier,
@@ -238,6 +283,7 @@ fun CollectionItemPreview(modifier: Modifier = Modifier) {
             chapterName = "自助",
             envelopePic = "https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
             collect = false,
+            originId = 0,
             desc = "Android图片选择器支持GIF预览，选择，仿微信的图片选择器的样式和效果。可横竖屏切换显示, 自定义配置，单选，多选，是否显示拍照，material design风格，单选裁剪，拍照裁剪，滑动翻页预览，双击放大，缩放"
         ), onArticleItemClick = {}, onCollectClick = {})
 }

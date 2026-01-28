@@ -99,6 +99,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
                                 it
                             }
                         })
+                    UserManager.instance.addCollectId(id)
                 } else {
                     _homeUiState.value = _homeUiState.value.copy(
                         errorMsg = response.message ?: "收藏文章失败", isLoading = false
@@ -126,6 +127,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
                                 it
                             }
                         })
+                    UserManager.instance.removeCollectId(id)
                 } else {
                     _homeUiState.value = _homeUiState.value.copy(
                         errorMsg = response.message ?: "取消收藏文章失败", isLoading = false
