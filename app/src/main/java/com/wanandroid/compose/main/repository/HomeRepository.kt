@@ -1,17 +1,17 @@
 package com.wanandroid.compose.main.repository
 
-import com.wanandroid.compose.http.ApiService
+import com.wanandroid.compose.main.api.HomeApi
 
 /**
  * Created by wenjie on 2026/01/22.
  */
-class HomeRepository(private val apiService: ApiService) {
+class HomeRepository(private val homeApi: HomeApi) {
 
-    suspend fun getBannerList() = apiService.getBannerList()
+    suspend fun getBannerList() = homeApi.getBannerList()
 
-    suspend fun getArticleList(pageNum: Int) = apiService.getArticleList(pageNum)
+    suspend fun getArticleList(pageNum: Int) = homeApi.getArticleList(pageNum)
 
-    suspend fun collectArticle(id: Int) = apiService.collectArticle(id)
+    suspend fun collectArticle(id: Int) = homeApi.collectArticle(id)
 
-     suspend fun unCollectArticle(id: Int) = apiService.unCollectArticle(id)
+     suspend fun unCollectArticle(id: Int) = homeApi.unCollectArticle(id)
 }

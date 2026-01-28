@@ -25,7 +25,7 @@ import androidx.paging.compose.itemKey
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.common.LazyColumnPaging
-import com.wanandroid.compose.http.CoinApi
+import com.wanandroid.compose.coin.CoinApi
 import com.wanandroid.compose.http.RetrofitHelper
 
 /**

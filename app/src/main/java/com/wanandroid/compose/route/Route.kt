@@ -35,4 +35,6 @@ sealed interface Route : NavKey {
     data object Settings : Route
     @Serializable
     data object Coin : Route
+    @Serializable
+    data object Collect : Route
 }

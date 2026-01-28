@@ -16,7 +16,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanandroid.compose.http.LoginApi
+import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme

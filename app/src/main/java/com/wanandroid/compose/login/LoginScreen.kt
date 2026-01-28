@@ -43,7 +43,7 @@ import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
-import com.wanandroid.compose.http.LoginApi
+import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.state.LoginState
 

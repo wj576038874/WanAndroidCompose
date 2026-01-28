@@ -14,8 +14,10 @@ data class ArticleItem(
     val author: String,
     val shareUser: String,
     val shareDate: Long,
+    val desc: String,
     val niceShareDate: String,
     val superChapterName: String,
     val chapterName: String,
     val collect: Boolean,
+    val envelopePic: String? = null
 )

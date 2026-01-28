@@ -1,4 +1,4 @@
-package com.wanandroid.compose.http
+package com.wanandroid.compose.coin
 
 import com.wanandroid.compose.bean.BasePageData
 import com.wanandroid.compose.bean.BaseResponse

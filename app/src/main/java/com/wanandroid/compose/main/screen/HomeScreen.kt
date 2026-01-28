@@ -51,7 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.bean.BannerItem
-import com.wanandroid.compose.http.ApiService
+import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.HomeRepository
 import com.wanandroid.compose.main.viemodel.HomeViewModel
@@ -69,8 +69,8 @@ fun HomeScreen(
 ) {
     Log.e("asd", "HomeScreen$innerPadding")
     val viewModel = viewModel {
-        val apiService = RetrofitHelper.create(ApiService::class.java)
-        val homeRepository = HomeRepository(apiService = apiService)
+        val homeApi = RetrofitHelper.create(HomeApi::class.java)
+        val homeRepository = HomeRepository(homeApi = homeApi)
         HomeViewModel(homeRepository = homeRepository)
     }
     val homeUiState by viewModel.homeUiState.collectAsStateWithLifecycle()
@@ -250,6 +250,7 @@ fun ArticleItemCardPreview() {
             niceShareDate = "1天前",
             superChapterName = "广场Tab",
             chapterName = "自助",
+            desc = "",
             collect = false,
         ), modifier = Modifier, onArticleItemClick = {}, onCollectClick = {}
     )

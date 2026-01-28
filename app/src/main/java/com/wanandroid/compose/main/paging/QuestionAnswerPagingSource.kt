@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.wanandroid.compose.bean.QuestionAnswerItem
-import com.wanandroid.compose.http.QuestionAnswerApi
+import com.wanandroid.compose.main.api.QuestionAnswerApi
 
 /**
  * Created by wenjie on 2026/01/23.

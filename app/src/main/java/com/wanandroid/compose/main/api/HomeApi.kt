@@ -1,4 +1,4 @@
-package com.wanandroid.compose.http
+package com.wanandroid.compose.main.api
 
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.bean.BannerItem
@@ -11,7 +11,7 @@ import retrofit2.http.Path
 /**
  * Created by wenjie on 2026/01/22.
  */
-interface ApiService {
+interface HomeApi {
 
     @GET("banner/json")
     suspend fun getBannerList(): BaseResponse<List<BannerItem>>

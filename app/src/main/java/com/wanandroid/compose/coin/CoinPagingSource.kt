@@ -3,7 +3,7 @@ package com.wanandroid.compose.coin
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.wanandroid.compose.bean.CoinItem
-import com.wanandroid.compose.http.CoinApi
+import com.wanandroid.compose.coin.CoinApi
 
 /**
  * Created by wenjie on 2026/01/27.

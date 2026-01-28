@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.wanandroid.compose.bean.QuestionAnswerItem
-import com.wanandroid.compose.http.QuestionAnswerApi
+import com.wanandroid.compose.main.api.QuestionAnswerApi
 import com.wanandroid.compose.main.paging.QuestionAnswerPagingSource
 import kotlinx.coroutines.flow.Flow
 

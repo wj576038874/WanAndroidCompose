@@ -1,5 +1,6 @@
 package com.wanandroid.compose.main.screen
 
+import android.text.Html
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +39,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.wanandroid.compose.bean.QuestionAnswerItem
 import com.wanandroid.compose.common.LazyColumnPaging
-import com.wanandroid.compose.http.QuestionAnswerApi
+import com.wanandroid.compose.main.api.QuestionAnswerApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import com.wanandroid.compose.main.viemodel.QuestionAnswerViewModel
@@ -152,7 +153,7 @@ fun QuestionAnswerItem(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = item.desc ?: "unknown",
+            text = Html.fromHtml(item.desc ?: "unknown").toString(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary,
             maxLines = 4,

@@ -96,6 +96,13 @@ fun ProfileScreen(
                                 backStack.add(Route.Login)
                             }
                         }
+                        2 ->{
+                            if (isLogin) {
+                                backStack.add(Route.Collect)
+                            } else {
+                                backStack.add(Route.Login)
+                            }
+                        }
                         7 -> {
                             if (isLogin) {
                                 backStack.add(Route.Settings)

@@ -1,6 +1,6 @@
 package com.wanandroid.compose.main.repository
 
-import com.wanandroid.compose.http.NavigationApi
+import com.wanandroid.compose.main.api.NavigationApi
 
 /**
  * Created by wenjie on 2026/01/23.

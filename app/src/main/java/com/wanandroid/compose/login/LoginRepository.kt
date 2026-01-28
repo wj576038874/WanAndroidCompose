@@ -1,6 +1,6 @@
 package com.wanandroid.compose.login
 
-import com.wanandroid.compose.http.LoginApi
+import com.wanandroid.compose.login.LoginApi
 
 /**
  * Created by wenjie on 2026/01/26.
