@@ -1,17 +1,8 @@
 package com.wanandroid.compose.main.screen
 
-import android.content.Context
-import android.net.Uri
-import android.util.Log
-import android.widget.Toast
-import androidx.annotation.ColorInt
-import androidx.browser.customtabs.CustomTabColorSchemeParams
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,20 +11,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -47,12 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.wanandroid.compose.WanAndroidApplication
-import com.wanandroid.compose.WanAndroidApplication.Companion.context
 import com.wanandroid.compose.bean.QuestionAnswerItem
+import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.http.QuestionAnswerApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
@@ -71,121 +56,34 @@ fun QuestionAnswerScreen(
         val questionAnswerRepository = QuestionAnswerRepository(questionAnswerApi)
         QuestionAnswerViewModel(questionAnswerRepository)
     }
-    val itemList = viewModel.questionAnswerList.collectAsLazyPagingItems()
-    val isRefreshing = itemList.loadState.refresh is LoadState.Loading
+    val lazyPagingItems = viewModel.questionAnswerList.collectAsLazyPagingItems()
     val collectedIds by viewModel.collectedIds.collectAsStateWithLifecycle()
 //    LaunchedEffect(collectIds) {
 //        itemList.refresh()
 //    }
-    PullToRefreshBox(
-        modifier = Modifier.fillMaxSize(),
-        isRefreshing = isRefreshing,
-        onRefresh = itemList::refresh
+    LazyColumnPaging(
+        modifier = modifier.fillMaxSize(),
+        lazyPagingItems = lazyPagingItems,
     ) {
-        if (itemList.loadState.refresh is LoadState.Error) {
-            Log.e("asd", "refresh error2")
-            Box(
-                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = (itemList.loadState.refresh as LoadState.Error).error.message
-                        ?: "refresh error",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-            return@PullToRefreshBox
+        item {
+            Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
         }
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
-            }
-            items(
-                count = itemList.itemCount,
-                key = itemList.itemKey {
-                    it.id
-                }) { index ->
-                itemList[index]?.let { item ->
-                    // 实时计算当前收藏状态（合并服务器原始 + 本地操作）
-                    val isCollected = collectedIds.contains(item.id)
-                    QuestionAnswerItem(
-                        item = item, isCollected = isCollected, onCollectClick = {
-                            if (it) {
-                                viewModel.collectArticle(item.id)
-                            } else {
-                                viewModel.unCollectArticle(item.id)
-                            }
-                        })
-                }
-            }
-            itemList.loadState.apply {
-                when {
-                    refresh is LoadState.Loading -> {
-                        Log.e("asd", "refresh loading")
-                    }
-
-                    refresh is LoadState.Error -> {
-                        Log.e("asd", "refresh error")
-                        Toast.makeText(
-                            context,
-                            (refresh as LoadState.Error).error.message ?: "refresh error",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    append is LoadState.Loading -> {
-                        Log.e("asd", "append loading")
-                        item {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(24.dp)
-                                )
-                                Text(
-                                    text = "Loading...",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    modifier = Modifier.padding(8.dp)
-                                )
-                            }
+        items(
+            count = lazyPagingItems.itemCount,
+            key = lazyPagingItems.itemKey {
+                it.id
+            }) { index ->
+            lazyPagingItems[index]?.let { item ->
+                // 实时计算当前收藏状态（合并服务器原始 + 本地操作）
+                val isCollected = collectedIds.contains(item.id)
+                QuestionAnswerItem(
+                    item = item, isCollected = isCollected, onCollectClick = {
+                        if (it) {
+                            viewModel.collectArticle(item.id)
+                        } else {
+                            viewModel.unCollectArticle(item.id)
                         }
-                    }
-
-                    append is LoadState.Error -> {
-                        Log.e("asd", "append error")
-                        item {
-                            Text(
-                                text = "load more error",
-                                modifier = Modifier
-                                    .clickable {
-                                        itemList.retry()
-                                    }
-                                    .padding(8.dp),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.error,
-                            )
-                        }
-                    }
-                    // 当 over=true 且没有更多数据时
-                    append.endOfPaginationReached && itemList.itemCount > 0 -> {
-                        Log.e("asd", "已经到底啦")
-                        item {
-                            Text(
-                                text = "已经到底啦～",
-                                modifier = Modifier.padding(8.dp),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-                        }
-                    }
-                }
+                    })
             }
         }
     }
