@@ -22,9 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,7 +30,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,22 +54,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil3.compose.SubcomposeAsyncImage
-import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.common.LazyColumnPaging
+import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.route.Route
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
  * Created by wenjie on 2026/01/28.
  */
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollectScreen(modifier: Modifier = Modifier) {
-    val backStack = LocalBackStack.current
     val context = LocalContext.current
     val toolbarColor = MaterialTheme.colorScheme.primary
     val viewmodel = viewModel {
@@ -89,27 +85,10 @@ fun CollectScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ), title = {
-                    Text(
-                        text = stringResource(id = R.string.string_settings),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                }, navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            backStack.removeLastOrNull()
-                        }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = "返回",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
-                })
+            CommonToolbar(
+                route = Route.Collect,
+                title = stringResource(id = R.string.string_collect),
+            )
         },
     ) { innerPadding ->
         LazyColumnPaging(

@@ -37,4 +37,8 @@ sealed interface Route : NavKey {
     data object Coin : Route
     @Serializable
     data object Collect : Route
+    @Serializable
+    data object Camera : Route
+    @Serializable
+    data object Search : Route
 }

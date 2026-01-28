@@ -16,20 +16,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,13 +41,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.LocalAppViewModel
+import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
-import com.wanandroid.compose.login.LoginApi
+import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.login.state.LogoutState
@@ -92,29 +89,14 @@ fun SettingScreen(modifier: Modifier = Modifier) {
 //        }
 //    }
     Scaffold(
-        modifier = modifier.fillMaxSize(), topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ), title = {
-                    Text(
-                        text = stringResource(id = R.string.string_settings),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                }, navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            backStack.removeLastOrNull()
-                        }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = "返回",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
-                })
-        }) { innerPadding ->
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            CommonToolbar(
+                route = Route.Settings,
+                title = stringResource(id = R.string.string_settings),
+            )
+        }
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

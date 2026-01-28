@@ -30,12 +30,14 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.wanandroid.compose.camera.CameraScreen
 import com.wanandroid.compose.coin.CoinScreen
 import com.wanandroid.compose.collect.CollectScreen
 import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.search.SearchScreen
 import com.wanandroid.compose.setting.SettingScreen
 import java.util.Locale
 
@@ -128,6 +130,12 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     }
                     entry<Route.Collect> {
                         CollectScreen()
+                    }
+                    entry<Route.Camera> {
+                        CameraScreen()
+                    }
+                    entry<Route.Search> {
+                        SearchScreen()
                     }
                 }
             )

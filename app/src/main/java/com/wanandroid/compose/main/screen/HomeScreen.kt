@@ -22,13 +22,20 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.SettingsOverscan
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,30 +50,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.bean.BannerItem
 import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.HomeRepository
 import com.wanandroid.compose.main.viemodel.HomeViewModel
+import com.wanandroid.compose.route.Route
 import com.wanandroid.compose.utils.launchCustomChromeTab
 import kotlinx.coroutines.delay
 
 /**
  * Created by wenjie on 2026/01/22.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
     onArticleItemClick: (ArticleItem) -> Unit
 ) {
+    val backStack = LocalBackStack.current
     Log.e("asd", "HomeScreen$innerPadding")
     val viewModel = viewModel {
         val homeApi = RetrofitHelper.create(HomeApi::class.java)
@@ -74,11 +87,51 @@ fun HomeScreen(
         HomeViewModel(homeRepository = homeRepository)
     }
     val homeUiState by viewModel.homeUiState.collectAsStateWithLifecycle()
-    Box(
+    Scaffold(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        topBar = {
+            CenterAlignedTopAppBar(
+                modifier = modifier.fillMaxWidth(),
+                actions = {
+                    IconButton(
+                        onClick = {
+                            backStack.add(Route.Search)
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            backStack.add(Route.Camera)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.QrCodeScanner,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ), title = {
+                    Text(
+                        text = stringResource(R.string.string_home),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                })
+        },
     ) {
         PullToRefreshBox(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = it.calculateTopPadding()),
             isRefreshing = homeUiState.isLoading, onRefresh = {
                 viewModel.getHomeData(pageNum = 0)
             }) {
