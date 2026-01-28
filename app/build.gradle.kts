@@ -68,6 +68,8 @@ dependencies {
 
     implementation(libs.bundles.kotlinx)
 
+    implementation(libs.bundles.camerax)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

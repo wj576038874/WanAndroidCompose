@@ -27,7 +27,7 @@ accompanistPermissions = "0.37.3"
 splashcreen = "1.2.0"
 pagingCompose = "3.3.6"
 appcompat = "1.7.1"
-
+cameraxVersion = "1.5.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -70,6 +70,14 @@ androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name 
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
+androidx-camerax-core = { module = "androidx.camera:camera-core", version.ref = "cameraxVersion" }
+androidx-camerax-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraxVersion" }
+androidx-camerax-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraxVersion" }
+androidx-camerax-video = { module = "androidx.camera:camera-video", version.ref = "cameraxVersion" }
+
+androidx-camerax-view = { module = "androidx.camera:camera-view", version.ref = "cameraxVersion" }
+androidx-camerax-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraxVersion" }
+
 
 [bundles]
 androidx = [
@@ -105,6 +113,15 @@ network = [
     "retrofit",
     "retrofit-gson-converter",
     "gson"
+]
+
+camerax = [
+    "androidx-camerax-core",
+    "androidx-camerax-camera2",
+    "androidx-camerax-lifecycle",
+    "androidx-camerax-video",
+    "androidx-camerax-view",
+    "androidx-camerax-extensions"
 ]
 
 [plugins]
