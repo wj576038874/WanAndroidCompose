@@ -221,7 +221,7 @@ fun CollectionItem(
                             .width(120.dp)
                             .height(90.dp)
                             .padding(end = 12.dp),
-                        model = articleItem.envelopePic.replace("http", "https"),
+                        model = articleItem.envelopePic,
                         loading = {
                             Box(
                                 contentAlignment = Alignment.Center
