@@ -3,8 +3,8 @@ package com.wanandroid.compose.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.UserManager
-import com.wanandroid.compose.main.state.LoginState
-import com.wanandroid.compose.main.state.LogoutState
+import com.wanandroid.compose.login.state.LoginState
+import com.wanandroid.compose.login.state.LogoutState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

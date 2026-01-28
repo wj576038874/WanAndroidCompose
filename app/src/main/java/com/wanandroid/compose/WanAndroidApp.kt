@@ -2,6 +2,16 @@
 
 package com.wanandroid.compose
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -85,7 +95,28 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     entry<Route.ArticleDetail> {
                         ArticleDetailScreen(articleItem = it.articleItem)
                     }
-                    entry<Route.Login> {
+                    entry<Route.Login>(
+                        metadata = NavDisplay.transitionSpec {
+                            slideInVertically(
+                                initialOffsetY = { it },
+                                animationSpec = tween(800)
+                            ) togetherWith ExitTransition.KeepUntilTransitionsFinished
+                        } + NavDisplay.popTransitionSpec {
+                            // Slide old content down, revealing the new content in place underneath
+                            EnterTransition.None togetherWith
+                                    slideOutVertically(
+                                        targetOffsetY = { it },
+                                        animationSpec = tween(800)
+                                    )
+                        } + NavDisplay.predictivePopTransitionSpec {
+                            // Slide old content down, revealing the new content in place underneath
+                            EnterTransition.None togetherWith
+                                    slideOutVertically(
+                                        targetOffsetY = { it },
+                                        animationSpec = tween(800)
+                                    )
+                        }
+                    ) {
                         LoginScreen()
                     }
                     entry<Route.Settings> {

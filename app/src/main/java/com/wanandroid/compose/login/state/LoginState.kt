@@ -1,4 +1,4 @@
-package com.wanandroid.compose.main.state
+package com.wanandroid.compose.login.state
 
 import com.wanandroid.compose.bean.UserInfo
 

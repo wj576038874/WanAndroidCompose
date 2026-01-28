@@ -32,7 +32,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,18 +48,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.LocalAppViewModel
 import com.wanandroid.compose.R
-import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.http.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.login.LoginViewModel
-import com.wanandroid.compose.main.state.LoginState
-import com.wanandroid.compose.main.state.LogoutState
+import com.wanandroid.compose.login.state.LogoutState
 import com.wanandroid.compose.route.Route
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 /**
  * Created by wenjie on 2026/01/27.
