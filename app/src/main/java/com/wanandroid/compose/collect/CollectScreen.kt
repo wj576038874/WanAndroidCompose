@@ -111,7 +111,7 @@ fun CollectScreen(modifier: Modifier = Modifier) {
         LazyColumnPaging(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding()),
+                .padding(innerPadding),
             lazyPagingItems = lazyPagingItems,
         ) {
             items(
