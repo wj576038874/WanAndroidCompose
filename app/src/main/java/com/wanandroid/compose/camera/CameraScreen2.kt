@@ -157,7 +157,6 @@ private fun CameraPreview2(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     AndroidView(
         factory = { context ->
             PreviewView(context).apply {

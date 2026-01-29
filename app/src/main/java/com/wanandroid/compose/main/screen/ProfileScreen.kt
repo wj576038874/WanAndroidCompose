@@ -76,7 +76,6 @@ fun ProfileScreen(
 //    val backStack = LocalBackStack.current
     val context = LocalContext.current
     val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
-    val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
     val toolbarColor = MaterialTheme.colorScheme.primary.toArgb()
     LazyColumn(
         modifier = modifier.fillMaxSize()
