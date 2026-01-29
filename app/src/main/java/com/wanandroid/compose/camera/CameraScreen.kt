@@ -18,8 +18,14 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
+import androidx.camera.video.FileOutputOptions
+import androidx.camera.video.Quality
+import androidx.camera.video.QualitySelector
+import androidx.camera.video.Recording
+import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.camera.view.video.AudioConfig
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +39,7 @@ import androidx.compose.material.icons.outlined.Cameraswitch
 import androidx.compose.material.icons.outlined.FlashOff
 import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.Videocam
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +54,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
@@ -95,13 +103,14 @@ fun CameraScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize()
         ) {
             val perm = permissionState.permissions[0]
-            when (perm.status){
-                 PermissionStatus.Granted-> {
+            when (perm.status) {
+                PermissionStatus.Granted -> {
                     CameraPreviewView(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         innerPadding = innerPadding
                     )
                 }
+
                 PermissionStatus.Denied(false) -> {
                     Text(
                         text = "请去设置页面授权相机权限",
@@ -115,6 +124,7 @@ fun CameraScreen(modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+
                 PermissionStatus.Denied(true) -> {
                     Text(
                         text = "请授权相机权限",
@@ -158,34 +168,35 @@ private fun CameraPreviewView(
         }
     }
     var isTorchOn by remember { mutableStateOf(false) }
-
+    var recording by remember { mutableStateOf<Recording?>(null) }
+    var recordUiState by remember { mutableStateOf(UiState.IDLE) }
     CameraPreview(
         controller = cameraController,
         modifier = Modifier.fillMaxSize()
     )
+    IconButton(
+        modifier = Modifier
+            .padding(innerPadding),
+        onClick = {
+            cameraController.cameraSelector =
+                if (cameraController.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                    CameraSelector.DEFAULT_FRONT_CAMERA
+                } else {
+                    CameraSelector.DEFAULT_BACK_CAMERA
+                }
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Cameraswitch,
+            tint = MaterialTheme.colorScheme.onPrimary,
+            contentDescription = null
+        )
+    }
     Row(
         modifier = modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        IconButton(
-            modifier = Modifier
-                .padding(innerPadding),
-            onClick = {
-                cameraController.cameraSelector =
-                    if (cameraController.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
-                        CameraSelector.DEFAULT_FRONT_CAMERA
-                    } else {
-                        CameraSelector.DEFAULT_BACK_CAMERA
-                    }
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Cameraswitch,
-                tint = MaterialTheme.colorScheme.onPrimary,
-                contentDescription = null
-            )
-        }
         IconButton(
             modifier = Modifier
                 .padding(innerPadding),
@@ -259,6 +270,46 @@ private fun CameraPreviewView(
             modifier = Modifier
                 .padding(innerPadding),
             onClick = {
+                if (recording != null) {
+                    recording?.stop()
+                    recording = null
+                    return@IconButton
+                }
+                recording = recordVideo(
+                    cameraController = cameraController,
+                    onVideoRecorded = { file ->
+                        Log.e("CameraScreen", "recordVideo: ${file.absolutePath}")
+                    },
+                    onRecordEvent = {
+                        when (it) {
+                            is VideoRecordEvent.Start -> {
+                                recordUiState = UiState.RECORDING
+                            }
+
+                            is VideoRecordEvent.Finalize -> {
+                                recordUiState = UiState.FINALIZED
+                            }
+                        }
+                    },
+                    context = context
+                )
+            }
+        ) {
+            val color = when (recordUiState) {
+                UiState.FINALIZED -> MaterialTheme.colorScheme.onPrimary
+                UiState.RECORDING -> Color.Red
+                UiState.IDLE -> MaterialTheme.colorScheme.onPrimary
+            }
+            Icon(
+                imageVector = Icons.Outlined.Videocam,
+                tint = color,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
                 isTorchOn = !isTorchOn
                 cameraController.enableTorch(isTorchOn)
             }
@@ -291,6 +342,58 @@ private fun CameraPreviewView(
                 tint = MaterialTheme.colorScheme.onPrimary,
                 contentDescription = null
             )
+        }
+    }
+}
+
+private enum class UiState {
+    IDLE,       // 未录制
+    RECORDING,  // 摄像机正在录制时，只显示停止按钮
+    FINALIZED,  // 录制完成
+}
+
+private fun recordVideo(
+    cameraController: LifecycleCameraController,
+    onVideoRecorded: (File) -> Unit,
+    onRecordEvent: (VideoRecordEvent) -> Unit,
+    context: Context
+): Recording {
+    val qualitySelector = QualitySelector.from(Quality.FHD)
+    val outputFile = File(context.cacheDir, "camerax.mp4")
+    val outputOptions = FileOutputOptions.Builder(outputFile)
+        .build()
+    cameraController.videoCaptureQualitySelector = qualitySelector
+    return cameraController.startRecording(
+        outputOptions,
+        AudioConfig.create(false),
+        ContextCompat.getMainExecutor(context.applicationContext),
+    ) {
+        onRecordEvent.invoke(it)
+        when (it) {
+            is VideoRecordEvent.Finalize -> {
+                Log.e("CameraScreen", "recordVideo: Finalize")
+                if (it.hasError()) {
+                    Log.e("CameraScreen", "recordVideo: ", it.cause)
+                } else {
+                    onVideoRecorded.invoke(outputFile)
+                }
+            }
+
+//            is VideoRecordEvent.Status -> {
+//                Log.e("CameraScreen", "recordVideo: Status")
+//            }
+
+            is VideoRecordEvent.Start -> {
+                Log.e("CameraScreen", "recordVideo: Start")
+            }
+
+            is VideoRecordEvent.Pause -> {
+                Log.e("CameraScreen", "recordVideo: Pause")
+            }
+
+            is VideoRecordEvent.Resume -> {
+                Log.e("CameraScreen", "recordVideo: Resume")
+            }
         }
     }
 }
