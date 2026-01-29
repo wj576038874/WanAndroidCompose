@@ -6,10 +6,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.graphics.Matrix
-import androidx.exifinterface.media.ExifInterface
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -39,7 +40,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
+import androidx.exifinterface.media.ExifInterface
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -69,7 +70,7 @@ fun CameraScreen(modifier: Modifier = Modifier) {
     val permissionState = rememberMultiplePermissionsState(
         listOf(android.Manifest.permission.CAMERA)
     )
-
+    val context = LocalContext.current
     LaunchedEffect(permissionState) {
         permissionState.launchMultiplePermissionRequest()
     }
@@ -104,15 +105,20 @@ fun CameraScreen(modifier: Modifier = Modifier) {
                 PermissionStatus.Denied(false) -> {
                     Text(
                         text = "请去设置页面授权相机权限",
-                        modifier = Modifier.align(Alignment.Center),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .clickable {
+                                goAppDetailSetting(
+                                    context = context
+                                )
+                            },
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
                 PermissionStatus.Denied(true) -> {
                     Text(
                         text = "请授权相机权限",
-                        modifier = Modifier.align(Alignment.Center).clickable{
-                        },
+                        modifier = Modifier.align(Alignment.Center),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -121,6 +127,14 @@ fun CameraScreen(modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+fun goAppDetailSetting(context: Context) {
+    val intent = Intent()
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    intent.setData(Uri.fromParts("package", context.packageName, null))
+    context.startActivity(intent)
 }
 
 @Composable
