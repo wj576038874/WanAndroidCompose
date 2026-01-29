@@ -22,7 +22,8 @@
 #### 10、积分列表
 
 ![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_dark.png)
-![主题切换](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
+![QA](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_light.png)
+![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_navigation.png)
 ![我的收藏](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_collect_dark.png)
 ![我的积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_profile.png)
 ![切换语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
