@@ -2,11 +2,11 @@ package com.wanandroid.compose.camera
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import androidx.exifinterface.media.ExifInterface
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -19,8 +19,10 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +37,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +50,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.wanandroid.compose.LocalBackStack
 import com.wanandroid.compose.route.Route
 import java.io.ByteArrayOutputStream
@@ -55,9 +63,71 @@ import java.util.Locale
 /**
  * Created by wenjie on 2026/01/28.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(modifier: Modifier = Modifier) {
+    val permissionState = rememberMultiplePermissionsState(
+        listOf(android.Manifest.permission.CAMERA)
+    )
+
+    LaunchedEffect(permissionState) {
+        permissionState.launchMultiplePermissionRequest()
+    }
+
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//    DisposableEffect(lifecycleOwner) {
+//        val observer = object : DefaultLifecycleObserver {
+//            override fun onResume(owner: LifecycleOwner) {
+//                super.onResume(owner)
+//                permissionState.launchMultiplePermissionRequest()
+//            }
+//        }
+//        lifecycleOwner.lifecycle.addObserver(observer = observer)
+//        onDispose {
+//            lifecycleOwner.lifecycle.removeObserver(observer = observer)
+//        }
+//    }
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val perm = permissionState.permissions[0]
+            when (perm.status){
+                 PermissionStatus.Granted-> {
+                    CameraPreviewView(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        innerPadding = innerPadding
+                    )
+                }
+                PermissionStatus.Denied(false) -> {
+                    Text(
+                        text = "请去设置页面授权相机权限",
+                        modifier = Modifier.align(Alignment.Center),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                PermissionStatus.Denied(true) -> {
+                    Text(
+                        text = "请授权相机权限",
+                        modifier = Modifier.align(Alignment.Center).clickable{
+                        },
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                else -> {}
+            }
+        }
+    }
+}
+
+@Composable
+private fun CameraPreviewView(
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues
+) {
     val backStack = LocalBackStack.current
     val context = LocalContext.current
     val resolutionSelector = ResolutionSelector.Builder()
@@ -74,144 +144,141 @@ fun CameraScreen(modifier: Modifier = Modifier) {
         }
     }
     var isTorchOn by remember { mutableStateOf(false) }
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            CameraPreview(
-                controller = cameraController,
-                modifier = Modifier.fillMaxSize()
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                IconButton(
-                    modifier = Modifier
-                        .padding(innerPadding),
-                    onClick = {
-                        cameraController.cameraSelector =
-                            if (cameraController.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
-                                CameraSelector.DEFAULT_FRONT_CAMERA
-                            } else {
-                                CameraSelector.DEFAULT_BACK_CAMERA
-                            }
+
+    CameraPreview(
+        controller = cameraController,
+        modifier = Modifier.fillMaxSize()
+    )
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
+                cameraController.cameraSelector =
+                    if (cameraController.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                        CameraSelector.DEFAULT_FRONT_CAMERA
+                    } else {
+                        CameraSelector.DEFAULT_BACK_CAMERA
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Cameraswitch,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .padding(innerPadding),
-                    onClick = {
-                        takePhotoBitmap(
-                            cameraController = cameraController,
-                            onPhotoTaken = { byteArray ->
-                                backStack.add(Route.CameraBitmapPreview(
-                                    byteArray = byteArray
-                                ))
-                            },
-                            context = context
-                        )
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PhotoCamera,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .padding(innerPadding),
-                    onClick = {
-                        takePhotoCacheFile(
-                            cameraController = cameraController,
-                            onPhotoTaken = { byteArray ->
-                                backStack.add(Route.CameraBitmapPreview(
-                                    byteArray = byteArray
-                                ))
-                            },
-                            context = context
-                        )
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PhotoCamera,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .padding(innerPadding),
-                    onClick = {
-                        takePhotoPhotoAlbum(
-                            cameraController = cameraController,
-                            context = context,
-                            onPhotoTaken = { byteArray ->
-                                backStack.add(Route.CameraBitmapPreview(
-                                    byteArray = byteArray
-                                ))
-                            },
-                        )
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PhotoCamera,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .padding(innerPadding),
-                    onClick = {
-                        isTorchOn = !isTorchOn
-                        cameraController.enableTorch(isTorchOn)
-                    }
-                ) {
-                    Icon(
-                        imageVector = if (isTorchOn) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .padding(innerPadding),
-                    onClick = {
-                        /**
-                         * 这种方式切换闪光灯 没效果？
-                         */
-                        cameraController.imageCaptureFlashMode =
-                            if (cameraController.imageCaptureFlashMode == ImageCapture.FLASH_MODE_ON) {
-                                isTorchOn = false
-                                ImageCapture.FLASH_MODE_OFF
-                            } else {
-                                isTorchOn = true
-                                ImageCapture.FLASH_MODE_ON
-                            }
-                    }
-                ) {
-                    Icon(
-                        imageVector = if (isTorchOn) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
             }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Cameraswitch,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
+                takePhotoBitmap(
+                    cameraController = cameraController,
+                    onPhotoTaken = { byteArray ->
+                        backStack.add(
+                            Route.CameraBitmapPreview(
+                                byteArray = byteArray
+                            )
+                        )
+                    },
+                    context = context
+                )
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.PhotoCamera,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
+                takePhotoCacheFile(
+                    cameraController = cameraController,
+                    onPhotoTaken = { byteArray ->
+                        backStack.add(
+                            Route.CameraBitmapPreview(
+                                byteArray = byteArray
+                            )
+                        )
+                    },
+                    context = context
+                )
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.PhotoCamera,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
+                takePhotoPhotoAlbum(
+                    cameraController = cameraController,
+                    context = context,
+                    onPhotoTaken = { byteArray ->
+                        backStack.add(
+                            Route.CameraBitmapPreview(
+                                byteArray = byteArray
+                            )
+                        )
+                    },
+                )
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.PhotoCamera,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
+                isTorchOn = !isTorchOn
+                cameraController.enableTorch(isTorchOn)
+            }
+        ) {
+            Icon(
+                imageVector = if (isTorchOn) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(innerPadding),
+            onClick = {
+                /**
+                 * 这种方式切换闪光灯 没效果？
+                 */
+                cameraController.imageCaptureFlashMode =
+                    if (cameraController.imageCaptureFlashMode == ImageCapture.FLASH_MODE_ON) {
+                        isTorchOn = false
+                        ImageCapture.FLASH_MODE_OFF
+                    } else {
+                        isTorchOn = true
+                        ImageCapture.FLASH_MODE_ON
+                    }
+            }
+        ) {
+            Icon(
+                imageVector = if (isTorchOn) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = null
+            )
         }
     }
-
 }
 
 /**
@@ -238,7 +305,8 @@ private fun takePhotoBitmap(
                 super.onCaptureSuccess(image)
                 Log.d("CameraScreen", "onCaptureSuccess: $image")
                 val rotationDegrees = image.imageInfo.rotationDegrees
-                val convertedBitmap = convertBitmap(rotationDegrees, image.toBitmap(), cameraController)
+                val convertedBitmap =
+                    convertBitmap(rotationDegrees, image.toBitmap(), cameraController)
                 onPhotoTaken.invoke(convertedBitmap.toByteArray())
             }
 
@@ -251,7 +319,10 @@ private fun takePhotoBitmap(
 }
 
 
-fun Bitmap.toByteArray(format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG, quality: Int = 100): ByteArray {
+fun Bitmap.toByteArray(
+    format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
+    quality: Int = 100
+): ByteArray {
     ByteArrayOutputStream().use { stream ->
         compress(format, quality, stream)
         return stream.toByteArray()
@@ -341,7 +412,10 @@ private fun takePhotoPhotoAlbum(
                 val inputStream = context.contentResolver.openInputStream(savedUri)
                 inputStream?.use {
                     val exif = ExifInterface(inputStream)
-                    val rotationDegrees = when (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+                    val rotationDegrees = when (exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_NORMAL
+                    )) {
                         ExifInterface.ORIENTATION_ROTATE_90 -> 90
                         ExifInterface.ORIENTATION_ROTATE_180 -> 180
                         ExifInterface.ORIENTATION_ROTATE_270 -> 270
