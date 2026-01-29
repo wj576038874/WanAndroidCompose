@@ -57,7 +57,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.bean.BannerItem
@@ -79,7 +79,7 @@ fun HomeScreen(
     innerPadding: PaddingValues,
     onArticleItemClick: (ArticleItem) -> Unit
 ) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     Log.e("asd", "HomeScreen$innerPadding")
     val viewModel = viewModel {
         val homeApi = RetrofitHelper.create(HomeApi::class.java)
@@ -95,7 +95,7 @@ fun HomeScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            backStack.add(Route.Search)
+                            navigator.goTo(Route.Search)
                         }) {
                         Icon(
                             imageVector = Icons.Default.Search,
@@ -107,7 +107,7 @@ fun HomeScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            backStack.add(Route.Camera)
+                            navigator.goTo(Route.Camera)
                         }
                     ) {
                         Icon(

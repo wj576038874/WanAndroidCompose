@@ -26,4 +26,8 @@
     <string name="string_logout_content">Möchten Sie sich wirklich abmelden?</string>
     <string name="string_confirm">Bestätigen</string>
     <string name="string_cancel">Abbrechen</string>
+    <string name="string_username">Benutzername</string>
+    <string name="string_password">Passwort</string>
+    <string name="string_login">Anmelden</string>
+    <string name="string_welcome">Willkommen</string>
 </resources>

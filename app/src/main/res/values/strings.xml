@@ -26,4 +26,8 @@
     <string name="string_logout_content">Are you sure you want to log out?</string>
     <string name="string_confirm">Confirm</string>
     <string name="string_cancel">Cancel</string>
+    <string name="string_username">Username</string>
+    <string name="string_password">Password</string>
+    <string name="string_login">Login</string>
+    <string name="string_welcome">Welcome</string>
 </resources>

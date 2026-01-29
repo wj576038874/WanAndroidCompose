@@ -26,4 +26,8 @@
     <string name="string_logout_content">คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?</string>
     <string name="string_confirm">ยืนยัน</string>
     <string name="string_cancel">ยกเลิก</string>
+    <string name="string_username">ชื่อผู้ใช้</string>
+    <string name="string_password">รหัสผ่าน</string>
+    <string name="string_login">เข้าสู่ระบบ</string>
+    <string name="string_welcome">ยินดีต้อนรับ</string>
 </resources>

@@ -35,31 +35,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
-import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.state.LoginState
+import com.wanandroid.compose.route.Route
 
 /**
  * Created by wenjie on 2026/01/26.
  */
-@Preview(
-    showBackground = true,
-)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    destination: Route
+) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
-        LoginSector(innerPadding)
+        LoginSector(
+            innerPadding = innerPadding,
+            modifier = modifier,
+            destination = destination
+        )
     }
 }
 
@@ -68,20 +73,23 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 @Composable
 fun LoginSector(
     innerPadding: PaddingValues,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    destination: Route
 ) {
     val loginViewModel = viewModel {
         val loginApi = RetrofitHelper.create(LoginApi::class.java)
         LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))
     }
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     var userName by remember { mutableStateOf("wj576038874") }
     var password by remember { mutableStateOf("1rujiwang") }
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
 
     LaunchedEffect(loginState) {
         if (loginState is LoginState.Success) {
-            backStack.removeLastOrNull()
+//            navigator.goBack()
+            navigator.goTo(destination)
+            navigator.goBack(Route.Login(destination = destination))
         }
     }
     when (loginState) {
@@ -115,7 +123,7 @@ fun LoginSector(
             Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
             IconButton(
                 onClick = {
-                    backStack.removeLastOrNull()
+                    navigator.goBack()
                 }
             ) {
                 Icon(
@@ -132,7 +140,7 @@ fun LoginSector(
                 contentDescription = null,
             )
             Text(
-                text = "欢迎使用",
+                text = stringResource(R.string.string_welcome),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 16.dp),
@@ -148,7 +156,7 @@ fun LoginSector(
             },
             label = {
                 Text(
-                    text = "用户名",
+                    text = stringResource(R.string.string_username),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -180,7 +188,7 @@ fun LoginSector(
             },
             label = {
                 Text(
-                    text = "密码",
+                    text = stringResource(R.string.string_password),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -216,7 +224,7 @@ fun LoginSector(
                 )
         ) {
             Text(
-                text = "登录",
+                text = stringResource(R.string.string_login),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onPrimary
             )

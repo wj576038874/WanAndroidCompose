@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.route.Route
 
 /**
@@ -28,7 +28,7 @@ fun CommonToolbar(
     title: String,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     CenterAlignedTopAppBar(
         modifier = modifier.fillMaxWidth(),
         actions = actions,
@@ -43,7 +43,7 @@ fun CommonToolbar(
         }, navigationIcon = {
             IconButton(
                 onClick = {
-                    backStack.remove(route)
+                    navigator.goBack(route)
                 }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,

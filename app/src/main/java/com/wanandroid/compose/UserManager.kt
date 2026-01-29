@@ -26,7 +26,7 @@ class UserManager private constructor() {
         it != null
     }.stateIn(
         scope = scope,
-        started = SharingStarted.WhileSubscribed(),
+        started = SharingStarted.Eagerly,//不管是否有收集者 只要_userInfo发生了改变，都运行isLogin更新最新值
         initialValue = false
     )
 

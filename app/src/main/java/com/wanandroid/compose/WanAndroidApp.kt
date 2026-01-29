@@ -13,9 +13,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -30,6 +35,7 @@ import com.wanandroid.compose.collect.CollectScreen
 import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
+import com.wanandroid.compose.route.Navigator
 import com.wanandroid.compose.route.Route
 import com.wanandroid.compose.search.SearchScreen
 import com.wanandroid.compose.setting.SettingScreen
@@ -38,12 +44,25 @@ import com.wanandroid.compose.setting.SettingScreen
  * Created by wenjie on 2026/01/22.
  */
 
-val LocalBackStack = staticCompositionLocalOf<NavBackStack<NavKey>> {
-    error("LocalBackStack")
+//val LocalBackStack = staticCompositionLocalOf<NavBackStack<NavKey>> {
+//    error("LocalBackStack")
+//}
+
+val LocalNavigator = staticCompositionLocalOf<Navigator> {
+    error("LocalNavigator")
 }
 
 val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
     error("LocalAuthViewModel")
+}
+
+@Composable
+fun rememberNavigator(): Navigator {
+    val backStack = rememberNavBackStack(Route.Main)
+    val navigator = Navigator(backStack)
+    return retain {
+        navigator
+    }
 }
 
 @Composable
@@ -65,9 +84,11 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        val backStack = rememberNavBackStack(Route.Main)
+//        val backStack = rememberNavBackStack(Route.Main)
+        val navigator = rememberNavigator()
         CompositionLocalProvider(
-            LocalBackStack provides backStack,
+            LocalNavigator provides navigator,
+//            LocalBackStack provides backStack,
             LocalAppViewModel provides appViewModel,
 //            LocalContext provides newContext,
         ) {
@@ -75,7 +96,7 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
             NavDisplay(
                 modifier = modifier,
 //                    .padding(bottom = innerPadding.calculateBottomPadding()),
-                backStack = backStack,
+                backStack = navigator.backStack,
                 entryDecorators = listOf(
                     rememberSaveableStateHolderNavEntryDecorator(),
                     rememberViewModelStoreNavEntryDecorator()
@@ -84,36 +105,28 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     entry<Route.Main> {
                         MainScreen(
                             onArticleItemClick = {
-                                backStack.add(Route.ArticleDetail(articleItem = it))
-                            }
-                        )
+                                navigator.goTo(Route.ArticleDetail(articleItem = it))
+                            })
                     }
                     entry<Route.ArticleDetail> {
                         ArticleDetailScreen(articleItem = it.articleItem)
                     }
-                    entry<Route.Login>(
-                        metadata = NavDisplay.transitionSpec {
-                            slideInVertically(
-                                initialOffsetY = { it },
-                                animationSpec = tween(800)
-                            ) togetherWith ExitTransition.KeepUntilTransitionsFinished
-                        } + NavDisplay.popTransitionSpec {
-                            // Slide old content down, revealing the new content in place underneath
-                            EnterTransition.None togetherWith
-                                    slideOutVertically(
-                                        targetOffsetY = { it },
-                                        animationSpec = tween(800)
-                                    )
-                        } + NavDisplay.predictivePopTransitionSpec {
-                            // Slide old content down, revealing the new content in place underneath
-                            EnterTransition.None togetherWith
-                                    slideOutVertically(
-                                        targetOffsetY = { it },
-                                        animationSpec = tween(800)
-                                    )
-                        }
-                    ) {
-                        LoginScreen()
+                    entry<Route.Login>(metadata = NavDisplay.transitionSpec {
+                        slideInVertically(
+                            initialOffsetY = { it }, animationSpec = tween(500)
+                        ) togetherWith ExitTransition.KeepUntilTransitionsFinished
+                    } + NavDisplay.popTransitionSpec {
+                        // Slide old content down, revealing the new content in place underneath
+                        EnterTransition.None togetherWith slideOutVertically(
+                            targetOffsetY = { it }, animationSpec = tween(500)
+                        )
+                    } + NavDisplay.predictivePopTransitionSpec {
+                        // Slide old content down, revealing the new content in place underneath
+                        EnterTransition.None togetherWith slideOutVertically(
+                            targetOffsetY = { it }, animationSpec = tween(500)
+                        )
+                    }) {
+                        LoginScreen(destination = it.destination)
                     }
                     entry<Route.Settings> {
                         SettingScreen()

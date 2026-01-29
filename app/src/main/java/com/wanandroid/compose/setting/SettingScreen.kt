@@ -42,8 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalAppViewModel
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
+import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.common.CommonToolbar
@@ -62,7 +63,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(modifier: Modifier = Modifier) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     val themeViewModel = LocalAppViewModel.current
     val loginViewModel = viewModel {
         val loginApi = RetrofitHelper.create(LoginApi::class.java)
@@ -80,7 +81,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
     val bottomSheetStateLanguage =
         rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpandedLanguage)
     val language by themeViewModel.language.collectAsStateWithLifecycle()
-
+    val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
     var logoutDialog by remember { mutableStateOf(false) }
     val logoutState by loginViewModel.logoutState.collectAsStateWithLifecycle()
 //    LaunchedEffect(logoutState) {
@@ -120,14 +121,16 @@ fun SettingScreen(modifier: Modifier = Modifier) {
                     }
                 )
             }
-            item {
-                SettingItem(
-                    item = Pair(1, R.string.string_logout),
-                    icon = false,
-                    onClick = {
-                        logoutDialog = !logoutDialog
-                    }
-                )
+            if (isLogin) {
+                item {
+                    SettingItem(
+                        item = Pair(1, R.string.string_logout),
+                        icon = false,
+                        onClick = {
+                            logoutDialog = !logoutDialog
+                        }
+                    )
+                }
             }
         }
 
@@ -156,7 +159,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             }
 
             is LogoutState.Success -> {
-                backStack.remove(Route.Settings)
+                navigator.goBack(Route.Settings)
             }
 
             is LogoutState.Loading -> {

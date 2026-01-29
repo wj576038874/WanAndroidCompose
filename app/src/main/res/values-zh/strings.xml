@@ -26,4 +26,8 @@
     <string name="string_logout_content">确定退出登录吗?</string>
     <string name="string_confirm">确定</string>
     <string name="string_cancel">取消</string>
+    <string name="string_username">用户名</string>
+    <string name="string_password">密码</string>
+    <string name="string_login">登陆</string>
+    <string name="string_welcome">欢迎</string>
 </resources>

@@ -62,7 +62,7 @@ import androidx.exifinterface.media.ExifInterface
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.route.Route
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -152,7 +152,7 @@ private fun CameraPreviewView(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues
 ) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     val context = LocalContext.current
     val resolutionSelector = ResolutionSelector.Builder()
         .setResolutionStrategy(ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY)  // 优先最高分辨率
@@ -204,7 +204,7 @@ private fun CameraPreviewView(
                 takePhotoBitmap(
                     cameraController = cameraController,
                     onPhotoTaken = { byteArray ->
-                        backStack.add(
+                        navigator.goTo(
                             Route.CameraBitmapPreview(
                                 byteArray = byteArray
                             )
@@ -227,7 +227,7 @@ private fun CameraPreviewView(
                 takePhotoCacheFile(
                     cameraController = cameraController,
                     onPhotoTaken = { byteArray ->
-                        backStack.add(
+                        navigator.goTo(
                             Route.CameraBitmapPreview(
                                 byteArray = byteArray
                             )
@@ -251,7 +251,7 @@ private fun CameraPreviewView(
                     cameraController = cameraController,
                     context = context,
                     onPhotoTaken = { byteArray ->
-                        backStack.add(
+                        navigator.goTo(
                             Route.CameraBitmapPreview(
                                 byteArray = byteArray
                             )

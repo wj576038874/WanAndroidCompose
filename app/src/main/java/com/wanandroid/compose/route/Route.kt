@@ -29,7 +29,7 @@ sealed interface Route : NavKey {
     data class ArticleDetail(val articleItem: ArticleItem) : Route
 
     @Serializable
-    data object Login : Route
+    data class Login(val destination: Route = Main) : Route
 
     @Serializable
     data object Settings : Route

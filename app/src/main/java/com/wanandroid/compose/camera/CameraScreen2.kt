@@ -46,7 +46,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.WanAndroidApplication.Companion.context
 import com.wanandroid.compose.route.Route
 import kotlinx.coroutines.CancellableContinuation
@@ -61,7 +61,7 @@ import kotlin.coroutines.resumeWithException
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen2(modifier: Modifier = Modifier) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     val context = LocalContext.current
     // 设置拍照
     val imageCapture =
@@ -124,7 +124,7 @@ fun CameraScreen2(modifier: Modifier = Modifier) {
                                     val matrix = Matrix()
                                     matrix.postRotate(rotationDegrees.toFloat())
                                     val rotatedBitmap = rotatedBitmap(bitmap, rotationDegrees)
-                                    backStack.add(Route.CameraBitmapPreview(
+                                    navigator.goTo(Route.CameraBitmapPreview(
                                         byteArray = rotatedBitmap.toByteArray()
                                     ))
                                 }

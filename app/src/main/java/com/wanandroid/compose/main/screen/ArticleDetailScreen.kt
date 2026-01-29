@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.viewinterop.AndroidView
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.bean.ArticleItem
 
 /**
@@ -31,7 +31,7 @@ fun ArticleDetailScreen(
     articleItem: ArticleItem,
     modifier: Modifier = Modifier
 ) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -48,7 +48,7 @@ fun ArticleDetailScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        backStack.removeLastOrNull()
+                        navigator.goBack()
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
                     }

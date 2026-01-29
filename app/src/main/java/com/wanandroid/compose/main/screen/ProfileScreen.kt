@@ -1,5 +1,6 @@
 package com.wanandroid.compose.main.screen
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,17 +37,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanandroid.compose.LocalBackStack
+import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.UserInfo
 import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -68,9 +72,12 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues
 ) {
-    val backStack = LocalBackStack.current
+    val navigator = LocalNavigator.current
+//    val backStack = LocalBackStack.current
+    val context = LocalContext.current
     val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
     val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
+    val toolbarColor = MaterialTheme.colorScheme.primary.toArgb()
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
@@ -78,7 +85,7 @@ fun ProfileScreen(
             Header(
                 innerPadding = innerPadding,
                 toLogin = {
-                    backStack.add(Route.Login)
+                    navigator.goTo(Route.Login())
                 },
                 userInfo = userInfo,
             )
@@ -90,25 +97,20 @@ fun ProfileScreen(
                 onClick = {
                     when (it.first) {
                         0 ->{
-                            if (isLogin) {
-                                backStack.add(Route.Coin)
-                            } else {
-                                backStack.add(Route.Login)
-                            }
+                            navigator.goTo(Route.Coin)
                         }
                         2 ->{
-                            if (isLogin) {
-                                backStack.add(Route.Collect)
-                            } else {
-                                backStack.add(Route.Login)
-                            }
+                            navigator.goTo(Route.Collect)
+                        }
+                        6 ->{
+                            launchCustomChromeTab(
+                                context = context,
+                                uri = Uri.parse("https://www.wanandroid.com/"),
+                                toolbarColor = toolbarColor,
+                            )
                         }
                         7 -> {
-                            if (isLogin) {
-                                backStack.add(Route.Settings)
-                            } else {
-                                backStack.add(Route.Login)
-                            }
+                            navigator.goTo(Route.Settings)
                         }
                     }
                 }
@@ -226,7 +228,7 @@ fun Header(
                 modifier = Modifier.clickable {
                     toLogin()
                 },
-                text = "未登录",
+                text = stringResource(R.string.string_login),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
