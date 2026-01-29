@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.exifinterface)
 
 
     val composeBom = platform(libs.androidx.compose.bom)

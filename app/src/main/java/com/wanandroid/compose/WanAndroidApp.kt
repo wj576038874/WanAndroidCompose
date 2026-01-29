@@ -5,11 +5,7 @@ package com.wanandroid.compose
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,12 +13,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -32,6 +24,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.wanandroid.compose.camera.CameraBitmapPreviewScreen
 import com.wanandroid.compose.camera.CameraScreen
+import com.wanandroid.compose.camera.CameraScreen2
 import com.wanandroid.compose.coin.CoinScreen
 import com.wanandroid.compose.collect.CollectScreen
 import com.wanandroid.compose.login.LoginScreen
@@ -40,7 +33,6 @@ import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.route.Route
 import com.wanandroid.compose.search.SearchScreen
 import com.wanandroid.compose.setting.SettingScreen
-import java.util.Locale
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -139,7 +131,10 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                         SearchScreen()
                     }
                     entry<Route.CameraBitmapPreview> {
-                        CameraBitmapPreviewScreen(bitmap = it.bitmap)
+                        CameraBitmapPreviewScreen(byteArray = it.byteArray)
+                    }
+                    entry<Route.Camera2> {
+                        CameraScreen2()
                     }
                 }
             )

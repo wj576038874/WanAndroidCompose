@@ -1,7 +1,5 @@
 package com.wanandroid.compose.route
 
-import android.graphics.Bitmap
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.navigation3.runtime.NavKey
 import com.wanandroid.compose.bean.ArticleItem
 import kotlinx.serialization.Serializable
@@ -45,9 +43,25 @@ sealed interface Route : NavKey {
     @Serializable
     data object Camera : Route
 
+    data object Camera2 : Route
+
     @Serializable
     data object Search : Route
 
     @Serializable
-    data class CameraBitmapPreview(val bitmap: ImageBitmap) : Route
+    data class CameraBitmapPreview(val byteArray: ByteArray) : Route {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as CameraBitmapPreview
+
+            return byteArray.contentEquals(other.byteArray)
+        }
+
+        override fun hashCode(): Int {
+            return byteArray.contentHashCode()
+        }
+
+    }
 }

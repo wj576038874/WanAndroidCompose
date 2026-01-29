@@ -3,7 +3,7 @@ package com.wanandroid.compose.camera
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.decodeToImageBitmap
 
 /**
  * Created by wenjie on 2026/01/28.
@@ -11,10 +11,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 @Composable
 fun CameraBitmapPreviewScreen(
     modifier: Modifier = Modifier,
-    bitmap: ImageBitmap
+    byteArray: ByteArray
 ) {
     Image(
-        bitmap = bitmap,
+        bitmap = byteArray.decodeToImageBitmap(),
         contentDescription = null,
         modifier = modifier
     )
