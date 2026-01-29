@@ -20,6 +20,7 @@
 #### 8、主题切换
 #### 9、语言切换
 #### 10、积分列表
+#### 其他功能待完善
 
 ![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_dark.png)
 ![QA](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_light.png)
