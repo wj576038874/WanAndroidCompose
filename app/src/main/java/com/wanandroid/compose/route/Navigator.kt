@@ -14,6 +14,11 @@ class Navigator(
 ) {
     private val isLogin = UserManager.instance.isLogin
 
+    /**
+     * 如果跳转的页面routeNavKey 需要登录 且 未登录 则跳转到登录页
+     * 然后把routeNavKey 作为onNavigateToRestrictedKey方法的参数 调用onNavigateToRestrictedKey方法返回登陆页面NavKey
+     * 且这个登陆的NavKey的redirectToKey 就是 我们需要跳转的目标页面
+     */
     fun goTo(routeNavKey: RouteNavKey) {
         val isLogin = isLogin.value
         if (routeNavKey.requiresLogin && !isLogin) {
