@@ -6,7 +6,8 @@
 ### 2、导航采用 compose最新版本的Nav3 登陆拦截，重定向
 ### 3、除文章列表采用LazyColumn实现，自定义加载更多功能，其他列表页面均采用Paging3+LazyColumn实现
 ### 4、网络层使用retrofit+okhttp+coroutine实现
-### 5、图片加载使用coil compose库
+### 5、图片加载使用coil compose库实现
+### 6、cameraX + compose 实现 代码示例
 
 
 ### 已实现功能
