@@ -19,7 +19,7 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/27.
@@ -38,7 +38,7 @@ fun CoinScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                route = Route.Coin,
+                routeNavKey = RouteNavKey.Coin,
                 title = stringResource(id = R.string.string_coin),
             )
         }

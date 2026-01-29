@@ -63,7 +63,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.wanandroid.compose.LocalNavigator
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
@@ -205,7 +205,7 @@ private fun CameraPreviewView(
                     cameraController = cameraController,
                     onPhotoTaken = { byteArray ->
                         navigator.goTo(
-                            Route.CameraBitmapPreview(
+                            RouteNavKey.CameraBitmapPreview(
                                 byteArray = byteArray
                             )
                         )
@@ -228,7 +228,7 @@ private fun CameraPreviewView(
                     cameraController = cameraController,
                     onPhotoTaken = { byteArray ->
                         navigator.goTo(
-                            Route.CameraBitmapPreview(
+                            RouteNavKey.CameraBitmapPreview(
                                 byteArray = byteArray
                             )
                         )
@@ -252,7 +252,7 @@ private fun CameraPreviewView(
                     context = context,
                     onPhotoTaken = { byteArray ->
                         navigator.goTo(
-                            Route.CameraBitmapPreview(
+                            RouteNavKey.CameraBitmapPreview(
                                 byteArray = byteArray
                             )
                         )

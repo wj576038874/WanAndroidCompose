@@ -14,17 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.NavKey
 import com.wanandroid.compose.R
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/14.
  */
 
 val BOTTOM_ITEM = mapOf(
-    Route.Main.Home to BottomBarItem(Icons.Outlined.Home, R.string.string_home),
-    Route.Main.QuestionAnswer to BottomBarItem(Icons.Outlined.QuestionAnswer, R.string.string_qa),
-    Route.Main.Navigation to BottomBarItem(Icons.Outlined.Navigation, R.string.string_navigation),
-    Route.Main.Profile to BottomBarItem(Icons.Outlined.Person, R.string.string_profile),
+    RouteNavKey.Main.Home to BottomBarItem(Icons.Outlined.Home, R.string.string_home),
+    RouteNavKey.Main.QuestionAnswer to BottomBarItem(Icons.Outlined.QuestionAnswer, R.string.string_qa),
+    RouteNavKey.Main.Navigation to BottomBarItem(Icons.Outlined.Navigation, R.string.string_navigation),
+    RouteNavKey.Main.Profile to BottomBarItem(Icons.Outlined.Person, R.string.string_profile),
 )
 
 @Composable

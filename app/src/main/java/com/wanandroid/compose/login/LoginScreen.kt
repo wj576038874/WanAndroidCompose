@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,7 +44,7 @@ import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.state.LoginState
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/26.
@@ -55,26 +53,7 @@ import com.wanandroid.compose.route.Route
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    destination: Route
-) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-    ) { innerPadding ->
-        LoginSector(
-            innerPadding = innerPadding,
-            modifier = modifier,
-            destination = destination
-        )
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LoginSector(
-    innerPadding: PaddingValues,
-    modifier: Modifier = Modifier,
-    destination: Route
+    routeNavKey: RouteNavKey.Login
 ) {
     val loginViewModel = viewModel {
         val loginApi = RetrofitHelper.create(LoginApi::class.java)
@@ -84,150 +63,154 @@ fun LoginSector(
     var userName by remember { mutableStateOf("wj576038874") }
     var password by remember { mutableStateOf("1rujiwang") }
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
-
     LaunchedEffect(loginState) {
         if (loginState is LoginState.Success) {
-//            navigator.goBack()
-            navigator.goTo(destination)
-            navigator.goBack(Route.Login(destination = destination))
+            navigator.goBack(routeNavKey)
+            routeNavKey.redirectToKey?.let {
+                navigator.goTo(it)
+            }
         }
     }
-    when (loginState) {
-        is LoginState.Loading -> {
-            LoadingDialog(
-                onDismissRequest = {
-                    loginViewModel.cancelLogin()
-                }
-            )
-        }
-
-        is LoginState.Failure -> {
-            Toast.makeText(
-                WanAndroidApplication.context,
-                (loginState as LoginState.Failure).errorMsg,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        else -> {}
-    }
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
-            IconButton(
-                onClick = {
-                    navigator.goBack()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Close,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        when (loginState) {
+            is LoginState.Loading -> {
+                LoadingDialog(
+                    onDismissRequest = {
+                        loginViewModel.cancelLogin()
+                    }
                 )
             }
-            Image(
-                modifier = Modifier
-                    .size(100.dp)
-                    .align(Alignment.CenterHorizontally),
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-            )
-            Text(
-                text = stringResource(R.string.string_welcome),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 16.dp),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+
+            is LoginState.Failure -> {
+                Toast.makeText(
+                    WanAndroidApplication.context,
+                    (loginState as LoginState.Failure).errorMsg,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> {}
         }
-        Spacer(Modifier.height(64.dp))
-        TextField(
-            value = userName,
-            onValueChange = {
-                userName = it
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.string_username),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-            ),
-            maxLines = 1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 32.dp
-                )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            value = password,
-            onValueChange = {
-                password = it
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.string_password),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.Lock,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-            ),
-            maxLines = 1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 32.dp
-                )
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = {
-                loginViewModel.login(userName, password)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 32.dp
-                )
+        Column(
+            modifier = modifier.fillMaxSize()
         ) {
-            Text(
-                text = stringResource(R.string.string_login),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimary
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
+                IconButton(
+                    onClick = {
+                        navigator.goBack()
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+                Image(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .align(Alignment.CenterHorizontally),
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = null,
+                )
+                Text(
+                    text = stringResource(R.string.string_welcome),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 16.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            Spacer(Modifier.height(64.dp))
+            TextField(
+                value = userName,
+                onValueChange = {
+                    userName = it
+                },
+                label = {
+                    Text(
+                        text = stringResource(R.string.string_username),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                ),
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 32.dp
+                    )
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            TextField(
+                value = password,
+                onValueChange = {
+                    password = it
+                },
+                label = {
+                    Text(
+                        text = stringResource(R.string.string_password),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Lock,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                ),
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 32.dp
+                    )
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(
+                onClick = {
+                    loginViewModel.login(userName, password)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 32.dp
+                    )
+            ) {
+                Text(
+                    text = stringResource(R.string.string_login),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     }
 }

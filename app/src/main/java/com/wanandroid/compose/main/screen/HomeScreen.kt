@@ -26,7 +26,6 @@ import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.SettingsOverscan
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -65,7 +64,7 @@ import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.main.repository.HomeRepository
 import com.wanandroid.compose.main.viemodel.HomeViewModel
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
 import kotlinx.coroutines.delay
 
@@ -95,7 +94,7 @@ fun HomeScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            navigator.goTo(Route.Search)
+                            navigator.goTo(RouteNavKey.Search)
                         }) {
                         Icon(
                             imageVector = Icons.Default.Search,
@@ -107,7 +106,7 @@ fun HomeScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            navigator.goTo(Route.Camera)
+                            navigator.goTo(RouteNavKey.Camera)
                         }
                     ) {
                         Icon(

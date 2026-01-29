@@ -49,7 +49,7 @@ import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.UserInfo
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
@@ -85,7 +85,7 @@ fun ProfileScreen(
             Header(
                 innerPadding = innerPadding,
                 toLogin = {
-                    navigator.goTo(Route.Login())
+                    navigator.goTo(RouteNavKey.Login())
                 },
                 userInfo = userInfo,
             )
@@ -97,10 +97,10 @@ fun ProfileScreen(
                 onClick = {
                     when (it.first) {
                         0 ->{
-                            navigator.goTo(Route.Coin)
+                            navigator.goTo(RouteNavKey.Coin)
                         }
                         2 ->{
-                            navigator.goTo(Route.Collect)
+                            navigator.goTo(RouteNavKey.Collect)
                         }
                         6 ->{
                             launchCustomChromeTab(
@@ -110,7 +110,7 @@ fun ProfileScreen(
                             )
                         }
                         7 -> {
-                            navigator.goTo(Route.Settings)
+                            navigator.goTo(RouteNavKey.Settings)
                         }
                     }
                 }

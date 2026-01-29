@@ -15,14 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.retain.retain
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
@@ -36,7 +31,7 @@ import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.route.Navigator
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.search.SearchScreen
 import com.wanandroid.compose.setting.SettingScreen
 
@@ -56,14 +51,19 @@ val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
     error("LocalAuthViewModel")
 }
 
-@Composable
-fun rememberNavigator(): Navigator {
-    val backStack = rememberNavBackStack(Route.Main)
-    val navigator = Navigator(backStack)
-    return retain {
-        navigator
-    }
-}
+//@Composable
+//fun rememberNavigator(): Navigator {
+//    val backStack = rememberNavBackStack(RouteNavKey.Main)
+//    val navigator = retain {
+//        Navigator(
+//            backStack = backStack,
+//            onNavigateToRestrictedKey = {
+//                RouteNavKey.Login(redirectToKey = it)
+//            },
+//        )
+//    }
+//    return navigator
+//}
 
 @Composable
 fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
@@ -84,8 +84,15 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-//        val backStack = rememberNavBackStack(Route.Main)
-        val navigator = rememberNavigator()
+        val backStack = rememberNavBackStack(RouteNavKey.Main)
+        val navigator = remember {
+            Navigator(
+                backStack = backStack,
+                onNavigateToRestrictedKey = {
+                    RouteNavKey.Login(redirectToKey = it)
+                },
+            )
+        }
         CompositionLocalProvider(
             LocalNavigator provides navigator,
 //            LocalBackStack provides backStack,
@@ -96,22 +103,22 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
             NavDisplay(
                 modifier = modifier,
 //                    .padding(bottom = innerPadding.calculateBottomPadding()),
-                backStack = navigator.backStack,
+                backStack = backStack,
                 entryDecorators = listOf(
                     rememberSaveableStateHolderNavEntryDecorator(),
                     rememberViewModelStoreNavEntryDecorator()
                 ),
                 entryProvider = entryProvider {
-                    entry<Route.Main> {
+                    entry<RouteNavKey.Main> {
                         MainScreen(
                             onArticleItemClick = {
-                                navigator.goTo(Route.ArticleDetail(articleItem = it))
+                                navigator.goTo(RouteNavKey.ArticleDetail(articleItem = it))
                             })
                     }
-                    entry<Route.ArticleDetail> {
+                    entry<RouteNavKey.ArticleDetail> {
                         ArticleDetailScreen(articleItem = it.articleItem)
                     }
-                    entry<Route.Login>(metadata = NavDisplay.transitionSpec {
+                    entry<RouteNavKey.Login>(metadata = NavDisplay.transitionSpec {
                         slideInVertically(
                             initialOffsetY = { it }, animationSpec = tween(500)
                         ) togetherWith ExitTransition.KeepUntilTransitionsFinished
@@ -126,27 +133,27 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                             targetOffsetY = { it }, animationSpec = tween(500)
                         )
                     }) {
-                        LoginScreen(destination = it.destination)
+                        LoginScreen(routeNavKey = it)
                     }
-                    entry<Route.Settings> {
+                    entry<RouteNavKey.Settings> {
                         SettingScreen()
                     }
-                    entry<Route.Coin> {
+                    entry<RouteNavKey.Coin> {
                         CoinScreen()
                     }
-                    entry<Route.Collect> {
+                    entry<RouteNavKey.Collect> {
                         CollectScreen()
                     }
-                    entry<Route.Camera> {
+                    entry<RouteNavKey.Camera> {
                         CameraScreen()
                     }
-                    entry<Route.Search> {
+                    entry<RouteNavKey.Search> {
                         SearchScreen()
                     }
-                    entry<Route.CameraBitmapPreview> {
+                    entry<RouteNavKey.CameraBitmapPreview> {
                         CameraBitmapPreviewScreen(byteArray = it.byteArray)
                     }
-                    entry<Route.Camera2> {
+                    entry<RouteNavKey.Camera2> {
                         CameraScreen2()
                     }
                 }

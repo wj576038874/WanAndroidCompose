@@ -53,7 +53,7 @@ import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.login.state.LogoutState
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import kotlinx.coroutines.launch
 
 /**
@@ -93,7 +93,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                route = Route.Settings,
+                routeNavKey = RouteNavKey.Settings,
                 title = stringResource(id = R.string.string_settings),
             )
         }
@@ -159,7 +159,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             }
 
             is LogoutState.Success -> {
-                navigator.goBack(Route.Settings)
+                navigator.goBack(RouteNavKey.Settings)
             }
 
             is LogoutState.Loading -> {

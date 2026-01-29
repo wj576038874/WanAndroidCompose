@@ -14,7 +14,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.wanandroid.compose.LocalNavigator
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/28.
@@ -24,7 +24,7 @@ import com.wanandroid.compose.route.Route
 @Composable
 fun CommonToolbar(
     modifier: Modifier = Modifier,
-    route: Route,
+    routeNavKey: RouteNavKey,
     title: String,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
@@ -43,7 +43,7 @@ fun CommonToolbar(
         }, navigationIcon = {
             IconButton(
                 onClick = {
-                    navigator.goBack(route)
+                    navigator.goBack(routeNavKey)
                 }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,

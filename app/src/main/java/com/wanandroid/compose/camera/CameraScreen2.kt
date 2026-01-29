@@ -48,7 +48,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
 import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.WanAndroidApplication.Companion.context
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -124,7 +124,7 @@ fun CameraScreen2(modifier: Modifier = Modifier) {
                                     val matrix = Matrix()
                                     matrix.postRotate(rotationDegrees.toFloat())
                                     val rotatedBitmap = rotatedBitmap(bitmap, rotationDegrees)
-                                    navigator.goTo(Route.CameraBitmapPreview(
+                                    navigator.goTo(RouteNavKey.CameraBitmapPreview(
                                         byteArray = rotatedBitmap.toByteArray()
                                     ))
                                 }

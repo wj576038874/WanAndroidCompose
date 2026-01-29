@@ -8,29 +8,28 @@ import com.wanandroid.compose.UserManager
  * Created by wenjie on 2026/01/29.
  */
 
-class Navigator(val backStack: NavBackStack<NavKey>) {
-
+class Navigator(
+    private val backStack: NavBackStack<NavKey>,
+    private val onNavigateToRestrictedKey: (targetKey: RouteNavKey?) -> RouteNavKey,
+) {
     private val isLogin = UserManager.instance.isLogin
 
-    private val needLoginRoutes = listOf(
-        Route.Coin,
-        Route.Collect,
-    )
-
-    fun goTo(destination: Route) {
+    fun goTo(routeNavKey: RouteNavKey) {
         val isLogin = isLogin.value
-        if (needLoginRoutes.contains(destination) && !isLogin) {
-            backStack.add(Route.Login(destination = destination))
-            return
+        if (routeNavKey.requiresLogin && !isLogin) {
+            //把目标存放到登录页 后续登录成功后 可以拿到这个目标页面 进行跳转
+            val loginKey = onNavigateToRestrictedKey(routeNavKey)
+            backStack.add(loginKey)
+        } else {
+            backStack.add(routeNavKey)
         }
-        backStack.add(destination)
     }
 
     fun goBack() {
         backStack.removeLastOrNull()
     }
 
-    fun goBack(route: Route) {
-        backStack.remove(route)
+    fun goBack(routeNavKey: RouteNavKey) {
+        backStack.remove(routeNavKey)
     }
 }

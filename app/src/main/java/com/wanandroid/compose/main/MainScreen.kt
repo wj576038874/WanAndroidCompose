@@ -19,7 +19,7 @@ import com.wanandroid.compose.main.screen.HomeScreen
 import com.wanandroid.compose.main.screen.NavigationScreen
 import com.wanandroid.compose.main.screen.ProfileScreen
 import com.wanandroid.compose.main.screen.QuestionAnswerScreen
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -31,7 +31,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     onArticleItemClick: (ArticleItem) -> Unit
 ) {
-    val backStack = rememberNavBackStack(Route.Main.Home)
+    val backStack = rememberNavBackStack(RouteNavKey.Main.Home)
     val selected = backStack.last()
     val context = LocalContext.current
     Scaffold(
@@ -54,11 +54,11 @@ fun MainScreen(
             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
             backStack = backStack,
             onBack = {
-                if (selected == Route.Main.Home) {
+                if (selected == RouteNavKey.Main.Home) {
                     (context as Activity).finish()
                 } else {
                     backStack.remove(selected)
-                    backStack.add(Route.Main.Home)
+                    backStack.add(RouteNavKey.Main.Home)
                 }
             },
             entryDecorators = listOf(
@@ -66,23 +66,23 @@ fun MainScreen(
                 rememberViewModelStoreNavEntryDecorator()
             ),
             entryProvider = entryProvider {
-                entry<Route.Main.Home> {
+                entry<RouteNavKey.Main.Home> {
                     HomeScreen(
                         innerPadding = innerPadding,
                         onArticleItemClick = onArticleItemClick
                     )
                 }
-                entry<Route.Main.QuestionAnswer> {
+                entry<RouteNavKey.Main.QuestionAnswer> {
                     QuestionAnswerScreen(
                         innerPadding = innerPadding,
                     )
                 }
-                entry<Route.Main.Navigation> {
+                entry<RouteNavKey.Main.Navigation> {
                     NavigationScreen(
                         innerPadding = innerPadding,
                     )
                 }
-                entry<Route.Main.Profile> {
+                entry<RouteNavKey.Main.Profile> {
                     ProfileScreen(
                         innerPadding = innerPadding,
                     )

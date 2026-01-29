@@ -59,7 +59,7 @@ import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.route.Route
+import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
@@ -86,7 +86,7 @@ fun CollectScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                route = Route.Collect,
+                routeNavKey = RouteNavKey.Collect,
                 title = stringResource(id = R.string.string_collect),
             )
         },
