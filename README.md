@@ -21,9 +21,9 @@
 #### 9、语言切换
 #### 10、积分列表
 
-![相册](https://github.com/wj576038874/PhotoSelectorDemo/blob/master/images/selector.jpg)
-![文件夹](https://github.com/wj576038874/PhotoSelectorDemo/blob/master/images/folder.jpg)
-![预览](https://github.com/wj576038874/PhotoSelectorDemo/blob/master/images/preview.jpg)
-![预览列表](https://github.com/wj576038874/PhotoSelectorDemo/blob/master/images/preview_list.jpg)
-![裁剪](https://github.com/wj576038874/PhotoSelectorDemo/blob/master/images/clip.jpg)
+![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_dark.png)
+![主题切换](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
+![我的收藏](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_collect_dark.png)
+![我的积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_profile.png)
+![切换语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
 
