@@ -74,7 +74,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
                         )
                     } else {
                         val oldData = _homeUiState.value.articleList ?: emptyList()
-                        _homeUiState.value.copy(
+                        _homeUiState.value = _homeUiState.value.copy(
                             articleList = oldData + newData, isLoading = false, noMoreData = false
                         )
                     }
