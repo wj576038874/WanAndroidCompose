@@ -2,13 +2,14 @@
 
 ## 项目介绍
 
-### 1、项目架构采用MVVM架构，使用Jetpack Compose实现UI层
-### 2、导航采用 compose最新版本的Nav3 登陆拦截，重定向
-### 3、除文章列表采用LazyColumn实现，自定义加载更多功能，其他列表页面均采用Paging3+LazyColumn实现
-### 4、网络层使用retrofit+okhttp+coroutine实现
-### 5、图片加载使用coil compose库实现
-### 6、文章详情采用compose嵌套androidView#webview实现 和 跳转浏览器两种实现方式
-### 7、cameraX + compose 实现 代码示例
+### 项目架构采用MVVM架构，使用Jetpack Compose实现UI层
+### 导航采用 compose最新版本的Nav3 登陆拦截，重定向
+### 除文章列表采用LazyColumn实现，自定义加载更多功能，其他列表页面均采用Paging3+LazyColumn实现
+### 列表Item布局采用ConstraintLayout实现
+### 网络层使用retrofit+okhttp+coroutine实现
+### 图片加载使用coil compose库实现
+### 文章详情采用compose嵌套androidView#webview实现 和 跳转浏览器两种实现方式
+### cameraX + compose 实现 代码示例
 
 
 ### 已实现功能
