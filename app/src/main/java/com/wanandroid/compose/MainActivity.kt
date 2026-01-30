@@ -60,7 +60,8 @@ class MainActivity : AppCompatActivity() {
                 else -> isSystemInDarkTheme()
             }
             WanAndroidComposeTheme(
-                darkTheme = isDarkTheme, dynamicColor = false
+                darkTheme = isDarkTheme,
+                dynamicColor = false
             ) {
                 WanAndroidApp(appViewModel = appViewModel)
             }
