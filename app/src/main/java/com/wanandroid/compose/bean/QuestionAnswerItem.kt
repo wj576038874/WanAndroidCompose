@@ -14,4 +14,10 @@ data class QuestionAnswerItem(
     val chapterName: String? = null,
     val collect: Boolean,
     val niceDate: String? = null,
+    val tags: List<Tag>? = null
+)
+
+data class Tag(
+    val name: String? = null,
+    val url: String? = null
 )
