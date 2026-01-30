@@ -37,7 +37,7 @@
 ![收藏](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_collect_dark.png)
 ![积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_coin_light.png)
 ![积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_coin_dark.png)
-![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_settings_light.png)
-![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_settings_dark.png)
+![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_setting_light.png)
+![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_setting_dark.png)
 ![语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
 
