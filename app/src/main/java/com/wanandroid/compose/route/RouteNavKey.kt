@@ -54,6 +54,20 @@ sealed class RouteNavKey(val requiresLogin: Boolean = false) : NavKey {
     data object Search : RouteNavKey(requiresLogin = true)
 
     @Serializable
+    data object Message : RouteNavKey(requiresLogin = true)
+
+    @Serializable
+    data object Share : RouteNavKey(requiresLogin = true)
+
+    @Serializable
+    data object BookMark : RouteNavKey(requiresLogin = true)
+
+    @Serializable
+    data object History : RouteNavKey(requiresLogin = true)
+
+
+
+    @Serializable
     data class CameraBitmapPreview(val byteArray: ByteArray) : RouteNavKey() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

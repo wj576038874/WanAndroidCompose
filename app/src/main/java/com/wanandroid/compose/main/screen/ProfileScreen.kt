@@ -87,6 +87,9 @@ fun ProfileScreen(
                     navigator.goTo(RouteNavKey.Login())
                 },
                 userInfo = userInfo,
+                toMessage = {
+                    navigator.goTo(RouteNavKey.Message)
+                }
             )
         }
         items(ITEMS) {
@@ -95,13 +98,22 @@ fun ProfileScreen(
                 item = it,
                 onClick = {
                     when (it.first) {
-                        0 ->{
+                        0 -> {
                             navigator.goTo(RouteNavKey.Coin)
                         }
-                        2 ->{
+                        1 -> {
+                            navigator.goTo(RouteNavKey.Share)
+                        }
+                        2 -> {
                             navigator.goTo(RouteNavKey.Collect)
                         }
-                        6 ->{
+                        3 -> {
+                            navigator.goTo(RouteNavKey.BookMark)
+                        }
+                        4 -> {
+                            navigator.goTo(RouteNavKey.History)
+                        }
+                        6 -> {
                             launchCustomChromeTab(
                                 context = context,
                                 uri = Uri.parse("https://www.wanandroid.com/"),
@@ -172,7 +184,8 @@ fun Header(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     userInfo: UserInfo?,
-    toLogin: () -> Unit
+    toLogin: () -> Unit,
+    toMessage: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -188,9 +201,8 @@ fun Header(
         ) {
             Spacer(modifier = modifier.weight(1f))
             IconButton(
-                onClick = {
-
-                }) {
+                onClick = toMessage
+            ) {
                 Icon(
                     modifier = modifier,
                     imageVector = Icons.Outlined.Notifications,

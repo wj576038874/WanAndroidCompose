@@ -21,18 +21,22 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.wanandroid.compose.bookmark.BookMarkScreen
 import com.wanandroid.compose.camera.CameraBitmapPreviewScreen
 import com.wanandroid.compose.camera.CameraScreen
 import com.wanandroid.compose.camera.CameraScreen2
 import com.wanandroid.compose.coin.CoinScreen
 import com.wanandroid.compose.collect.CollectScreen
+import com.wanandroid.compose.history.HistoryScreen
 import com.wanandroid.compose.login.LoginScreen
 import com.wanandroid.compose.main.MainScreen
 import com.wanandroid.compose.main.screen.ArticleDetailScreen
+import com.wanandroid.compose.message.MessageScreen
 import com.wanandroid.compose.route.Navigator
 import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.search.SearchScreen
 import com.wanandroid.compose.setting.SettingScreen
+import com.wanandroid.compose.share.ShareScreen
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -154,6 +158,18 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     }
                     entry<RouteNavKey.Camera2> {
                         CameraScreen2()
+                    }
+                    entry<RouteNavKey.Message> {
+                        MessageScreen()
+                    }
+                    entry<RouteNavKey.Share> {
+                        ShareScreen()
+                    }
+                    entry<RouteNavKey.BookMark> {
+                        BookMarkScreen()
+                    }
+                    entry<RouteNavKey.History> {
+                        HistoryScreen()
                     }
                 }
             )
