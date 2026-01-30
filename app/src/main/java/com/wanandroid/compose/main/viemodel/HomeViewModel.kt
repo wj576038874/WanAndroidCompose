@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.BannerItem
-import com.wanandroid.compose.main.repository.HomeRepository
+import com.wanandroid.compose.main.repository.impl.NetworkHomeRepository
 import com.wanandroid.compose.main.state.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
  * Created by wenjie on 2026/01/22.
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(private val networkHomeRepository: NetworkHomeRepository) : ViewModel() {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow()
@@ -42,10 +42,10 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
                 it.copy(isLoading = true)
             }
             var bannerList: List<BannerItem>? = null
-            homeRepository.getBannerList().onSuccess {
+            networkHomeRepository.getBannerList().onSuccess {
                 bannerList = it
             }
-            homeRepository.getArticleList(pageNum).apply {
+            networkHomeRepository.getArticleList(pageNum).apply {
                 onSuccess {
                     _homeUiState.value = _homeUiState.value.copy(
                         bannerList = bannerList,
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
 
     fun loadNexPage(pageNum: Int) {
         viewModelScope.launch {
-            homeRepository.getArticleList(pageNum).apply {
+            networkHomeRepository.getArticleList(pageNum).apply {
                 onSuccess {
                     val newData = it.datas ?: emptyList()
                     if (newData.isEmpty()) {
@@ -90,7 +90,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
 
     fun collectArticle(id: Int) {
         viewModelScope.launch {
-            homeRepository.collectArticle(id).apply {
+            networkHomeRepository.collectArticle(id).apply {
                 onSuccess {
                     _homeUiState.value = _homeUiState.value.copy(
                         articleList = _homeUiState.value.articleList?.map {
@@ -113,7 +113,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
 
     fun unCollectArticle(id: Int) {
         viewModelScope.launch {
-            homeRepository.unCollectArticle(id).apply {
+            networkHomeRepository.unCollectArticle(id).apply {
                 onSuccess {
                     _homeUiState.value = _homeUiState.value.copy(
                         articleList = _homeUiState.value.articleList?.map {
