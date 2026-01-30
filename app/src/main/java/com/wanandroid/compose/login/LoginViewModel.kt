@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.login.state.LoginState
 import com.wanandroid.compose.login.state.LogoutState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +17,9 @@ import kotlin.coroutines.cancellation.CancellationException
 /**
  * Created by wenjie on 2026/01/26.
  */
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) :
+    ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Nothing)
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
@@ -30,23 +34,18 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         userName: String, password: String
     ) {
         loginJob = viewModelScope.launch {
-            runCatching {
-                _loginState.value = LoginState.Loading
-                loginRepository.login(userName, password)
-            }.onSuccess {
-                if (it.isSuccess) {
-                    it.data?.let { userInfo ->
-                        _loginState.value = LoginState.Success(userInfo = userInfo)
-                        UserManager.instance.login(userInfo)
-                    }
-                } else {
-                    _loginState.value = LoginState.Failure(errorMsg = it.message ?: "登录失败")
+            _loginState.value = LoginState.Loading
+            loginRepository.login(userName, password).apply {
+                onSuccess { userInfo ->
+                    _loginState.value = LoginState.Success(userInfo = userInfo)
+                    UserManager.instance.login(userInfo)
                 }
-            }.onFailure {
-                if (it is CancellationException) {
-                    _loginState.value = LoginState.Failure(errorMsg = "取消登陆")
-                } else {
-                    _loginState.value = LoginState.Failure(errorMsg = it.message ?: "登录失败")
+                onFailure {
+                    if (it is CancellationException) {
+                        _loginState.value = LoginState.Failure(errorMsg = "取消登陆")
+                    } else {
+                        _loginState.value = LoginState.Failure(errorMsg = it.message ?: "登录失败")
+                    }
                 }
             }
         }
@@ -65,19 +64,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun logout() {
         logoutJob = viewModelScope.launch {
-            runCatching {
-                _logoutState.value = LogoutState.Loading
-                loginRepository.logout()
-            }.onSuccess {
-                if (it.isSuccess) {
+            _logoutState.value = LogoutState.Loading
+            loginRepository.logout().apply {
+                onSuccess {
                     UserManager.instance.logout()
                     _logoutState.value = LogoutState.Success
-                } else {
-                    _logoutState.value = LogoutState.Failure(errorMsg = it.message ?: "退出登录失败")
                 }
-            }.onFailure {
-                _logoutState.value = LogoutState.Nothing
-                _logoutState.value = LogoutState.Failure(errorMsg = it.message ?: "退出登录失败")
+                onFailure {
+                    _logoutState.value = LogoutState.Nothing
+                    _logoutState.value =
+                        LogoutState.Failure(errorMsg = it.message ?: "退出登录失败")
+                }
             }
         }
     }

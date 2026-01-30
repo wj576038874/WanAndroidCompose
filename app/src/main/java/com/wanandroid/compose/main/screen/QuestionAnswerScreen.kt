@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.net.toUri
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -49,11 +50,7 @@ import com.wanandroid.compose.utils.launchCustomChromeTab
 fun QuestionAnswerScreen(
     modifier: Modifier = Modifier, innerPadding: PaddingValues
 ) {
-    val viewModel = viewModel {
-        val questionAnswerApi = RetrofitHelper.create(QuestionAnswerApi::class.java)
-        val questionAnswerRepository = QuestionAnswerRepository(questionAnswerApi)
-        QuestionAnswerViewModel(questionAnswerRepository)
-    }
+    val viewModel = hiltViewModel<QuestionAnswerViewModel>()
     val lazyPagingItems = viewModel.questionAnswerList.collectAsLazyPagingItems()
     val collectedIds by viewModel.collectedIds.collectAsStateWithLifecycle()
 //    LaunchedEffect(collectIds) {

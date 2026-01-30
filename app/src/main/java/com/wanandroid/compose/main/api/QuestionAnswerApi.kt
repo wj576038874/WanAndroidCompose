@@ -16,8 +16,8 @@ interface QuestionAnswerApi {
     suspend fun getQuestionAnswerList(@Path("pageNum") pageNum: Int): BaseResponse<BasePageData<QuestionAnswerItem>>
 
     @POST("lg/collect/{id}/json")
-    suspend fun collectArticle(@Path("id") id: Int): BaseResponse<Any>
+    suspend fun collectArticle(@Path("id") id: Int): BaseResponse<Any?>
 
     @POST("lg/uncollect_originId/{id}/json")
-    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any>
+    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any?>
 }

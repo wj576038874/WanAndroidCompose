@@ -20,8 +20,8 @@ interface HomeApi {
     suspend fun getArticleList(@Path("pageNum") pageNum: Int): BaseResponse<BasePageData<ArticleItem>>
 
     @POST("lg/collect/{id}/json")
-    suspend fun collectArticle(@Path("id") id: Int): BaseResponse<Any>
+    suspend fun collectArticle(@Path("id") id: Int): BaseResponse<Any?>
 
     @POST("lg/uncollect_originId/{id}/json")
-    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any>
+    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any?>
 }

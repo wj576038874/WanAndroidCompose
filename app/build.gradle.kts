@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -57,6 +59,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.exifinterface)
 
+    //hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.viewmodel)
+    implementation(libs.hilt.viewmodel.compose)
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)

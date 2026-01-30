@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -14,17 +15,11 @@ import kotlinx.coroutines.launch
 /**
  * Created by wenjie on 2026/01/23.
  */
-class QuestionAnswerViewModel(private val questionAnswerRepository: QuestionAnswerRepository) :
+@HiltViewModel
+class QuestionAnswerViewModel @Inject constructor(private val questionAnswerRepository: QuestionAnswerRepository) :
     ViewModel() {
 
     val questionAnswerList = questionAnswerRepository.getQuestionAnswerList()
-//        .map { pagingData ->
-//            pagingData.map {
-//                it.copy(
-//                    collect = collectIds.value.contains(it.id)
-//                )
-//            }
-//        }
         .cachedIn(viewModelScope)
 
     val collectedIds = UserManager.instance.userInfo.map {
@@ -37,28 +32,26 @@ class QuestionAnswerViewModel(private val questionAnswerRepository: QuestionAnsw
 
     fun collectArticle(id: Int) {
         viewModelScope.launch {
-            runCatching {
-                questionAnswerRepository.collectArticle(id)
-            }.onSuccess { response ->
-                if (response.isSuccess) {
+            questionAnswerRepository.collectArticle(id).apply {
+                onSuccess {
                     UserManager.instance.addCollectId(id)
                 }
-            }.onFailure {
-
+                onFailure {
+                    //todo 处理失败情况
+                }
             }
         }
     }
 
     fun unCollectArticle(id: Int) {
         viewModelScope.launch {
-            runCatching {
-                questionAnswerRepository.unCollectArticle(id)
-            }.onSuccess { response ->
-                if (response.isSuccess) {
+            questionAnswerRepository.unCollectArticle(id).apply {
+                onSuccess {
                     UserManager.instance.removeCollectId(id)
                 }
-            }.onFailure {
-
+                onFailure {
+                    //todo 处理失败情况
+                }
             }
         }
     }

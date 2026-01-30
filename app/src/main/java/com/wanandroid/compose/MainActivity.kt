@@ -20,20 +20,23 @@ import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val appViewModel: AppViewModel by viewModels()
 
-    private val splashViewModel: SplashViewModel by viewModels {
-        val loginApi = RetrofitHelper.create(LoginApi::class.java)
-        val loginRepository = LoginRepository(loginApi)
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST") return SplashViewModel(loginRepository) as T
-            }
-        }
-    }
+//    private val splashViewModel: SplashViewModel by viewModels {
+//        val loginApi = RetrofitHelper.create(LoginApi::class.java)
+//        val loginRepository = LoginRepository(loginApi)
+//        object : ViewModelProvider.Factory {
+//            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//                @Suppress("UNCHECKED_CAST") return SplashViewModel(loginRepository) as T
+//            }
+//        }
+//    }
+    private val splashViewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

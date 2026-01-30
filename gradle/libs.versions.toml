@@ -1,6 +1,6 @@
 [versions]
 agp = "8.13.1"
-kotlin = "2.0.21"
+kotlin = "2.2.21"
 coreKtx = "1.10.1"
 junit = "5.0-SNAPSHOT"
 junitVersion = "1.1.5"
@@ -29,6 +29,10 @@ pagingCompose = "3.3.6"
 appcompat = "1.7.1"
 cameraxVersion = "1.5.2"
 exifinterface = "1.3.6"
+hilt = "2.57.2"
+ksp = "2.3.2"
+hiltViewModel = "1.3.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -79,6 +83,11 @@ androidx-camerax-video = { module = "androidx.camera:camera-video", version.ref 
 androidx-camerax-view = { module = "androidx.camera:camera-view", version.ref = "cameraxVersion" }
 androidx-camerax-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraxVersion" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-viewmodel = { group = "androidx.hilt", name = "hilt-lifecycle-viewmodel", version.ref = "hiltViewModel" }
+hilt-viewmodel-compose = { group = "androidx.hilt", name = "hilt-lifecycle-viewmodel-compose", version.ref = "hiltViewModel" }
 
 
 [bundles]
@@ -131,3 +140,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

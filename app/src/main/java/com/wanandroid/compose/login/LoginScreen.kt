@@ -36,13 +36,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
-import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.login.state.LoginState
 import com.wanandroid.compose.route.RouteNavKey
 
@@ -55,10 +54,8 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     routeNavKey: RouteNavKey.Login
 ) {
-    val loginViewModel = viewModel {
-        val loginApi = RetrofitHelper.create(LoginApi::class.java)
-        LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))
-    }
+    val loginViewModel = hiltViewModel<LoginViewModel>()
+
     val navigator = LocalNavigator.current
     var userName by remember { mutableStateOf("wj576038874") }
     var password by remember { mutableStateOf("1rujiwang") }

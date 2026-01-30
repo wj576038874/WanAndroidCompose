@@ -53,6 +53,7 @@ import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.concurrent.ExecutionException
+import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
@@ -288,7 +289,7 @@ suspend fun <T> ListenableFuture<T>.await(): T {
                 } else {
                     try {
                         continuation.resumeWith(
-                            Result.success(getUninterruptibly(this))
+                            Result.success(getUninterruptibly(this)!!)
                         )
                     } catch (e: ExecutionException) {
                         // ExecutionException is the only kind of exception that can be thrown from a gotten

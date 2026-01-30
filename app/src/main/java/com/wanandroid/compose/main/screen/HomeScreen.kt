@@ -53,6 +53,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
@@ -80,11 +81,8 @@ fun HomeScreen(
 ) {
     val navigator = LocalNavigator.current
     Log.e("asd", "HomeScreen$innerPadding")
-    val viewModel = viewModel {
-        val homeApi = RetrofitHelper.create(HomeApi::class.java)
-        val homeRepository = HomeRepository(homeApi = homeApi)
-        HomeViewModel(homeRepository = homeRepository)
-    }
+    val viewModel = hiltViewModel<HomeViewModel>()
+
     val homeUiState by viewModel.homeUiState.collectAsStateWithLifecycle()
     Scaffold(
         modifier = modifier.fillMaxSize(),

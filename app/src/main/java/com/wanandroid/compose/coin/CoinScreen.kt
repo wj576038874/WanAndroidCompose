@@ -1,12 +1,9 @@
 package com.wanandroid.compose.coin
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,14 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.CoinItem
-import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.common.CommonToolbar
-import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.route.RouteNavKey
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -38,11 +34,8 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinScreen(modifier: Modifier = Modifier) {
-    val viewModel = viewModel {
-        val coinApi = RetrofitHelper.create(CoinApi::class.java)
-        val coinRepository = CoinRepository(coinApi)
-        CoinViewModel(coinRepository)
-    }
+    val viewModel = hiltViewModel<CoinViewModel>()
+
     val lazyPagingItems = viewModel.coinList.collectAsLazyPagingItems()
     Scaffold(
         modifier = modifier.fillMaxSize(),

@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.bean.ArticleItem
@@ -43,11 +44,7 @@ fun NavigationScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues
 ) {
-    val viewModel = viewModel {
-        val navigationApi = RetrofitHelper.create(NavigationApi::class.java)
-        val navigationRepository = NavigationRepository(navigationApi = navigationApi)
-        NavigationViewModel(navigationRepository = navigationRepository)
-    }
+    val viewModel = hiltViewModel<NavigationViewModel>()
 
     val navigationUiState by viewModel.navigationUiState.collectAsStateWithLifecycle()
 

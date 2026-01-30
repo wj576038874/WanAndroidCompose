@@ -44,8 +44,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil3.compose.SubcomposeAsyncImage
@@ -53,7 +53,6 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LazyColumnPaging
-import com.wanandroid.compose.http.RetrofitHelper
 import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
@@ -66,15 +65,8 @@ import com.wanandroid.compose.utils.launchCustomChromeTab
 fun CollectScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val toolbarColor = MaterialTheme.colorScheme.primary
-    val viewmodel = viewModel {
-        CollectViewModel(
-            collectRepository = CollectRepository(
-                collectApi = RetrofitHelper.create(
-                    CollectApi::class.java
-                )
-            )
-        )
-    }
+    val viewmodel = hiltViewModel<CollectViewModel>()
+
     val lazyPagingItems = viewmodel.collectList.collectAsLazyPagingItems()
     val unCollectId by viewmodel.unCollectIdState.collectAsStateWithLifecycle()
     Scaffold(

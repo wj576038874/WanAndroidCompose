@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.main.repository.NavigationRepository
 import com.wanandroid.compose.main.state.NavigationUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -11,7 +13,8 @@ import kotlinx.coroutines.launch
 /**
  * Created by wenjie on 2026/01/23.
  */
-class NavigationViewModel(
+@HiltViewModel
+class NavigationViewModel @Inject constructor(
     private val navigationRepository: NavigationRepository
 ) : ViewModel() {
 
@@ -28,24 +31,20 @@ class NavigationViewModel(
      */
     fun getNavigationList() {
         viewModelScope.launch {
-            runCatching {
-                _navigationUiState.value = _navigationUiState.value.copy(
-                    isLoading = true
-                )
-                val response = navigationRepository.getNavigationList()
-                if (response.isSuccess) {
-                    response.data
-                } else {
-                    throw Exception(response.message)
+            _navigationUiState.value = _navigationUiState.value.copy(
+                isLoading = true
+            )
+            navigationRepository.getNavigationList().apply {
+                onSuccess {
+                    _navigationUiState.value = _navigationUiState.value.copy(
+                        isLoading = false, navigationList = it
+                    )
                 }
-            }.onSuccess { navigationItems ->
-                _navigationUiState.value = _navigationUiState.value.copy(
-                    isLoading = false, navigationList = navigationItems ?: emptyList()
-                )
-            }.onFailure {
-                _navigationUiState.value = _navigationUiState.value.copy(
-                    errorMessage = it.message ?: "获取导航列表失败", isLoading = false
-                )
+                onFailure {
+                    _navigationUiState.value = _navigationUiState.value.copy(
+                        errorMessage = it.message ?: "获取导航列表失败", isLoading = false
+                    )
+                }
             }
         }
     }

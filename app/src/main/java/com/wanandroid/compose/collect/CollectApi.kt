@@ -16,5 +16,5 @@ interface CollectApi {
     suspend fun getCollectList(@Path("pageNum") pageNum: Int): BaseResponse<BasePageData<ArticleItem>>
 
     @POST("lg/uncollect_originId/{id}/json")
-    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any>
+    suspend fun unCollectArticle(@Path("id") id: Int): BaseResponse<Any?>
 }
