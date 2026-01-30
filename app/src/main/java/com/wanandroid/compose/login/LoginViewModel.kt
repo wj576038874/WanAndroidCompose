@@ -34,9 +34,13 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 _loginState.value = LoginState.Loading
                 loginRepository.login(userName, password)
             }.onSuccess {
-                it.data?.let { userInfo ->
-                    _loginState.value = LoginState.Success(userInfo = userInfo)
-                    UserManager.instance.login(userInfo)
+                if (it.isSuccess) {
+                    it.data?.let { userInfo ->
+                        _loginState.value = LoginState.Success(userInfo = userInfo)
+                        UserManager.instance.login(userInfo)
+                    }
+                } else {
+                    _loginState.value = LoginState.Failure(errorMsg = it.message ?: "登录失败")
                 }
             }.onFailure {
                 if (it is CancellationException) {

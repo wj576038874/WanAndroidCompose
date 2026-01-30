@@ -24,5 +24,5 @@ interface LoginApi {
     suspend fun logout(): BaseResponse<Any>
 
     @GET("user/lg/userinfo/json")
-    suspend fun getUserCoinInfo(): BaseResponse<UserInfoData>
+    suspend fun getUserInfo(): BaseResponse<UserInfoData>
 }

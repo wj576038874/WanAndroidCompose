@@ -1,7 +1,5 @@
 package com.wanandroid.compose.login
 
-import com.wanandroid.compose.login.LoginApi
-
 /**
  * Created by wenjie on 2026/01/26.
  */
@@ -20,7 +18,7 @@ class LoginRepository(
     /**
      * 获取用户积分信息
      */
-    suspend fun getUserCoinInfo() = loginApi.getUserCoinInfo()
+    suspend fun getUserCoinInfo() = loginApi.getUserInfo()
 
      /**
       * 退出登录

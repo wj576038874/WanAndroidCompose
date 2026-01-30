@@ -160,7 +160,7 @@ fun QuestionAnswerItem(
             author, niceDate, date
         )
         Text(
-            text = item.title ?: "unknown",
+            text = item.title ?: "",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.constrainAs(title) {
