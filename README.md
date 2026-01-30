@@ -25,10 +25,19 @@
 #### 10、积分列表
 #### 其他功能待完善
 
-![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_dark.png)
-![QA](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_light.png)
-![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_navigation.png)
-![我的收藏](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_collect_dark.png)
-![我的积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_profile.png)
-![切换语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
+![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_light.png)
+![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_light.png)
+![问答](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_light.png)
+![问答](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_dark.png)
+![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_navigation_light.png)
+![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_navigation_dark.png)
+![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_profile_light.png)
+![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_profile_dark.png)
+![收藏](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_collect_light.png)
+![收藏](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_collect_dark.png)
+![积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_coin_light.png)
+![积分](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_coin_dark.png)
+![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_settings_light.png)
+![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_settings_dark.png)
+![语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
 
