@@ -40,4 +40,5 @@
 ![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_setting_light.png)
 ![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_setting_dark.png)
 ![语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
+![语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_detail_dark.png)
 
