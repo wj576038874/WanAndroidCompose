@@ -26,7 +26,7 @@
 #### 其他功能待完善
 
 ![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_light.png)
-![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_light.png)
+![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_dark.png)
 ![问答](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_light.png)
 ![问答](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_dark.png)
 ![导航](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_navigation_light.png)
