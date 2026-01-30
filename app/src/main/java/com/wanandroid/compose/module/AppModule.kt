@@ -1,8 +1,9 @@
 package com.wanandroid.compose.module
 
+import android.util.Log
 import com.wanandroid.compose.coin.CoinApi
 import com.wanandroid.compose.collect.CollectApi
-import com.wanandroid.compose.http.RetrofitHelper
+import com.wanandroid.compose.http.OkHttpHelper
 import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.main.api.NavigationApi
@@ -11,6 +12,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
@@ -22,37 +25,54 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideHomeApi(): HomeApi {
-        return RetrofitHelper.create(HomeApi::class.java)
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder().baseUrl("https://www.wanandroid.com/")
+            .client(OkHttpHelper.instance.getOkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     @Provides
     @Singleton
-    fun provideCollectApi(): CollectApi {
-        return RetrofitHelper.create(CollectApi::class.java)
+    fun provideHomeApi(
+        retrofit: Retrofit
+    ): HomeApi {
+        Log.e("AppModule", "provideHomeApi$retrofit")
+        return retrofit.create(HomeApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideCoinApi(): CoinApi {
-        return RetrofitHelper.create(CoinApi::class.java)
+    fun provideCollectApi(retrofit: Retrofit): CollectApi {
+        Log.e("AppModule", "provideCollectApi$retrofit")
+        return retrofit.create(CollectApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideQuestionAnswerApi(): QuestionAnswerApi {
-        return RetrofitHelper.create(QuestionAnswerApi::class.java)
+    fun provideCoinApi(retrofit: Retrofit): CoinApi {
+        Log.e("AppModule", "provideCoinApi$retrofit")
+        return retrofit.create(CoinApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideNavigationApi(): NavigationApi {
-        return RetrofitHelper.create(NavigationApi::class.java)
+    fun provideQuestionAnswerApi(retrofit: Retrofit): QuestionAnswerApi {
+        Log.e("AppModule", "provideQuestionAnswerApi$retrofit")
+        return retrofit.create(QuestionAnswerApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideLoginApi(): LoginApi {
-        return RetrofitHelper.create(LoginApi::class.java)
+    fun provideNavigationApi(retrofit: Retrofit): NavigationApi {
+        Log.e("AppModule", "provideNavigationApi$retrofit")
+        return retrofit.create(NavigationApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideLoginApi(retrofit: Retrofit): LoginApi {
+        Log.e("AppModule", "provideLoginApi$retrofit")
+        return retrofit.create(LoginApi::class.java)
+    }
+
 }

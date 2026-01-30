@@ -31,15 +31,11 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.wanandroid.compose.bean.QuestionAnswerItem
 import com.wanandroid.compose.bean.Tag
 import com.wanandroid.compose.common.LazyColumnPaging
-import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.main.api.QuestionAnswerApi
-import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import com.wanandroid.compose.main.viemodel.QuestionAnswerViewModel
 import com.wanandroid.compose.utils.launchCustomChromeTab
 

@@ -3,7 +3,6 @@ package com.wanandroid.compose
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -11,14 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
-import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanandroid.compose.login.LoginApi
-import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.login.LoginRepository
 import com.wanandroid.compose.ui.theme.WanAndroidComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 

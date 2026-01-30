@@ -39,18 +39,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.LocalAppViewModel
 import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.WanAndroidApplication
-import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.common.CommonToolbar
-import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.login.LoginApi
-import com.wanandroid.compose.login.LoginRepository
+import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.login.state.LogoutState
 import com.wanandroid.compose.route.RouteNavKey
@@ -65,10 +62,7 @@ import kotlinx.coroutines.launch
 fun SettingScreen(modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.current
     val themeViewModel = LocalAppViewModel.current
-    val loginViewModel = viewModel {
-        val loginApi = RetrofitHelper.create(LoginApi::class.java)
-        LoginViewModel(loginRepository = LoginRepository(loginApi = loginApi))
-    }
+    val loginViewModel = hiltViewModel<LoginViewModel>()
     val scope = rememberCoroutineScope()
     var openBottomSheetTheme by rememberSaveable { mutableStateOf(false) }
     var skipPartiallyExpandedTheme by rememberSaveable { mutableStateOf(false) }

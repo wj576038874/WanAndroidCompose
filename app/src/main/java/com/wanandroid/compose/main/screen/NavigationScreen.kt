@@ -28,11 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wanandroid.compose.bean.ArticleItem
-import com.wanandroid.compose.main.api.NavigationApi
-import com.wanandroid.compose.http.RetrofitHelper
-import com.wanandroid.compose.main.repository.NavigationRepository
 import com.wanandroid.compose.main.viemodel.NavigationViewModel
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
