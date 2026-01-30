@@ -12,20 +12,6 @@
 ### 文章详情采用compose嵌套androidView#webview实现 和 跳转浏览器两种实现方式
 ### cameraX + compose 实现 代码示例
 
-
-### 已实现功能
-#### 1、登录、登出功能
-#### 2、首页文章列表
-#### 3、文章详情页
-#### 4、收藏、取消收藏文章
-#### 5、我的收藏列表
-#### 6、设置页面
-#### 7、设置页面
-#### 8、主题切换
-#### 9、语言切换
-#### 10、积分列表
-#### 其他功能待完善
-
 ![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_light.png)
 ![首页](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_home_dark.png)
 ![问答](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_qa_light.png)
@@ -42,4 +28,19 @@
 ![设置](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_setting_dark.png)
 ![语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_change_language_light.png)
 ![语言](https://github.com/wj576038874/WanAndroidCompose/blob/master/images/img_detail_dark.png)
+
+
+### 已实现功能
+#### 1、登录、登出功能
+#### 2、首页文章列表
+#### 3、文章详情页
+#### 4、收藏、取消收藏文章
+#### 5、我的收藏列表
+#### 6、设置页面
+#### 7、设置页面
+#### 8、主题切换
+#### 9、语言切换
+#### 10、积分列表
+#### 其他功能待完善
+
 
