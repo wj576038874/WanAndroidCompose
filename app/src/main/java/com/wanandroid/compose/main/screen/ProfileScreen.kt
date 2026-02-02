@@ -1,6 +1,5 @@
 package com.wanandroid.compose.main.screen
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -48,9 +47,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.UserInfo
-import com.wanandroid.compose.route.RouteNavKey
-import com.wanandroid.compose.utils.launchCustomChromeTab
-import androidx.core.net.toUri
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -82,9 +78,7 @@ fun ProfileScreen(
     onAboutClick: () -> Unit,
     onSettingsClick: () -> Unit,
 ) {
-    val context = LocalContext.current
     val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
-    val toolbarColor = MaterialTheme.colorScheme.primary.toArgb()
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {

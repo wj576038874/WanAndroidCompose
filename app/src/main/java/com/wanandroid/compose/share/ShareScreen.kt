@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.wanandroid.compose.R
 import com.wanandroid.compose.common.CommonToolbar
-import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/30.

@@ -1,6 +1,5 @@
 package com.wanandroid.compose.collect
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -53,7 +52,6 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LazyColumnPaging
-import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**

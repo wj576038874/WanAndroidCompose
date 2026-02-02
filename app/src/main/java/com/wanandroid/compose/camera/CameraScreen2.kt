@@ -271,7 +271,7 @@ private fun bindCameraUseCases(
         )
         // Attach the viewfinder's surface provider to preview use case
         preview.surfaceProvider = previewView.surfaceProvider
-    } catch (exc: Exception) {
+    } catch (_: Exception) {
 
     }
 }

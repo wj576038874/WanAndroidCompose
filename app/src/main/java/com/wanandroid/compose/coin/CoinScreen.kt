@@ -23,7 +23,6 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.CoinItem
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LazyColumnPaging
-import com.wanandroid.compose.route.RouteNavKey
 import java.text.SimpleDateFormat
 import java.util.Locale
 

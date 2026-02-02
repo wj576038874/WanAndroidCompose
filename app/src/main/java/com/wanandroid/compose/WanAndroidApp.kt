@@ -2,12 +2,6 @@
 
 package com.wanandroid.compose
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -21,17 +15,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.wanandroid.compose.bookmark.BookMarkScreen
-import com.wanandroid.compose.camera.CameraBitmapPreviewScreen
-import com.wanandroid.compose.camera.CameraScreen
-import com.wanandroid.compose.camera.CameraScreen2
-import com.wanandroid.compose.coin.CoinScreen
-import com.wanandroid.compose.collect.CollectScreen
-import com.wanandroid.compose.history.HistoryScreen
-import com.wanandroid.compose.login.LoginScreen
-import com.wanandroid.compose.main.MainScreen
-import com.wanandroid.compose.main.screen.ArticleDetailScreen
-import com.wanandroid.compose.message.MessageScreen
 import com.wanandroid.compose.route.Navigator
 import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.route.forArticleDetailScreen
@@ -48,9 +31,6 @@ import com.wanandroid.compose.route.forMessageScreen
 import com.wanandroid.compose.route.forSearchScreen
 import com.wanandroid.compose.route.forSettingScreen
 import com.wanandroid.compose.route.forShareScreen
-import com.wanandroid.compose.search.SearchScreen
-import com.wanandroid.compose.setting.SettingScreen
-import com.wanandroid.compose.share.ShareScreen
 
 /**
  * Created by wenjie on 2026/01/22.

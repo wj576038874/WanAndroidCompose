@@ -9,6 +9,11 @@ import com.wanandroid.compose.camera.CameraBitmapPreviewScreen
  */
 fun EntryProviderScope<NavKey>.forCameraBitmapPreviewScreen(navigator: Navigator) {
     entry<RouteNavKey.CameraBitmapPreview> {
-        CameraBitmapPreviewScreen(byteArray = it.byteArray)
+        CameraBitmapPreviewScreen(
+            byteArray = it.byteArray,
+            onBackClick = {
+                navigator.goBack()
+            }
+        )
     }
 }

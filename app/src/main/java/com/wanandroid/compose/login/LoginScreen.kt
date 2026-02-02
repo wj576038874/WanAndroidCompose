@@ -42,7 +42,6 @@ import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.login.state.LoginState
-import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/26.
