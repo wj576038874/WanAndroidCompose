@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
+import com.wanandroid.compose.locale.AppLocale
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,7 +45,6 @@ class AppViewModel : ViewModel() {
             putInt("THEME_MODE", themeMode)
         }
     }
-
 
 
     private val currentLanguage = if (AppCompatDelegate.getApplicationLocales().isEmpty) {
@@ -139,5 +139,21 @@ class AppViewModel : ViewModel() {
             putString("LANGUAGE", language)
         }
     }
+
+
+    val _appLocale = MutableStateFlow(AppLocale(Locale.getDefault().language))
+    val appLocale: StateFlow<AppLocale> = _appLocale.asStateFlow()
+
+    fun updateAppLocale(languageTag: String) {
+        if (languageTag == "system") {
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.getEmptyLocaleList()
+            )
+            _appLocale.value = AppLocale(Locale.getDefault().language)
+            return
+        }
+        _appLocale.value = AppLocale(languageTag)
+    }
+
 
 }

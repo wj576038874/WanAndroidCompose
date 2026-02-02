@@ -212,9 +212,9 @@ fun SettingScreen(
                             isSelected = item.first == language,
                             onClick = {
                                 scope.launch {
-                                    bottomSheetStateTheme.hide()
+                                    bottomSheetStateLanguage.hide()
                                 }.invokeOnCompletion {
-                                    if (!bottomSheetStateTheme.isVisible) {
+                                    if (!bottomSheetStateLanguage.isVisible) {
                                         openBottomSheetLanguage = false
                                         themeViewModel.setLanguage(item.first)
                                     }

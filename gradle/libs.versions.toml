@@ -79,7 +79,7 @@ androidx-camerax-core = { module = "androidx.camera:camera-core", version.ref = 
 androidx-camerax-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraxVersion" }
 androidx-camerax-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraxVersion" }
 androidx-camerax-video = { module = "androidx.camera:camera-video", version.ref = "cameraxVersion" }
-
+androidx-camerax-viewfinder-compose = { module = "androidx.camera.viewfinder:viewfinder-compose", version.ref = "cameraxVersion" }
 androidx-camerax-view = { module = "androidx.camera:camera-view", version.ref = "cameraxVersion" }
 androidx-camerax-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraxVersion" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
@@ -132,7 +132,8 @@ camerax = [
     "androidx-camerax-lifecycle",
     "androidx-camerax-video",
     "androidx-camerax-view",
-    "androidx-camerax-extensions"
+    "androidx-camerax-extensions",
+    "androidx-camerax-viewfinder-compose"
 ]
 
 [plugins]

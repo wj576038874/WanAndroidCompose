@@ -7,14 +7,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.wanandroid.compose.locale.AppLocale
 import com.wanandroid.compose.route.Navigator
 import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.route.forArticleDetailScreen
@@ -51,6 +54,13 @@ import com.wanandroid.compose.route.forShareScreen
 
 val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
     error("LocalAuthViewModel")
+}
+
+/**
+ * 自定义实现应用内语言切换 无需重启activity 且无闪烁
+ */
+val LocalAppLocale = staticCompositionLocalOf<AppLocale> {
+    error("LocalAppLocale")
 }
 
 //@Composable
@@ -95,10 +105,12 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                 },
             )
         }
+        val appLocale by appViewModel.appLocale.collectAsStateWithLifecycle()
         CompositionLocalProvider(
 //            LocalNavigator provides navigator,
 //            LocalBackStack provides backStack,
             LocalAppViewModel provides appViewModel,
+            LocalAppLocale provides appLocale,
 //            LocalContext provides newContext,
         ) {
             innerPadding.calculateBottomPadding()
@@ -108,6 +120,7 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                 backStack = backStack,
                 entryDecorators = listOf(
                     rememberSaveableStateHolderNavEntryDecorator(),
+                    //https://developer.android.com/guide/navigation/navigation-3/naventrydecorators?hl=zh-cn#when-use
                     rememberViewModelStoreNavEntryDecorator()
                 ),
                 entryProvider = entryProvider {
