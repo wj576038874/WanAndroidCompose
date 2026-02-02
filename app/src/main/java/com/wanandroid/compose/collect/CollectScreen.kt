@@ -303,15 +303,11 @@ fun CollectionItem(
                 onCollectClick(!articleItem.collect)
             }
         ) {
-            AnimatedContent(
-                targetState = articleItem.collect
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Favorite,
-                    contentDescription = null,
-                    tint = Color.Red
-                )
-            }
+            Icon(
+                imageVector = Icons.Outlined.Favorite,
+                contentDescription = null,
+                tint = Color.Red
+            )
         }
     }
 }
