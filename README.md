@@ -2,7 +2,7 @@
 
 ## 项目介绍
 
-### 项目架构采用MVI架构，集合dagger hilt 实现依赖注入，使用Jetpack Compose实现UI层
+### 项目架构采用MVVM架构，集合dagger hilt 实现依赖注入，使用Jetpack Compose实现UI层
 ### 导航采用 compose最新版本的Nav3 登陆拦截，重定向目标页面
 ### 状态管理使用StateFlow实现
 ### 除文章列表采用LazyColumn实现，自定义加载更多功能，其他列表页面均采用Paging3+LazyColumn实现
