@@ -15,13 +15,16 @@ import com.wanandroid.compose.route.RouteNavKey
  * Created by wenjie on 2026/01/28.
  */
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
+fun SearchScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
+) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                routeNavKey = RouteNavKey.Search,
                 title = "搜索",
+                onBackClick = onBackClick
             )
         }
     ) { innerPadding ->

@@ -56,12 +56,10 @@ import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.bean.BannerItem
 import com.wanandroid.compose.main.viemodel.HomeViewModel
-import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
 import kotlinx.coroutines.delay
 
@@ -73,9 +71,10 @@ import kotlinx.coroutines.delay
 fun HomeScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
-    onArticleItemClick: (ArticleItem) -> Unit
+    onArticleItemClick: (ArticleItem) -> Unit,
+    onSearchClick: () -> Unit,
+    onCameraClick:() -> Unit
 ) {
-    val navigator = LocalNavigator.current
     Log.e("asd", "HomeScreen$innerPadding")
     val viewModel = hiltViewModel<HomeViewModel>()
 
@@ -87,9 +86,8 @@ fun HomeScreen(
                 modifier = modifier.fillMaxWidth(),
                 actions = {
                     IconButton(
-                        onClick = {
-                            navigator.goTo(RouteNavKey.Search)
-                        }) {
+                        onClick = onSearchClick
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = null,
@@ -99,9 +97,7 @@ fun HomeScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = {
-                            navigator.goTo(RouteNavKey.Camera)
-                        }
+                        onClick = onCameraClick
                     ) {
                         Icon(
                             imageVector = Icons.Default.QrCodeScanner,

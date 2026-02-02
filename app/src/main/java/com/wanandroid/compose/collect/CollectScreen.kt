@@ -62,7 +62,10 @@ import com.wanandroid.compose.utils.launchCustomChromeTab
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollectScreen(modifier: Modifier = Modifier) {
+fun CollectScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
+) {
     val context = LocalContext.current
     val toolbarColor = MaterialTheme.colorScheme.primary
     val viewmodel = hiltViewModel<CollectViewModel>()
@@ -73,8 +76,8 @@ fun CollectScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                routeNavKey = RouteNavKey.Collect,
                 title = stringResource(id = R.string.string_collect),
+                onBackClick = onBackClick,
             )
         },
     ) { innerPadding ->

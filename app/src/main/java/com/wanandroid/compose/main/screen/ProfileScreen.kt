@@ -45,12 +45,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.UserInfo
 import com.wanandroid.compose.route.RouteNavKey
 import com.wanandroid.compose.utils.launchCustomChromeTab
+import androidx.core.net.toUri
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -70,10 +70,18 @@ private val ITEMS = listOf(
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    toLogin: () -> Unit,
+    toMessage: () -> Unit,
+    onCoinClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onCollectClick: () -> Unit,
+    onBookMarkClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onCodeClick: () -> Unit,
+    onAboutClick: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
-    val navigator = LocalNavigator.current
-//    val backStack = LocalBackStack.current
     val context = LocalContext.current
     val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
     val toolbarColor = MaterialTheme.colorScheme.primary.toArgb()
@@ -83,13 +91,9 @@ fun ProfileScreen(
         item {
             Header(
                 innerPadding = innerPadding,
-                toLogin = {
-                    navigator.goTo(RouteNavKey.Login())
-                },
+                toLogin = toLogin,
                 userInfo = userInfo,
-                toMessage = {
-                    navigator.goTo(RouteNavKey.Message)
-                }
+                toMessage = toMessage
             )
         }
         items(ITEMS) {
@@ -98,31 +102,14 @@ fun ProfileScreen(
                 item = it,
                 onClick = {
                     when (it.first) {
-                        0 -> {
-                            navigator.goTo(RouteNavKey.Coin)
-                        }
-                        1 -> {
-                            navigator.goTo(RouteNavKey.Share)
-                        }
-                        2 -> {
-                            navigator.goTo(RouteNavKey.Collect)
-                        }
-                        3 -> {
-                            navigator.goTo(RouteNavKey.BookMark)
-                        }
-                        4 -> {
-                            navigator.goTo(RouteNavKey.History)
-                        }
-                        6 -> {
-                            launchCustomChromeTab(
-                                context = context,
-                                uri = Uri.parse("https://www.wanandroid.com/"),
-                                toolbarColor = toolbarColor,
-                            )
-                        }
-                        7 -> {
-                            navigator.goTo(RouteNavKey.Settings)
-                        }
+                        0 -> onCoinClick()
+                        1 -> onShareClick()
+                        2 -> onCollectClick()
+                        3 -> onBookMarkClick()
+                        4 -> onHistoryClick()
+                        5 -> onCodeClick()
+                        6 -> onAboutClick()
+                        7 -> onSettingsClick()
                     }
                 }
             )

@@ -34,6 +34,20 @@ import com.wanandroid.compose.main.screen.ArticleDetailScreen
 import com.wanandroid.compose.message.MessageScreen
 import com.wanandroid.compose.route.Navigator
 import com.wanandroid.compose.route.RouteNavKey
+import com.wanandroid.compose.route.forArticleDetailScreen
+import com.wanandroid.compose.route.forBookMarkScreen
+import com.wanandroid.compose.route.forCameraBitmapPreviewScreen
+import com.wanandroid.compose.route.forCameraScreen
+import com.wanandroid.compose.route.forCameraScreen2
+import com.wanandroid.compose.route.forCoinScreen
+import com.wanandroid.compose.route.forCollectScreen
+import com.wanandroid.compose.route.forHistoryScreen
+import com.wanandroid.compose.route.forLoginScreen
+import com.wanandroid.compose.route.forMainScreen
+import com.wanandroid.compose.route.forMessageScreen
+import com.wanandroid.compose.route.forSearchScreen
+import com.wanandroid.compose.route.forSettingScreen
+import com.wanandroid.compose.route.forShareScreen
 import com.wanandroid.compose.search.SearchScreen
 import com.wanandroid.compose.setting.SettingScreen
 import com.wanandroid.compose.share.ShareScreen
@@ -46,9 +60,14 @@ import com.wanandroid.compose.share.ShareScreen
 //    error("LocalBackStack")
 //}
 
-val LocalNavigator = staticCompositionLocalOf<Navigator> {
-    error("LocalNavigator")
-}
+/**
+ * 导航事件 全部统一冒泡到导航最顶层 统一管理
+ * 不再向下传递Navigator
+ */
+//@Deprecated("不再使用")
+//val LocalNavigator = staticCompositionLocalOf<Navigator> {
+//    error("LocalNavigator")
+//}
 
 val LocalAppViewModel = staticCompositionLocalOf<AppViewModel> {
     error("LocalAuthViewModel")
@@ -97,7 +116,7 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
             )
         }
         CompositionLocalProvider(
-            LocalNavigator provides navigator,
+//            LocalNavigator provides navigator,
 //            LocalBackStack provides backStack,
             LocalAppViewModel provides appViewModel,
 //            LocalContext provides newContext,
@@ -112,65 +131,20 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     rememberViewModelStoreNavEntryDecorator()
                 ),
                 entryProvider = entryProvider {
-                    entry<RouteNavKey.Main> {
-                        MainScreen(
-                            onArticleItemClick = {
-                                navigator.goTo(RouteNavKey.ArticleDetail(articleItem = it))
-                            })
-                    }
-                    entry<RouteNavKey.ArticleDetail> {
-                        ArticleDetailScreen(articleItem = it.articleItem)
-                    }
-                    entry<RouteNavKey.Login>(metadata = NavDisplay.transitionSpec {
-                        slideInVertically(
-                            initialOffsetY = { it }, animationSpec = tween(500)
-                        ) togetherWith ExitTransition.KeepUntilTransitionsFinished
-                    } + NavDisplay.popTransitionSpec {
-                        // Slide old content down, revealing the new content in place underneath
-                        EnterTransition.None togetherWith slideOutVertically(
-                            targetOffsetY = { it }, animationSpec = tween(500)
-                        )
-                    } + NavDisplay.predictivePopTransitionSpec {
-                        // Slide old content down, revealing the new content in place underneath
-                        EnterTransition.None togetherWith slideOutVertically(
-                            targetOffsetY = { it }, animationSpec = tween(500)
-                        )
-                    }) {
-                        LoginScreen(routeNavKey = it)
-                    }
-                    entry<RouteNavKey.Settings> {
-                        SettingScreen()
-                    }
-                    entry<RouteNavKey.Coin> {
-                        CoinScreen()
-                    }
-                    entry<RouteNavKey.Collect> {
-                        CollectScreen()
-                    }
-                    entry<RouteNavKey.Camera> {
-                        CameraScreen()
-                    }
-                    entry<RouteNavKey.Search> {
-                        SearchScreen()
-                    }
-                    entry<RouteNavKey.CameraBitmapPreview> {
-                        CameraBitmapPreviewScreen(byteArray = it.byteArray)
-                    }
-                    entry<RouteNavKey.Camera2> {
-                        CameraScreen2()
-                    }
-                    entry<RouteNavKey.Message> {
-                        MessageScreen()
-                    }
-                    entry<RouteNavKey.Share> {
-                        ShareScreen()
-                    }
-                    entry<RouteNavKey.BookMark> {
-                        BookMarkScreen()
-                    }
-                    entry<RouteNavKey.History> {
-                        HistoryScreen()
-                    }
+                    forMainScreen(navigator)
+                    forArticleDetailScreen(navigator)
+                    forLoginScreen(navigator)
+                    forSettingScreen(navigator)
+                    forCoinScreen(navigator)
+                    forCollectScreen(navigator)
+                    forCameraScreen(navigator)
+                    forSearchScreen(navigator)
+                    forCameraBitmapPreviewScreen(navigator)
+                    forCameraScreen2(navigator)
+                    forMessageScreen(navigator)
+                    forShareScreen(navigator)
+                    forBookMarkScreen(navigator)
+                    forHistoryScreen(navigator)
                 }
             )
         }

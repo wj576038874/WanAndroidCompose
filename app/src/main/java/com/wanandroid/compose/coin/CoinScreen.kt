@@ -33,7 +33,10 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoinScreen(modifier: Modifier = Modifier) {
+fun CoinScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
+) {
     val viewModel = hiltViewModel<CoinViewModel>()
 
     val lazyPagingItems = viewModel.coinList.collectAsLazyPagingItems()
@@ -41,8 +44,8 @@ fun CoinScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                routeNavKey = RouteNavKey.Coin,
                 title = stringResource(id = R.string.string_coin),
+                onBackClick = onBackClick
             )
         }
     ) { innerPadding ->

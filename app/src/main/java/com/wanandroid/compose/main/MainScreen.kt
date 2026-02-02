@@ -29,36 +29,44 @@ import com.wanandroid.compose.route.RouteNavKey
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    onArticleItemClick: (ArticleItem) -> Unit
+    onArticleItemClick: (ArticleItem) -> Unit,
+    onSearchClick: () -> Unit,
+    onCameraClick: () -> Unit,
+    toLogin: () -> Unit,
+    toMessage: () -> Unit,
+    onCoinClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onCollectClick: () -> Unit,
+    onBookMarkClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onCodeClick: () -> Unit,
+    onAboutClick: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
-    val backStack = rememberNavBackStack(RouteNavKey.Main.Home)
-    val selected = backStack.last()
+    val nestedBackStack = rememberNavBackStack(RouteNavKey.Main.Home)
+    val selected = nestedBackStack.last()
     val context = LocalContext.current
     Scaffold(
-        modifier = modifier.fillMaxSize(),
-        bottomBar = {
+        modifier = modifier.fillMaxSize(), bottomBar = {
             BottomNavBar(
-                modifier = modifier,
-                selected = selected,
-                onClick = {
-                    if (!backStack.contains(it)) {
-                        backStack.add(it)
+                modifier = modifier, selected = selected, onClick = {
+                    if (!nestedBackStack.contains(it)) {
+                        nestedBackStack.add(it)
                     } else {
-                        backStack.remove(it)
-                        backStack.add(it)
+                        nestedBackStack.remove(it)
+                        nestedBackStack.add(it)
                     }
                 })
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
         NavDisplay(
             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
-            backStack = backStack,
+            backStack = nestedBackStack,
             onBack = {
                 if (selected == RouteNavKey.Main.Home) {
                     (context as Activity).finish()
                 } else {
-                    backStack.remove(selected)
-                    backStack.add(RouteNavKey.Main.Home)
+                    nestedBackStack.remove(selected)
+                    nestedBackStack.add(RouteNavKey.Main.Home)
                 }
             },
             entryDecorators = listOf(
@@ -69,7 +77,9 @@ fun MainScreen(
                 entry<RouteNavKey.Main.Home> {
                     HomeScreen(
                         innerPadding = innerPadding,
-                        onArticleItemClick = onArticleItemClick
+                        onArticleItemClick = onArticleItemClick,
+                        onSearchClick = onSearchClick,
+                        onCameraClick = onCameraClick
                     )
                 }
                 entry<RouteNavKey.Main.QuestionAnswer> {
@@ -85,9 +95,18 @@ fun MainScreen(
                 entry<RouteNavKey.Main.Profile> {
                     ProfileScreen(
                         innerPadding = innerPadding,
+                        toLogin = toLogin,
+                        toMessage = toMessage,
+                        onCoinClick = onCoinClick,
+                        onShareClick = onShareClick,
+                        onCollectClick = onCollectClick,
+                        onBookMarkClick = onBookMarkClick,
+                        onHistoryClick = onHistoryClick,
+                        onCodeClick = onCodeClick,
+                        onAboutClick = onAboutClick,
+                        onSettingsClick = onSettingsClick,
                     )
                 }
-            }
-        )
+            })
     }
 }

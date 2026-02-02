@@ -1,5 +1,6 @@
 package com.wanandroid.compose.main.screen
 
+import android.annotation.SuppressLint
 import android.webkit.WebView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.viewinterop.AndroidView
-import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.bean.ArticleItem
 
 /**
@@ -25,13 +25,14 @@ import com.wanandroid.compose.bean.ArticleItem
  */
 
 
+@SuppressLint("SetJavaScriptEnabled")
 @ExperimentalMaterial3Api
 @Composable
 fun ArticleDetailScreen(
     articleItem: ArticleItem,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {}
 ) {
-    val navigator = LocalNavigator.current
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -47,9 +48,9 @@ fun ArticleDetailScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navigator.goBack()
-                    }) {
+                    IconButton(
+                        onClick = onBackClick
+                    ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
                     }
                 }

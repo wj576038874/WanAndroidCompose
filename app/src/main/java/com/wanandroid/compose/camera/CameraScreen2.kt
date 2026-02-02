@@ -46,14 +46,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
-import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.WanAndroidApplication.Companion.context
-import com.wanandroid.compose.route.RouteNavKey
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.concurrent.ExecutionException
-import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
@@ -61,8 +58,10 @@ import kotlin.coroutines.resumeWithException
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CameraScreen2(modifier: Modifier = Modifier) {
-    val navigator = LocalNavigator.current
+fun CameraScreen2(
+    modifier: Modifier = Modifier,
+    onTakePhoto: (ByteArray) -> Unit
+) {
     val context = LocalContext.current
     // 设置拍照
     val imageCapture =
@@ -125,9 +124,7 @@ fun CameraScreen2(modifier: Modifier = Modifier) {
                                     val matrix = Matrix()
                                     matrix.postRotate(rotationDegrees.toFloat())
                                     val rotatedBitmap = rotatedBitmap(bitmap, rotationDegrees)
-                                    navigator.goTo(RouteNavKey.CameraBitmapPreview(
-                                        byteArray = rotatedBitmap.toByteArray()
-                                    ))
+                                    onTakePhoto(rotatedBitmap.toByteArray())
                                 }
 
                                 override fun onError(exception: ImageCaptureException) {
@@ -219,7 +216,7 @@ private fun bindCameraUseCases(
     cameraProvider: ProcessCameraProvider,
     imageCapture: ImageCapture,
     lifecycleOwner: LifecycleOwner
-    ) {
+) {
 
 //        // Get screen metrics used to setup camera for full screen resolution
 //        val metrics = windowManager.getCurrentWindowMetrics().bounds

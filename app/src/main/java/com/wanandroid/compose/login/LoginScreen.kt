@@ -38,7 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
@@ -52,20 +51,17 @@ import com.wanandroid.compose.route.RouteNavKey
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    routeNavKey: RouteNavKey.Login
+    onBackClick: () -> Unit,
+    onLogin: () -> Unit,
 ) {
     val loginViewModel = hiltViewModel<LoginViewModel>()
-
-    val navigator = LocalNavigator.current
     var userName by remember { mutableStateOf("wj576038874") }
     var password by remember { mutableStateOf("1rujiwang") }
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
     LaunchedEffect(loginState) {
         if (loginState is LoginState.Success) {
-            navigator.goBack(routeNavKey)
-            routeNavKey.redirectToKey?.let {
-                navigator.goTo(it)
-            }
+            onBackClick()
+            onLogin()
         }
     }
     Scaffold(
@@ -101,9 +97,7 @@ fun LoginScreen(
             ) {
                 Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
                 IconButton(
-                    onClick = {
-                        navigator.goBack()
-                    }
+                    onClick = onBackClick
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Close,

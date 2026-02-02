@@ -13,8 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.wanandroid.compose.LocalNavigator
-import com.wanandroid.compose.route.RouteNavKey
 
 /**
  * Created by wenjie on 2026/01/28.
@@ -24,32 +22,33 @@ import com.wanandroid.compose.route.RouteNavKey
 @Composable
 fun CommonToolbar(
     modifier: Modifier = Modifier,
-    routeNavKey: RouteNavKey,
     title: String,
     actions: @Composable RowScope.() -> Unit = {},
+    onBackClick: () -> Unit,
 ) {
-    val navigator = LocalNavigator.current
     CenterAlignedTopAppBar(
         modifier = modifier.fillMaxWidth(),
         actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
-        ), title = {
+        ),
+        title = {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
-        }, navigationIcon = {
+        },
+        navigationIcon = {
             IconButton(
-                onClick = {
-                    navigator.goBack(routeNavKey)
-                }) {
+                onClick = onBackClick
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = title,
                     tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
-        })
+        }
+    )
 }

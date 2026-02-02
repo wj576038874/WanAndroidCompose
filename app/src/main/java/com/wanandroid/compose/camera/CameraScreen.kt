@@ -1,5 +1,6 @@
 package com.wanandroid.compose.camera
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -62,8 +63,6 @@ import androidx.exifinterface.media.ExifInterface
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.wanandroid.compose.LocalNavigator
-import com.wanandroid.compose.route.RouteNavKey
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
@@ -74,7 +73,10 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun CameraScreen(modifier: Modifier = Modifier) {
+fun CameraScreen(
+    modifier: Modifier = Modifier,
+    onTakePhoto: (ByteArray) -> Unit
+) {
     val permissionState = rememberMultiplePermissionsState(
         listOf(android.Manifest.permission.CAMERA)
     )
@@ -107,7 +109,8 @@ fun CameraScreen(modifier: Modifier = Modifier) {
                 PermissionStatus.Granted -> {
                     CameraPreviewView(
                         modifier = Modifier.align(Alignment.BottomCenter),
-                        innerPadding = innerPadding
+                        innerPadding = innerPadding,
+                        onTakePhoto = onTakePhoto
                     )
                 }
 
@@ -150,9 +153,9 @@ fun goAppDetailSetting(context: Context) {
 @Composable
 private fun CameraPreviewView(
     modifier: Modifier = Modifier,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    onTakePhoto: (ByteArray) -> Unit
 ) {
-    val navigator = LocalNavigator.current
     val context = LocalContext.current
     val resolutionSelector = ResolutionSelector.Builder()
         .setResolutionStrategy(ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY)  // 优先最高分辨率
@@ -204,11 +207,7 @@ private fun CameraPreviewView(
                 takePhotoBitmap(
                     cameraController = cameraController,
                     onPhotoTaken = { byteArray ->
-                        navigator.goTo(
-                            RouteNavKey.CameraBitmapPreview(
-                                byteArray = byteArray
-                            )
-                        )
+                        onTakePhoto(byteArray)
                     },
                     context = context
                 )
@@ -227,11 +226,7 @@ private fun CameraPreviewView(
                 takePhotoCacheFile(
                     cameraController = cameraController,
                     onPhotoTaken = { byteArray ->
-                        navigator.goTo(
-                            RouteNavKey.CameraBitmapPreview(
-                                byteArray = byteArray
-                            )
-                        )
+                        onTakePhoto(byteArray)
                     },
                     context = context
                 )
@@ -251,11 +246,7 @@ private fun CameraPreviewView(
                     cameraController = cameraController,
                     context = context,
                     onPhotoTaken = { byteArray ->
-                        navigator.goTo(
-                            RouteNavKey.CameraBitmapPreview(
-                                byteArray = byteArray
-                            )
-                        )
+                        onTakePhoto(byteArray)
                     },
                 )
             }
@@ -352,6 +343,7 @@ private enum class UiState {
     FINALIZED,  // 录制完成
 }
 
+@SuppressLint("MissingPermission")
 private fun recordVideo(
     cameraController: LifecycleCameraController,
     onVideoRecorded: (File) -> Unit,

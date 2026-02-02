@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.LocalAppViewModel
-import com.wanandroid.compose.LocalNavigator
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.WanAndroidApplication
@@ -50,7 +49,6 @@ import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.login.state.LogoutState
-import com.wanandroid.compose.route.RouteNavKey
 import kotlinx.coroutines.launch
 
 /**
@@ -59,8 +57,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingScreen(modifier: Modifier = Modifier) {
-    val navigator = LocalNavigator.current
+fun SettingScreen(
+    modifier: Modifier = Modifier,
+    onLogout: () -> Unit,
+    onBackClick: () -> Unit
+) {
     val themeViewModel = LocalAppViewModel.current
     val loginViewModel = hiltViewModel<LoginViewModel>()
     val scope = rememberCoroutineScope()
@@ -87,8 +88,8 @@ fun SettingScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         topBar = {
             CommonToolbar(
-                routeNavKey = RouteNavKey.Settings,
                 title = stringResource(id = R.string.string_settings),
+                onBackClick = onBackClick
             )
         }
     ) { innerPadding ->
@@ -153,7 +154,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             }
 
             is LogoutState.Success -> {
-                navigator.goBack(RouteNavKey.Settings)
+                onLogout()
             }
 
             is LogoutState.Loading -> {
