@@ -24,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -48,7 +50,9 @@ import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.login.LoginViewModel
+import com.wanandroid.compose.login.event.LogoutEvent
 import com.wanandroid.compose.login.state.LogoutState
+import com.wanandroid.compose.utils.ObserveAsEvents
 import kotlinx.coroutines.launch
 
 /**
@@ -79,13 +83,27 @@ fun SettingScreen(
     val isLogin by UserManager.instance.isLogin.collectAsStateWithLifecycle()
     var logoutDialog by remember { mutableStateOf(false) }
     val logoutState by loginViewModel.logoutState.collectAsStateWithLifecycle()
-//    LaunchedEffect(logoutState) {
-//        if (logoutState is LogoutState.Success) {
-//            backStack.removeLastOrNull()
-//        }
-//    }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    ObserveAsEvents(
+        flow = loginViewModel.logoutEvent,
+        onEvent = { event ->
+            when (event) {
+                LogoutEvent.LogoutSuccess -> {
+                    onLogout()
+                }
+
+                is LogoutEvent.LogoutFailure -> {
+                    snackbarHostState.showSnackbar(event.errorMsg)
+                }
+            }
+        }
+    )
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             CommonToolbar(
                 title = stringResource(id = R.string.string_settings),
@@ -144,30 +162,13 @@ fun SettingScreen(
             )
         }
 
-        when (logoutState) {
-            is LogoutState.Failure -> {
-                Toast.makeText(
-                    WanAndroidApplication.context,
-                    (logoutState as LogoutState.Failure).errorMsg,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            is LogoutState.Success -> {
-                onLogout()
-            }
-
-            is LogoutState.Loading -> {
-                LoadingDialog(
-                    onDismissRequest = {
-                        loginViewModel.cancelLogout()
-                    }
-                )
-            }
-
-            is LogoutState.Nothing -> {}
+        if (logoutState.isLoading) {
+            LoadingDialog(
+                onDismissRequest = {
+                    loginViewModel.cancelLogout()
+                }
+            )
         }
-
         // Sheet content
         if (openBottomSheetTheme) {
             ModalBottomSheet(

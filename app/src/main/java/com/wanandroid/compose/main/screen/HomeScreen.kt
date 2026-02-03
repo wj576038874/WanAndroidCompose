@@ -33,6 +33,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -59,7 +61,9 @@ import coil3.compose.AsyncImage
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
 import com.wanandroid.compose.bean.BannerItem
+import com.wanandroid.compose.main.event.HomeEvent
 import com.wanandroid.compose.main.viemodel.HomeViewModel
+import com.wanandroid.compose.utils.ObserveAsEvents
 import com.wanandroid.compose.utils.launchCustomChromeTab
 import kotlinx.coroutines.delay
 
@@ -73,14 +77,30 @@ fun HomeScreen(
     innerPadding: PaddingValues,
     onArticleItemClick: (ArticleItem) -> Unit,
     onSearchClick: () -> Unit,
-    onCameraClick:() -> Unit
+    onCameraClick: () -> Unit
 ) {
     Log.e("asd", "HomeScreen$innerPadding")
     val viewModel = hiltViewModel<HomeViewModel>()
-
     val homeUiState by viewModel.homeUiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    ObserveAsEvents(
+        flow = viewModel.homeChannel,
+        onEvent = { event ->
+            when (event) {
+                is HomeEvent.Error -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.errorMsg
+                    )
+                }
+            }
+        }
+    )
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             CenterAlignedTopAppBar(
                 modifier = modifier.fillMaxWidth(),
@@ -121,9 +141,11 @@ fun HomeScreen(
             modifier = modifier
                 .fillMaxSize()
                 .padding(top = it.calculateTopPadding()),
-            isRefreshing = homeUiState.isLoading, onRefresh = {
+            isRefreshing = homeUiState.isLoading,
+            onRefresh = {
                 viewModel.getHomeData(pageNum = 0)
-            }) {
+            }
+        ) {
             val listState = rememberLazyListState()
             var page by remember { mutableIntStateOf(0) }
             LaunchedEffect(listState) {
@@ -178,6 +200,14 @@ fun HomeScreen(
                             if (homeUiState.noMoreData) {
                                 Text(
                                     text = "No more data",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                )
+                            } else if (homeUiState.nextPageError != null) {
+                                Text(
+                                    text = homeUiState.nextPageError!!,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.secondary,
                                     modifier = Modifier

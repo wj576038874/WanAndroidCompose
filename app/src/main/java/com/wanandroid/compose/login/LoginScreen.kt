@@ -1,6 +1,5 @@
 package com.wanandroid.compose.login
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +20,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,9 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.R
-import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.LoadingDialog
-import com.wanandroid.compose.login.state.LoginState
+import com.wanandroid.compose.login.event.LoginEvent
+import com.wanandroid.compose.utils.ObserveAsEvents
 
 /**
  * Created by wenjie on 2026/01/26.
@@ -57,34 +57,39 @@ fun LoginScreen(
     var userName by remember { mutableStateOf("wj576038874") }
     var password by remember { mutableStateOf("1rujiwang") }
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
-    LaunchedEffect(loginState) {
-        if (loginState is LoginState.Success) {
-            onBackClick()
-            onLogin()
-        }
-    }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    ObserveAsEvents(
+        flow = loginViewModel.loginEvent,
+        onEvent = { event ->
+            when (event) {
+                is LoginEvent.LoginSuccess -> {
+                    onBackClick()
+                    onLogin()
+                }
+
+                is LoginEvent.LoginFailure -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.errorMsg,
+                    )
+                }
+            }
+        })
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-    ) { innerPadding ->
-        when (loginState) {
-            is LoginState.Loading -> {
-                LoadingDialog(
-                    onDismissRequest = {
-                        loginViewModel.cancelLogin()
-                    }
-                )
-            }
-
-            is LoginState.Failure -> {
-                Toast.makeText(
-                    WanAndroidApplication.context,
-                    (loginState as LoginState.Failure).errorMsg,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            else -> {}
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
+    ) { innerPadding ->
+        if (loginState.isLoading) {
+            LoadingDialog(
+                onDismissRequest = {
+                    loginViewModel.cancelLogin()
+                }
+            )
+        }
+
         Column(
             modifier = modifier.fillMaxSize()
         ) {

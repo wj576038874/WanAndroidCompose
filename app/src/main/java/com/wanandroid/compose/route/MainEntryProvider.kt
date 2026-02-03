@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.wanandroid.compose.main.MainScreen
+import com.wanandroid.compose.main.action.ProfileAction
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
@@ -27,40 +28,26 @@ fun EntryProviderScope<NavKey>.forMainScreen(navigator: Navigator) {
             onCameraClick = {
                 navigator.goTo(RouteNavKey.Camera)
             },
-            toLogin = {
-                navigator.goTo(RouteNavKey.Login())
-            },
-            toMessage = {
-                navigator.goTo(RouteNavKey.Message)
-            },
-            onCoinClick = {
-                navigator.goTo(RouteNavKey.Coin)
-            },
-            onShareClick = {
-                navigator.goTo(RouteNavKey.Share)
-            },
-            onCollectClick = {
-                navigator.goTo(RouteNavKey.Collect)
-            },
-            onBookMarkClick = {
-                navigator.goTo(RouteNavKey.BookMark)
-            },
-            onHistoryClick = {
-                navigator.goTo(RouteNavKey.History)
-            },
-            onCodeClick = {
-
-            },
-            onAboutClick = {
-                launchCustomChromeTab(
-                    context = context,
-                    uri = "https://www.wanandroid.com/".toUri(),
-                    toolbarColor = toolbarColor,
-                )
-            },
-            onSettingsClick = {
-                navigator.goTo(RouteNavKey.Settings)
-            },
+            onAction = {
+                when (it) {
+                    ProfileAction.Coin -> navigator.goTo(RouteNavKey.Coin)
+                    ProfileAction.Share -> navigator.goTo(RouteNavKey.Share)
+                    ProfileAction.Collect -> navigator.goTo(RouteNavKey.Collect)
+                    ProfileAction.Bookmark -> navigator.goTo(RouteNavKey.BookMark)
+                    ProfileAction.History -> navigator.goTo(RouteNavKey.History)
+                    ProfileAction.Code -> {}
+                    ProfileAction.About -> {
+                        launchCustomChromeTab(
+                            context = context,
+                            uri = "https://www.wanandroid.com/".toUri(),
+                            toolbarColor = toolbarColor,
+                        )
+                    }
+                    ProfileAction.Setting -> navigator.goTo(RouteNavKey.Settings)
+                    ProfileAction.Login -> navigator.goTo(RouteNavKey.Login())
+                    ProfileAction.Message -> navigator.goTo(RouteNavKey.Message)
+                }
+            }
         )
     }
 }

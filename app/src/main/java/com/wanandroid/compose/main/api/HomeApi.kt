@@ -19,6 +19,9 @@ interface HomeApi {
     @GET("article/list/{pageNum}/json")
     suspend fun getArticleList(@Path("pageNum") pageNum: Int): BaseResponse<BasePageData<ArticleItem>>
 
+    @GET("article/list/{pageNum}/json")
+    suspend fun getNexPageArticleList(@Path("pageNum") pageNum: Int): BaseResponse<BasePageData<ArticleItem>>
+
     @POST("lg/collect/{id}/json")
     suspend fun collectArticle(@Path("id") id: Int): BaseResponse<Any?>
 

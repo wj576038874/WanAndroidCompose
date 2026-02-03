@@ -10,6 +10,6 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val bannerList: List<BannerItem>? = null,
     val articleList: List<ArticleItem>? = null,
-    val errorMsg: String? = null,
     val noMoreData: Boolean = false,
+    val nextPageError: String? = null
 )

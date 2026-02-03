@@ -77,13 +77,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        Log.e("MainActivity", "onConfigurationChanged: ${newConfig.locales} ${Locale.getDefault().language}")
-        AppCompatDelegate.setApplicationLocales(
-            AppCompatDelegate.getApplicationLocales() // 触发内部刷新
-        )
-        appViewModel.updateAppLocale(newConfig.locales.get(0).language)
-    }
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        Log.e("MainActivity", "onConfigurationChanged: ${newConfig.locales} ${Locale.getDefault().language}")
+//        AppCompatDelegate.setApplicationLocales(
+//            AppCompatDelegate.getApplicationLocales() // 触发内部刷新
+//        )
+//        appViewModel.updateAppLocale(newConfig.locales.get(0).language)
+//    }
 }
 

@@ -1,5 +1,6 @@
 package com.wanandroid.compose.main.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,10 +17,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -28,8 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.bean.ArticleItem
+import com.wanandroid.compose.main.event.NavigationEvent
 import com.wanandroid.compose.main.viemodel.NavigationViewModel
+import com.wanandroid.compose.utils.ObserveAsEvents
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
@@ -46,8 +52,23 @@ fun NavigationScreen(
 
     val itemList = navigationUiState.navigationList
 
+    ObserveAsEvents(
+        flow = viewModel.navigationEvent,
+        onEvent = { event ->
+            when (event) {
+                is NavigationEvent.NavigationError -> {
+                    Toast.makeText(
+                        WanAndroidApplication.context,
+                        event.errorMsg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    )
+
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         Spacer(
             modifier = Modifier

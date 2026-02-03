@@ -14,6 +14,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.wanandroid.compose.bean.ArticleItem
+import com.wanandroid.compose.main.action.ProfileAction
 import com.wanandroid.compose.main.bottombar.BottomNavBar
 import com.wanandroid.compose.main.screen.HomeScreen
 import com.wanandroid.compose.main.screen.NavigationScreen
@@ -32,16 +33,7 @@ fun MainScreen(
     onArticleItemClick: (ArticleItem) -> Unit,
     onSearchClick: () -> Unit,
     onCameraClick: () -> Unit,
-    toLogin: () -> Unit,
-    toMessage: () -> Unit,
-    onCoinClick: () -> Unit,
-    onShareClick: () -> Unit,
-    onCollectClick: () -> Unit,
-    onBookMarkClick: () -> Unit,
-    onHistoryClick: () -> Unit,
-    onCodeClick: () -> Unit,
-    onAboutClick: () -> Unit,
-    onSettingsClick: () -> Unit,
+    onAction: (ProfileAction) -> Unit
 ) {
     val nestedBackStack = rememberNavBackStack(RouteNavKey.Main.Home)
     val selected = nestedBackStack.last()
@@ -95,16 +87,7 @@ fun MainScreen(
                 entry<RouteNavKey.Main.Profile> {
                     ProfileScreen(
                         innerPadding = innerPadding,
-                        toLogin = toLogin,
-                        toMessage = toMessage,
-                        onCoinClick = onCoinClick,
-                        onShareClick = onShareClick,
-                        onCollectClick = onCollectClick,
-                        onBookMarkClick = onBookMarkClick,
-                        onHistoryClick = onHistoryClick,
-                        onCodeClick = onCodeClick,
-                        onAboutClick = onAboutClick,
-                        onSettingsClick = onSettingsClick,
+                        onAction = onAction
                     )
                 }
             })

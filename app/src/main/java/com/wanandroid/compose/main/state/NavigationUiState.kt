@@ -8,5 +8,4 @@ import com.wanandroid.compose.bean.NavigationItem
 data class NavigationUiState(
     val navigationList: List<NavigationItem> = emptyList(),
     val isLoading: Boolean = false,
-    val errorMessage: String = ""
 )

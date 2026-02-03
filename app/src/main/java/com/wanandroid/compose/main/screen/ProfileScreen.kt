@@ -41,10 +41,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.UserInfo
+import com.wanandroid.compose.login.event.ProfileEvent
+import com.wanandroid.compose.main.action.ProfileAction
+import com.wanandroid.compose.main.viemodel.ProfileViewModel
+import com.wanandroid.compose.utils.ObserveAsEvents
 
 /**
  * Created by wenjie on 2026/01/22.
@@ -65,27 +70,19 @@ private val ITEMS = listOf(
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
-    toLogin: () -> Unit,
-    toMessage: () -> Unit,
-    onCoinClick: () -> Unit,
-    onShareClick: () -> Unit,
-    onCollectClick: () -> Unit,
-    onBookMarkClick: () -> Unit,
-    onHistoryClick: () -> Unit,
-    onCodeClick: () -> Unit,
-    onAboutClick: () -> Unit,
-    onSettingsClick: () -> Unit,
+    onAction: (ProfileAction) -> Unit
 ) {
     val userInfo by UserManager.instance.userInfo.collectAsStateWithLifecycle()
+
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
         item {
             Header(
                 innerPadding = innerPadding,
-                toLogin = toLogin,
+                toLogin = { onAction(ProfileAction.Login) },
                 userInfo = userInfo,
-                toMessage = toMessage
+                toMessage = { onAction(ProfileAction.Message) }
             )
         }
         items(ITEMS) {
@@ -94,14 +91,14 @@ fun ProfileScreen(
                 item = it,
                 onClick = {
                     when (it.first) {
-                        0 -> onCoinClick()
-                        1 -> onShareClick()
-                        2 -> onCollectClick()
-                        3 -> onBookMarkClick()
-                        4 -> onHistoryClick()
-                        5 -> onCodeClick()
-                        6 -> onAboutClick()
-                        7 -> onSettingsClick()
+                        0 -> onAction(ProfileAction.Coin)
+                        1 -> onAction(ProfileAction.Share)
+                        2 -> onAction(ProfileAction.Collect)
+                        3 -> onAction(ProfileAction.Bookmark)
+                        4 -> onAction(ProfileAction.History)
+                        5 -> onAction(ProfileAction.Code)
+                        6 -> onAction(ProfileAction.About)
+                        7 -> onAction(ProfileAction.Setting)
                     }
                 }
             )

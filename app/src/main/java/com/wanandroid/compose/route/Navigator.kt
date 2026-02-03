@@ -12,7 +12,7 @@ class Navigator(
     private val backStack: NavBackStack<NavKey>,
     private val onNavigateToRestrictedKey: (targetKey: RouteNavKey?) -> RouteNavKey,
 ) {
-    private val isLogin = UserManager.instance.isLogin
+    private val userInfo = UserManager.instance.userInfo
 
     /**
      * 如果跳转的页面routeNavKey 需要登录 且 未登录 则跳转到登录页
@@ -20,7 +20,7 @@ class Navigator(
      * 且这个登陆的NavKey的redirectToKey 就是 我们需要跳转的目标页面
      */
     fun goTo(routeNavKey: RouteNavKey) {
-        val isLogin = isLogin.value
+        val isLogin = userInfo.value != null
         if (routeNavKey.requiresLogin && !isLogin) {
             //把目标存放到登录页 后续登录成功后 可以拿到这个目标页面 进行跳转
             val loginKey = onNavigateToRestrictedKey(routeNavKey)
