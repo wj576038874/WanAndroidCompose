@@ -149,12 +149,12 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     }
 
 
-    fun cancelLogin() {
-        _loginState.update {
-            it.copy(isLoading = false, userInfo = null)
-        }
-        loginJob?.cancel()
-    }
+//    fun cancelLogin() {
+//        _loginState.update {
+//            it.copy(isLoading = false, userInfo = null)
+//        }
+//        loginJob?.cancel()
+//    }
 
     fun cancelLogout() {
         _logoutState.update {
