@@ -143,7 +143,7 @@ fun LoginScreen(
                 onValueChange = {
                     viewModel.updateUserName(it)
                 },
-                isError = !loginState.isUserNameValid,
+//                isError = !loginState.isUserNameValid,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
                     onNext = {
@@ -184,7 +184,7 @@ fun LoginScreen(
                 onValueChange = {
                     viewModel.updatePassword(it)
                 },
-                isError = !loginState.isPasswordValid,
+//                isError = !loginState.isPasswordValid,
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()
@@ -240,11 +240,9 @@ fun LoginScreen(
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    if (loginState.canLogin){
-                        viewModel.login()
-                    }
+                    viewModel.login()
                 },
-                enabled = !loginState.isLoading,
+                enabled = loginState.canLogin,
                 colors = ButtonDefaults.buttonColors(
                     disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                 ),
