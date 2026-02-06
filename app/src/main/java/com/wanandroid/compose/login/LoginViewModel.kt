@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -86,6 +87,7 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
             _loginState.update {
                 it.copy(isLoading = true, userInfo = null)
             }
+            delay(1000)
             loginRepository.login(_loginState.value.userName, _loginState.value.password).apply {
                 onSuccess { userInfo ->
                     _loginState.update {

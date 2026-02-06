@@ -242,7 +242,7 @@ fun LoginScreen(
                     keyboardController?.hide()
                     viewModel.login()
                 },
-                enabled = loginState.canLogin,
+                enabled = loginState.canLogin && !loginState.isLoading,
                 colors = ButtonDefaults.buttonColors(
                     disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                 ),
