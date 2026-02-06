@@ -14,6 +14,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -42,14 +46,47 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     private var loginJob: Job? = null
     private var logoutJob: Job? = null
 
-    fun login(
-        userName: String, password: String
-    ) {
+
+    init {
+        _loginState.distinctUntilChangedBy { state ->
+            state.userName
+        }.map {
+            it.userName.isNotBlank() && it.userName.length >= 6
+        }.onEach { isUserNameValid ->
+            _loginState.update { state ->
+                state.copy(
+                    isUserNameValid = isUserNameValid
+                )
+            }
+        }.launchIn(viewModelScope)
+
+        _loginState.distinctUntilChangedBy { state ->
+            state.password
+        }.map {
+            it.password.isNotBlank() && it.password.length >= 6
+        }.onEach { isPasswordValid ->
+            _loginState.update { state ->
+                state.copy(
+                    isPasswordValid = isPasswordValid
+                )
+            }
+        }.launchIn(viewModelScope)
+
+        _loginState.onEach {
+            _loginState.update { state ->
+                it.copy(
+                    canLogin = state.isPasswordValid && state.isUserNameValid
+                )
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun login() {
         loginJob = viewModelScope.launch {
             _loginState.update {
                 it.copy(isLoading = true, userInfo = null)
             }
-            loginRepository.login(userName, password).apply {
+            loginRepository.login(_loginState.value.userName, _loginState.value.password).apply {
                 onSuccess { userInfo ->
                     _loginState.update {
                         it.copy(isLoading = false, userInfo = userInfo)
@@ -74,6 +111,31 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
             }
         }
     }
+
+    fun updateUserName(userName: String) {
+        _loginState.update { state ->
+            state.copy(
+                userName = userName
+            )
+        }
+    }
+
+    fun updatePassword(password: String) {
+        _loginState.update { state ->
+            state.copy(
+                password = password
+            )
+        }
+    }
+
+    fun updateIsPasswordVisible(isPasswordVisible: Boolean) {
+        _loginState.update { state ->
+            state.copy(
+                isPasswordVisible = isPasswordVisible
+            )
+        }
+    }
+
 
     fun cancelLogin() {
         _loginState.update {
@@ -107,7 +169,11 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                     _logoutState.update {
                         it.copy(isLoading = false)
                     }
-                    _logoutEventChannel.send(LogoutEvent.LogoutFailure(exception.message ?: "退出登录失败"))
+                    _logoutEventChannel.send(
+                        LogoutEvent.LogoutFailure(
+                            exception.message ?: "退出登录失败"
+                        )
+                    )
                 }
             }
         }

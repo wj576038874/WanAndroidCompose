@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -18,6 +19,8 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,15 +33,18 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -46,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.R
-import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.login.event.LoginEvent
 import com.wanandroid.compose.utils.ObserveAsEvents
 
@@ -60,15 +65,14 @@ fun LoginScreen(
     onBackClick: () -> Unit,
     onLogin: () -> Unit,
 ) {
-    val loginViewModel = hiltViewModel<LoginViewModel>()
-    var userName by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
-    val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
+    val viewModel = hiltViewModel<LoginViewModel>()
+    val loginState by viewModel.loginState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val usernameFocus = remember { FocusRequester() }
+    val passwordFocus = remember { FocusRequester() }
     ObserveAsEvents(
-        flow = loginViewModel.loginEvent,
+        flow = viewModel.loginEvent,
         onEvent = { event ->
             when (event) {
                 is LoginEvent.LoginSuccess -> {
@@ -90,13 +94,13 @@ fun LoginScreen(
             SnackbarHost(hostState = snackbarHostState)
         }
     ) { innerPadding ->
-        if (loginState.isLoading) {
-            LoadingDialog(
-                onDismissRequest = {
-                    loginViewModel.cancelLogin()
-                }
-            )
-        }
+//        if (loginState.isLoading) {
+//            LoadingDialog(
+//                onDismissRequest = {
+//                    loginViewModel.cancelLogin()
+//                }
+//            )
+//        }
 
         Column(
             modifier = modifier.fillMaxSize()
@@ -135,10 +139,17 @@ fun LoginScreen(
             }
             Spacer(Modifier.height(64.dp))
             TextField(
-                value = userName,
+                value = loginState.userName,
                 onValueChange = {
-                    userName = it
+                    viewModel.updateUserName(it)
                 },
+                isError = !loginState.isUserNameValid,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        passwordFocus.requestFocus()
+                    }
+                ),
                 label = {
                     Text(
                         text = stringResource(R.string.string_username),
@@ -157,6 +168,7 @@ fun LoginScreen(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
                 ),
                 maxLines = 1,
                 modifier = Modifier
@@ -164,13 +176,23 @@ fun LoginScreen(
                     .padding(
                         horizontal = 32.dp
                     )
+                    .focusRequester(usernameFocus)
             )
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
-                value = password,
+                value = loginState.password,
                 onValueChange = {
-                    password = it
+                    viewModel.updatePassword(it)
                 },
+                isError = !loginState.isPasswordValid,
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                        if (loginState.canLogin){
+                            viewModel.login()
+                        }
+                    }
+                ),
                 label = {
                     Text(
                         text = stringResource(R.string.string_password),
@@ -178,16 +200,16 @@ fun LoginScreen(
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                visualTransformation = if (loginState.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            isPasswordVisible = !isPasswordVisible
+                            viewModel.updateIsPasswordVisible(!loginState.isPasswordVisible)
                         }
                     ) {
                         Icon(
-                            imageVector = if (isPasswordVisible) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
+                            imageVector = if (loginState.isPasswordVisible) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -204,6 +226,7 @@ fun LoginScreen(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
                 ),
                 maxLines = 1,
                 modifier = Modifier
@@ -211,23 +234,38 @@ fun LoginScreen(
                     .padding(
                         horizontal = 32.dp
                     )
+                    .focusRequester(passwordFocus)
             )
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = {
-                    loginViewModel.login(userName, password)
+                    keyboardController?.hide()
+                    if (loginState.canLogin){
+                        viewModel.login()
+                    }
                 },
+                enabled = !loginState.isLoading,
+                colors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(48.dp)
                     .padding(
                         horizontal = 32.dp
                     )
             ) {
-                Text(
-                    text = stringResource(R.string.string_login),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
+                if (loginState.isLoading){
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp)
+                    )
+                }else{
+                    Text(
+                        text = stringResource(R.string.string_login),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
         }
     }
