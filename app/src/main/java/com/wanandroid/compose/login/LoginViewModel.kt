@@ -83,7 +83,7 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }.launchIn(viewModelScope)
     }
 
-    fun login() {
+    private fun login() {
         loginJob = viewModelScope.launch {
             _loginState.update {
                 it.copy(isLoading = true, userInfo = null)
