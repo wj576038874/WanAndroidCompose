@@ -3,6 +3,7 @@ package com.wanandroid.compose.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.login.action.LoginAction
 import com.wanandroid.compose.login.event.LoginEvent
 import com.wanandroid.compose.login.event.LogoutEvent
 import com.wanandroid.compose.login.state.LoginState
@@ -114,27 +115,36 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }
     }
 
-    fun updateUserName(userName: String) {
-        _loginState.update { state ->
-            state.copy(
-                userName = userName
-            )
-        }
-    }
 
-    fun updatePassword(password: String) {
-        _loginState.update { state ->
-            state.copy(
-                password = password
-            )
-        }
-    }
+    fun onAction(action: LoginAction) {
+        when (action) {
+            is LoginAction.InputUserName -> {
+                _loginState.update { state ->
+                    state.copy(
+                        userName = action.userName
+                    )
+                }
+            }
 
-    fun updateIsPasswordVisible(isPasswordVisible: Boolean) {
-        _loginState.update { state ->
-            state.copy(
-                isPasswordVisible = isPasswordVisible
-            )
+            is LoginAction.InputPassword -> {
+                _loginState.update { state ->
+                    state.copy(
+                        password = action.password
+                    )
+                }
+            }
+
+            is LoginAction.UpdateIsPasswordVisible -> {
+                _loginState.update { state ->
+                    state.copy(
+                        isPasswordVisible = action.isPasswordVisible
+                    )
+                }
+            }
+
+            is LoginAction.Login -> {
+                login()
+            }
         }
     }
 

@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.R
+import com.wanandroid.compose.login.action.LoginAction
 import com.wanandroid.compose.login.event.LoginEvent
 import com.wanandroid.compose.utils.ObserveAsEvents
 
@@ -141,7 +142,7 @@ fun LoginScreen(
             TextField(
                 value = loginState.userName,
                 onValueChange = {
-                    viewModel.updateUserName(it)
+                    viewModel.onAction(LoginAction.InputUserName(it))
                 },
 //                isError = !loginState.isUserNameValid,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -182,13 +183,13 @@ fun LoginScreen(
             TextField(
                 value = loginState.password,
                 onValueChange = {
-                    viewModel.updatePassword(it)
+                    viewModel.onAction(LoginAction.InputPassword(it))
                 },
 //                isError = !loginState.isPasswordValid,
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()
-                        if (loginState.canLogin){
+                        if (loginState.canLogin) {
                             viewModel.login()
                         }
                     }
@@ -200,12 +201,15 @@ fun LoginScreen(
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
                 visualTransformation = if (loginState.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            viewModel.updateIsPasswordVisible(!loginState.isPasswordVisible)
+                            viewModel.onAction(LoginAction.UpdateIsPasswordVisible(!loginState.isPasswordVisible))
                         }
                     ) {
                         Icon(
@@ -240,7 +244,7 @@ fun LoginScreen(
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    viewModel.login()
+                    viewModel.onAction(LoginAction.Login)
                 },
                 enabled = loginState.canLogin && !loginState.isLoading,
                 colors = ButtonDefaults.buttonColors(
@@ -253,11 +257,11 @@ fun LoginScreen(
                         horizontal = 32.dp
                     )
             ) {
-                if (loginState.isLoading){
+                if (loginState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp)
                     )
-                }else{
+                } else {
                     Text(
                         text = stringResource(R.string.string_login),
                         style = MaterialTheme.typography.labelMedium,
