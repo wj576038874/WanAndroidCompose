@@ -190,7 +190,7 @@ fun LoginScreen(
                     onDone = {
                         keyboardController?.hide()
                         if (loginState.canLogin) {
-                            viewModel.login()
+                            viewModel.onAction(LoginAction.Login)
                         }
                     }
                 ),
