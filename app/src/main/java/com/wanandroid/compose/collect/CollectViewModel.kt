@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.collect.event.CollectEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -23,6 +26,9 @@ class CollectViewModel @Inject constructor(
         .flow
         .cachedIn(viewModelScope)
 
+    private val _collectEvent = MutableSharedFlow<CollectEvent>()
+    val collectEvent = _collectEvent.asSharedFlow()
+
     private val _unCollectIdState = MutableStateFlow(0)
     val unCollectIdState = _unCollectIdState.asStateFlow()
 
@@ -34,7 +40,9 @@ class CollectViewModel @Inject constructor(
                     _unCollectIdState.value = id
                 }
                 onFailure {
-                    //todo 处理失败逻辑
+                    _collectEvent.emit(
+                        CollectEvent(it.message ?: "Un collect failed")
+                    )
                 }
             }
         }

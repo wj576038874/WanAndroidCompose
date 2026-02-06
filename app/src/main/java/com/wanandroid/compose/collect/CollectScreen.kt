@@ -20,11 +20,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,8 +53,10 @@ import androidx.paging.compose.itemKey
 import coil3.compose.SubcomposeAsyncImage
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
+import com.wanandroid.compose.collect.event.CollectEvent
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LazyColumnPaging
+import com.wanandroid.compose.utils.ObserveAsEvents
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
@@ -68,10 +73,28 @@ fun CollectScreen(
     val toolbarColor = MaterialTheme.colorScheme.primary
     val viewmodel = hiltViewModel<CollectViewModel>()
 
+    val snackbarHostState = remember { SnackbarHostState() }
     val lazyPagingItems = viewmodel.collectList.collectAsLazyPagingItems()
     val unCollectId by viewmodel.unCollectIdState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(
+        flow = viewmodel.collectEvent,
+        onEvent = {
+            when (it) {
+                is CollectEvent -> {
+                    snackbarHostState.showSnackbar(
+                        message = it.message
+                    )
+                }
+            }
+        }
+    )
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             CommonToolbar(
                 title = stringResource(id = R.string.string_collect),

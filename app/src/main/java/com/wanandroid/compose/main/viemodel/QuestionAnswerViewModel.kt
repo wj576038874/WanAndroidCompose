@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.collect.event.CollectEvent
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -30,6 +33,9 @@ class QuestionAnswerViewModel @Inject constructor(private val questionAnswerRepo
         initialValue = UserManager.instance.userInfo.value?.collectIds ?: emptySet()
     )
 
+    private val _collectEvent = MutableSharedFlow<CollectEvent>()
+    val collectEvent = _collectEvent.asSharedFlow()
+
     fun collectArticle(id: Int) {
         viewModelScope.launch {
             questionAnswerRepository.collectArticle(id).apply {
@@ -37,7 +43,9 @@ class QuestionAnswerViewModel @Inject constructor(private val questionAnswerRepo
                     UserManager.instance.addCollectId(id)
                 }
                 onFailure {
-                    //todo 处理失败情况
+                    _collectEvent.emit(
+                        CollectEvent(it.message ?: "Collect failed")
+                    )
                 }
             }
         }
@@ -50,7 +58,9 @@ class QuestionAnswerViewModel @Inject constructor(private val questionAnswerRepo
                     UserManager.instance.removeCollectId(id)
                 }
                 onFailure {
-                    //todo 处理失败情况
+                    _collectEvent.emit(
+                        CollectEvent(it.message ?: "Un collect failed")
+                    )
                 }
             }
         }

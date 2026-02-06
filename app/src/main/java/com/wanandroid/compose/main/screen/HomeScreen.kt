@@ -166,9 +166,9 @@ fun HomeScreen(
                 state = listState,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                homeUiState.bannerList?.let {
+                homeUiState.bannerList?.let { bannerList ->
                     item {
-                        Banner(bannerList = it)
+                        Banner(bannerList = bannerList)
                     }
                 }
                 homeUiState.articleList?.let { item ->
@@ -182,8 +182,8 @@ fun HomeScreen(
                             articleItem = item,
                             modifier = Modifier,
                             onArticleItemClick = onArticleItemClick,
-                            onCollectClick = {
-                                if (it) {
+                            onCollectClick = { isCollect ->
+                                if (isCollect) {
                                     viewModel.collectArticle(id = item.id)
                                 } else {
                                     viewModel.unCollectArticle(id = item.id)

@@ -1,6 +1,7 @@
 package com.wanandroid.compose.main.screen
 
 import android.text.Html
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,10 +34,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.bean.QuestionAnswerItem
 import com.wanandroid.compose.bean.Tag
+import com.wanandroid.compose.collect.event.CollectEvent
 import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.main.viemodel.QuestionAnswerViewModel
+import com.wanandroid.compose.utils.ObserveAsEvents
 import com.wanandroid.compose.utils.launchCustomChromeTab
 
 /**
@@ -49,9 +53,22 @@ fun QuestionAnswerScreen(
     val viewModel = hiltViewModel<QuestionAnswerViewModel>()
     val lazyPagingItems = viewModel.questionAnswerList.collectAsLazyPagingItems()
     val collectedIds by viewModel.collectedIds.collectAsStateWithLifecycle()
-//    LaunchedEffect(collectIds) {
-//        itemList.refresh()
-//    }
+
+    ObserveAsEvents(
+        flow = viewModel.collectEvent,
+        onEvent = {
+            when (it) {
+                is CollectEvent -> {
+                    Toast.makeText(
+                        WanAndroidApplication.context,
+                        it.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    )
+
     LazyColumnPaging(
         modifier = modifier.fillMaxSize(),
         lazyPagingItems = lazyPagingItems,

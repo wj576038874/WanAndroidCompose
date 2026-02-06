@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(private val networkHomeRepository: Netwo
                     _homeUiState.update { state ->
                         state.copy(isLoading = false)
                     }
-                    _homeChannel.send(HomeEvent.Error(it.message ?: "获取首页数据失败"))
+                    _homeChannel.send(HomeEvent.Error(it.message ?: "Failed to retrieve homepage data"))
                 }
             }
         }
@@ -100,7 +100,7 @@ class HomeViewModel @Inject constructor(private val networkHomeRepository: Netwo
                 onFailure {
                     _homeUiState.update { state ->
                         state.copy(
-                            nextPageError = it.message ?: "获取下一页数据失败", isLoading = false
+                            nextPageError = it.message ?: "Failed to retrieve next page data", isLoading = false
                         )
                     }
                 }
@@ -125,7 +125,7 @@ class HomeViewModel @Inject constructor(private val networkHomeRepository: Netwo
                     UserManager.instance.addCollectId(id)
                 }
                 onFailure {
-                    _homeChannel.send(HomeEvent.Error(it.message ?: "收藏文章失败"))
+                    _homeChannel.send(HomeEvent.Error(it.message ?: "Collect failed"))
                 }
             }
         }
@@ -146,7 +146,7 @@ class HomeViewModel @Inject constructor(private val networkHomeRepository: Netwo
                     UserManager.instance.removeCollectId(id)
                 }
                 onFailure {
-                    _homeChannel.send(HomeEvent.Error(it.message ?: "取消收藏文章失败"))
+                    _homeChannel.send(HomeEvent.Error(it.message ?: "Un collect failed"))
                 }
             }
         }

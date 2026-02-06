@@ -1,7 +1,6 @@
 package com.wanandroid.compose.setting
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,12 +45,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.LocalAppViewModel
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
-import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LoadingDialog
 import com.wanandroid.compose.login.LoginViewModel
 import com.wanandroid.compose.login.event.LogoutEvent
-import com.wanandroid.compose.login.state.LogoutState
 import com.wanandroid.compose.utils.ObserveAsEvents
 import kotlinx.coroutines.launch
 
