@@ -41,15 +41,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanandroid.compose.R
 import com.wanandroid.compose.UserManager
 import com.wanandroid.compose.bean.UserInfo
-import com.wanandroid.compose.login.event.ProfileEvent
 import com.wanandroid.compose.main.action.ProfileAction
-import com.wanandroid.compose.main.viemodel.ProfileViewModel
-import com.wanandroid.compose.utils.ObserveAsEvents
 
 /**
  * Created by wenjie on 2026/01/22.
