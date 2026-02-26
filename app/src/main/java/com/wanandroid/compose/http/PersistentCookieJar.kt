@@ -6,6 +6,7 @@ import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import java.util.Date
+import androidx.core.content.edit
 
 /**
  * Created by wenjie on 2026/01/26.
@@ -37,7 +38,7 @@ class PersistentCookieJar(private val context: Context) : CookieJar {
                         loadedCookies.add(cookie)
                     } else {
                         // 清理过期
-                        prefs.edit().remove(key).apply()
+                        prefs.edit { remove(key) }
                     }
                 }
             }
@@ -57,17 +58,17 @@ class PersistentCookieJar(private val context: Context) : CookieJar {
         val validCookies = cookies.filter { it.persistent }  // 只存持久化的（有 expiresAt）
         cookieCache[host] = validCookies
         // 持久化到 SharedPreferences
-        val editor = prefs.edit()
-        validCookies.forEach { cookie ->
-            val key = "${host}_${cookie.name}"
-            editor.putString(key, cookie.toString())  // Cookie.toString() 是标准 HTTP 格式
+        prefs.edit {
+            validCookies.forEach { cookie ->
+                val key = "${host}_${cookie.name}"
+                putString(key, cookie.toString())  // Cookie.toString() 是标准 HTTP 格式
+            }
         }
-        editor.apply()
     }
 
     // 退出登录或清空时调用
     fun clear() {
         cookieCache.clear()
-        prefs.edit().clear().apply()
+        prefs.edit { clear() }
     }
 }

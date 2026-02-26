@@ -3,7 +3,6 @@ package com.wanandroid.compose.coin
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.wanandroid.compose.bean.CoinItem
-import com.wanandroid.compose.coin.CoinApi
 
 /**
  * Created by wenjie on 2026/01/27.
@@ -21,7 +20,7 @@ class CoinPagingSource(private val coinApi: CoinApi) : PagingSource<Int, CoinIte
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CoinItem> {
         return try {
             val page = params.key ?: 0
-            val pageSize = params.loadSize
+//            val pageSize = params.loadSize
             val response = coinApi.getCoinList(page)
             if (response.code == 0) {
                 val data = response.data ?: return LoadResult.Error(Exception("No data field"))

@@ -33,9 +33,7 @@ fun EntryProviderScope<NavKey>.forLoginScreen(navigator: Navigator) {
         }
     ) { routeNavKey ->
         LoginScreen(
-            onBackClick = {
-                navigator.goBack()
-            },
+            onBackClick = navigator::goBack,
             onLogin = {
                 routeNavKey.redirectToKey?.let {
                     navigator.goTo(it)
