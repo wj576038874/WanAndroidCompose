@@ -96,6 +96,10 @@ fun HomeScreen(
         }
     )
 
+    LaunchedEffect(true) {
+        viewModel.logEvent("home screen open")
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = {

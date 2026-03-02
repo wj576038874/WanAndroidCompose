@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -17,6 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LifecycleStartEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.wanandroid.compose.R
@@ -39,6 +46,57 @@ fun CoinScreen(
     val viewModel = hiltViewModel<CoinViewModel>()
 
     val lazyPagingItems = viewModel.coinList.collectAsLazyPagingItems()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        viewModel.logEvent("CoinScreen ON_RESUME")
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        viewModel.logEvent("CoinScreen ON_STOP")
+    }
+
+    val observer = object : DefaultLifecycleObserver {
+
+        override fun onCreate(owner: LifecycleOwner) {
+            super.onCreate(owner)
+            viewModel.logEvent("CoinScreen onCreate")
+        }
+
+        override fun onStart(owner: LifecycleOwner) {
+            super.onStart(owner)
+            viewModel.logEvent("CoinScreen onStart")
+        }
+
+        override fun onResume(owner: LifecycleOwner) {
+            super.onResume(owner)
+            viewModel.logEvent("CoinScreen onResume")
+        }
+
+        override fun onPause(owner: LifecycleOwner) {
+            super.onPause(owner)
+            viewModel.logEvent("CoinScreen onPause")
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            super.onStop(owner)
+            viewModel.logEvent("CoinScreen onStop")
+        }
+
+        override fun onDestroy(owner: LifecycleOwner) {
+            super.onDestroy(owner)
+            viewModel.logEvent("CoinScreen onDestroy")
+        }
+    }
+    DisposableEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+            viewModel.logEvent("CoinScreen DisposableEffect onDispose")
+        }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -95,13 +153,13 @@ fun CoinItem(
     modifier: Modifier = Modifier,
     coinItem: CoinItem
 ) {
-    val date  = SimpleDateFormat(
+    val date = SimpleDateFormat(
         "yyyy-MM-dd HH:mm:ss", Locale.getDefault()
     ).format(coinItem.date)
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
-            .clickable{}
+            .clickable {}
             .padding(16.dp)
     ) {
         val (tvCoinCount, tvDate, tvDesc) = createRefs()

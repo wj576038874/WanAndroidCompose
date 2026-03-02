@@ -21,8 +21,9 @@ import javax.inject.Inject
  * Created by wenjie on 2026/01/22.
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val networkHomeRepository: NetworkHomeRepository,
-    private val analytics: Analytics) :
+class HomeViewModel @Inject constructor(
+    private val networkHomeRepository: NetworkHomeRepository,
+    analytics: Analytics) :
     ViewModel() , Analytics by analytics {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
@@ -32,7 +33,6 @@ class HomeViewModel @Inject constructor(private val networkHomeRepository: Netwo
     val homeChannel = _homeChannel.receiveAsFlow()
 
     init {
-        logEvent("home_view_model_init")
         viewModelScope.launch {
             UserManager.instance.userInfo.collect { userInfo ->
                 _homeUiState.update { state ->
