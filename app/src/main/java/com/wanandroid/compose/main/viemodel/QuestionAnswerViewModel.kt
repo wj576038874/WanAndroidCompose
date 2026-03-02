@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.bean.ReLoginException
 import com.wanandroid.compose.collect.event.CollectEvent
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,9 +44,15 @@ class QuestionAnswerViewModel @Inject constructor(private val questionAnswerRepo
                     UserManager.instance.addCollectId(id)
                 }
                 onFailure {
-                    _collectEvent.emit(
-                        CollectEvent(it.message ?: "Collect failed")
-                    )
+                    if (it is ReLoginException) {
+                        _collectEvent.emit(
+                            CollectEvent(it.message ?: "Collect failed",id),
+                        )
+                    }else{
+                        _collectEvent.emit(
+                            CollectEvent(it.message ?: "Collect failed")
+                        )
+                    }
                 }
             }
         }

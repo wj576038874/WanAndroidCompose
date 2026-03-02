@@ -28,6 +28,9 @@ fun EntryProviderScope<NavKey>.forMainScreen(navigator: Navigator) {
             onCameraClick = {
                 navigator.goTo(RouteNavKey.Camera)
             },
+            reLogin = {
+                navigator.goTo(RouteNavKey.Login(redirect = it))
+            },
             onAction = {
                 when (it) {
                     ProfileAction.Coin -> navigator.goTo(RouteNavKey.Coin)

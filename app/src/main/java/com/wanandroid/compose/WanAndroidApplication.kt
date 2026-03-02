@@ -1,5 +1,6 @@
 package com.wanandroid.compose
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -12,6 +13,7 @@ import dagger.hilt.android.HiltAndroidApp
 class WanAndroidApplication : Application() {
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
             private set
     }

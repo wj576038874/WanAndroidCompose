@@ -48,7 +48,9 @@ import com.wanandroid.compose.utils.launchCustomChromeTab
  */
 @Composable
 fun QuestionAnswerScreen(
-    modifier: Modifier = Modifier, innerPadding: PaddingValues
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
+    reLogin:( ()-> Unit  )-> Unit
 ) {
     val viewModel = hiltViewModel<QuestionAnswerViewModel>()
     val lazyPagingItems = viewModel.questionAnswerList.collectAsLazyPagingItems()
@@ -59,11 +61,17 @@ fun QuestionAnswerScreen(
         onEvent = {
             when (it) {
                 is CollectEvent -> {
-                    Toast.makeText(
-                        WanAndroidApplication.context,
-                        it.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if(it.id > 0){
+                        reLogin {
+                            viewModel.collectArticle(it.id)
+                        }
+                    }else{
+                        Toast.makeText(
+                            WanAndroidApplication.context,
+                            it.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }

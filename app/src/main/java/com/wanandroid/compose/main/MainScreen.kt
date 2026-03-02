@@ -33,7 +33,8 @@ fun MainScreen(
     onArticleItemClick: (ArticleItem) -> Unit,
     onSearchClick: () -> Unit,
     onCameraClick: () -> Unit,
-    onAction: (ProfileAction) -> Unit
+    onAction: (ProfileAction) -> Unit,
+    reLogin: (()-> Unit  ) -> Unit
 ) {
     val nestedBackStack = rememberNavBackStack(RouteNavKey.Main.Home)
     val selected = nestedBackStack.last()
@@ -77,6 +78,7 @@ fun MainScreen(
                 entry<RouteNavKey.Main.QuestionAnswer> {
                     QuestionAnswerScreen(
                         innerPadding = innerPadding,
+                        reLogin = reLogin
                     )
                 }
                 entry<RouteNavKey.Main.Navigation> {

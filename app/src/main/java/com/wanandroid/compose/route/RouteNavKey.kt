@@ -34,7 +34,7 @@ sealed class RouteNavKey(val requiresLogin: Boolean = false) : NavKey {
     data class ArticleDetail(val articleItem: ArticleItem) : RouteNavKey()
 
     @Serializable
-    data class Login(val redirectToKey: RouteNavKey? = null) : RouteNavKey()
+    data class Login(val redirectToKey: RouteNavKey? = null,val redirect:(()-> Unit)? = null) : RouteNavKey()
 
     @Serializable
     data object Settings : RouteNavKey()

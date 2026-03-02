@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.wanandroid.compose.bean.QuestionAnswerItem
+import com.wanandroid.compose.bean.ReLoginException
 import com.wanandroid.compose.main.api.QuestionAnswerApi
 import com.wanandroid.compose.main.paging.QuestionAnswerPagingSource
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
@@ -32,7 +33,9 @@ class NetworkQuestionAnswerRepository @Inject constructor(private val questionAn
         val response = questionAnswerApi.collectArticle(id)
         if (response.isSuccess) {
             response.data
-        } else {
+        } else if (response.code == -1001){
+            throw ReLoginException()
+        }else{
             throw Exception(response.message)
         }
     }

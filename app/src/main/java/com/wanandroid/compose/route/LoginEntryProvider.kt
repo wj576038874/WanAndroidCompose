@@ -38,6 +38,7 @@ fun EntryProviderScope<NavKey>.forLoginScreen(navigator: Navigator) {
                 routeNavKey.redirectToKey?.let {
                     navigator.goTo(it)
                 }
+                routeNavKey.redirect?.invoke()
             }
         )
     }
