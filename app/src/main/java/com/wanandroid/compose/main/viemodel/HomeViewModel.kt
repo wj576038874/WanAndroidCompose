@@ -3,6 +3,7 @@ package com.wanandroid.compose.main.viemodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.compose.UserManager
+import com.wanandroid.compose.analytics.Analytics
 import com.wanandroid.compose.bean.BannerItem
 import com.wanandroid.compose.main.event.HomeEvent
 import com.wanandroid.compose.main.repository.impl.NetworkHomeRepository
@@ -20,8 +21,9 @@ import javax.inject.Inject
  * Created by wenjie on 2026/01/22.
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val networkHomeRepository: NetworkHomeRepository) :
-    ViewModel() {
+class HomeViewModel @Inject constructor(private val networkHomeRepository: NetworkHomeRepository,
+    private val analytics: Analytics) :
+    ViewModel() , Analytics by analytics {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow()
@@ -30,6 +32,7 @@ class HomeViewModel @Inject constructor(private val networkHomeRepository: Netwo
     val homeChannel = _homeChannel.receiveAsFlow()
 
     init {
+        logEvent("home_view_model_init")
         viewModelScope.launch {
             UserManager.instance.userInfo.collect { userInfo ->
                 _homeUiState.update { state ->
