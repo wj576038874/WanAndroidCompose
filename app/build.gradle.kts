@@ -20,12 +20,47 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+//        ndk {
+//            abiFilters.add("arm64-v8a")
+//            abiFilters.add("armeabi-v7a")
+//        }
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release"){
+            keyAlias = "wanandroid"
+            keyPassword = "123456"
+            storeFile = file("${rootDir.absolutePath}/wanandroid.jks")
+            storePassword = "123456"
+        }
+        getByName("debug"){
+            keyAlias = "wanandroid"
+            keyPassword = "123456"
+            storeFile = file("${rootDir.absolutePath}/wanandroid.jks")
+            storePassword = "123456"
+        }
     }
 
     buildTypes {
         release {
+            isShrinkResources = true
+            isMinifyEnabled = true
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
+            ndk.abiFilters.add("arm64-v8a")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            isDebuggable = true
+            isShrinkResources = false
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
+            ndk.abiFilters.add("armeabi-v7a")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
