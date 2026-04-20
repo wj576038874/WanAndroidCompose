@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    //从 AGP 9.0 开始，Google 官方引入了 Built-in Kotlin 支持（内置 Kotlin），并且默认开启。
+    //现在 AGP 9.0 自己就带了 Kotlin 支持，不再需要额外应用这个插件
 //    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
@@ -49,7 +51,7 @@ android {
             isMinifyEnabled = true
             isDebuggable = false
             signingConfig = signingConfigs.getByName("release")
-            ndk.abiFilters.add("arm64-v8a")
+//            ndk.abiFilters.add("arm64-v8a")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -60,7 +62,7 @@ android {
             isShrinkResources = false
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("debug")
-            ndk.abiFilters.add("armeabi-v7a")
+//            ndk.abiFilters.add("armeabi-v7a")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

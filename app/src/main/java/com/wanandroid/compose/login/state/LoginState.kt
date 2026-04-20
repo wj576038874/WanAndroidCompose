@@ -8,8 +8,8 @@ import com.wanandroid.compose.bean.UserInfo
 data class LoginState(
     val isLoading: Boolean = false,
     val userInfo: UserInfo? = null,
-    val userName: String = "",
-    val password: String = "",
+    val userName: String = "wj576038874",
+    val password: String = "1rujiwang",
     val isPasswordVisible: Boolean = false,
     val isUserNameValid: Boolean = true,
     val isPasswordValid: Boolean = true,

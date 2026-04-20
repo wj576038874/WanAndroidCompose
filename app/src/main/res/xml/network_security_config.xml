@@ -3,7 +3,36 @@
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
-            <certificates src="user" />
+            <certificates src="user"  />
         </trust-anchors>
     </base-config>
 </network-security-config>
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<network-security-config>-->
+
+<!--&lt;!&ndash; 针对特定域名配置（推荐，更安全） &ndash;&gt;-->
+<!--<domain-config cleartextTrafficPermitted="false">-->
+<!--    &lt;!&ndash; 改成你的实际域名，支持子域名 &ndash;&gt;-->
+<!--    <domain includeSubdomains="true">api.yourcompany.com</domain>-->
+<!--    <domain includeSubdomains="true">test.yourcompany.com</domain>-->
+
+<!--    <trust-anchors>-->
+<!--        &lt;!&ndash; 信任你自己的 CA 证书 &ndash;&gt;-->
+<!--        <certificates src="@raw/my_ca" />-->
+<!--        &lt;!&ndash; 同时保留系统默认的公共 CA（推荐） &ndash;&gt;-->
+<!--        <certificates src="system" />-->
+<!--    </trust-anchors>-->
+<!--</domain-config>-->
+
+<!--&lt;!&ndash; 如果你想全局使用（不推荐，除非所有接口都是内部的） &ndash;&gt;-->
+<!--&lt;!&ndash;-->
+<!--<base-config cleartextTrafficPermitted="false">-->
+<!--    <trust-anchors>-->
+<!--        <certificates src="@raw/my_ca" />-->
+<!--        <certificates src="system" />-->
+<!--    </trust-anchors>-->
+<!--</base-config>-->
+<!--&ndash;&gt;-->
+<!--</network-security-config>-->
