@@ -35,4 +35,12 @@
     <string name="string_read">อ่านแล้ว</string>
     <string name="string_message_empty_unread">ไม่มีข้อความที่ยังไม่ได้อ่าน</string>
     <string name="string_message_empty_read">ไม่มีข้อความที่อ่านแล้ว</string>
+    <string name="string_share_add">เพิ่มการแชร์</string>
+    <string name="string_share_title">หัวข้อ</string>
+    <string name="string_share_link">ลิงก์</string>
+    <string name="string_share_empty">ยังไม่มีบทความที่แชร์</string>
+    <string name="string_share_add_success">แชร์สำเร็จ</string>
+    <string name="string_share_add_invalid">กรุณากรอกหัวข้อและลิงก์ที่ถูกต้อง</string>
+    <string name="string_share_delete">ลบ</string>
+    <string name="string_share_delete_success">ลบสำเร็จ</string>
 </resources>

@@ -35,4 +35,12 @@
     <string name="string_read">已读</string>
     <string name="string_message_empty_unread">暂无未读消息</string>
     <string name="string_message_empty_read">暂无已读消息</string>
+    <string name="string_share_add">新增分享</string>
+    <string name="string_share_title">标题</string>
+    <string name="string_share_link">链接</string>
+    <string name="string_share_empty">暂无分享文章</string>
+    <string name="string_share_add_success">分享成功</string>
+    <string name="string_share_add_invalid">请输入有效的标题和链接</string>
+    <string name="string_share_delete">删除</string>
+    <string name="string_share_delete_success">删除成功</string>
 </resources>

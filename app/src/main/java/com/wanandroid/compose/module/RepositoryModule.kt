@@ -12,6 +12,8 @@ import com.wanandroid.compose.main.repository.impl.NetworkQuestionAnswerReposito
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import com.wanandroid.compose.message.MessageRepository
 import com.wanandroid.compose.message.NetworkMessageRepository
+import com.wanandroid.compose.share.NetworkShareRepository
+import com.wanandroid.compose.share.ShareRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -48,4 +50,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMessageRepository(messageRepository: NetworkMessageRepository): MessageRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindShareRepository(shareRepository: NetworkShareRepository): ShareRepository
 }

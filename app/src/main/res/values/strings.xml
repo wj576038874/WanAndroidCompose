@@ -35,4 +35,12 @@
     <string name="string_read">Read</string>
     <string name="string_message_empty_unread">No unread messages</string>
     <string name="string_message_empty_read">No read messages</string>
+    <string name="string_share_add">Add Share</string>
+    <string name="string_share_title">Title</string>
+    <string name="string_share_link">Link</string>
+    <string name="string_share_empty">No shared articles yet</string>
+    <string name="string_share_add_success">Share successful</string>
+    <string name="string_share_add_invalid">Please input valid title and link</string>
+    <string name="string_share_delete">Delete</string>
+    <string name="string_share_delete_success">Delete successful</string>
 </resources>

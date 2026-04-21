@@ -35,4 +35,12 @@
     <string name="string_read">Gelesen</string>
     <string name="string_message_empty_unread">Keine ungelesenen Nachrichten</string>
     <string name="string_message_empty_read">Keine gelesenen Nachrichten</string>
+    <string name="string_share_add">Teilen hinzufügen</string>
+    <string name="string_share_title">Titel</string>
+    <string name="string_share_link">Link</string>
+    <string name="string_share_empty">Noch keine geteilten Artikel</string>
+    <string name="string_share_add_success">Erfolgreich geteilt</string>
+    <string name="string_share_add_invalid">Bitte gültigen Titel und Link eingeben</string>
+    <string name="string_share_delete">Löschen</string>
+    <string name="string_share_delete_success">Erfolgreich gelöscht</string>
 </resources>

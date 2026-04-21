@@ -9,6 +9,7 @@ import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.main.api.NavigationApi
 import com.wanandroid.compose.main.api.QuestionAnswerApi
 import com.wanandroid.compose.message.MessageApi
+import com.wanandroid.compose.share.ShareApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,6 +82,13 @@ object AppModule {
     fun provideMessageApi(retrofit: Retrofit): MessageApi {
         Log.e("AppModule", "provideMessageApi$retrofit")
         return retrofit.create(MessageApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShareApi(retrofit: Retrofit): ShareApi {
+        Log.e("AppModule", "provideShareApi$retrofit")
+        return retrofit.create(ShareApi::class.java)
     }
 
 }
