@@ -43,4 +43,6 @@
     <string name="string_share_add_invalid">请输入有效的标题和链接</string>
     <string name="string_share_delete">删除</string>
     <string name="string_share_delete_success">删除成功</string>
+    <string name="string_delete">删除</string>
+    <string name="string_history_empty">暂无阅读历史</string>
 </resources>

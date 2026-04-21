@@ -4,6 +4,8 @@ import com.wanandroid.compose.coin.CoinRepository
 import com.wanandroid.compose.coin.NetworkCoinRepository
 import com.wanandroid.compose.collect.CollectRepository
 import com.wanandroid.compose.collect.NetworkCollectRepository
+import com.wanandroid.compose.history.HistoryRepository
+import com.wanandroid.compose.history.NetworkHistoryRepository
 import com.wanandroid.compose.main.repository.impl.NetworkHomeRepository
 import com.wanandroid.compose.main.repository.HomeRepository
 import com.wanandroid.compose.main.repository.NavigationRepository
@@ -54,4 +56,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindShareRepository(shareRepository: NetworkShareRepository): ShareRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindHistoryRepository(historyRepository: NetworkHistoryRepository): HistoryRepository
 }

@@ -43,4 +43,6 @@
     <string name="string_share_add_invalid">Please input valid title and link</string>
     <string name="string_share_delete">Delete</string>
     <string name="string_share_delete_success">Delete successful</string>
+    <string name="string_delete">Delete</string>
+    <string name="string_history_empty">No reading history yet</string>
 </resources>

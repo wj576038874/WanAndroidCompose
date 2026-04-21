@@ -3,6 +3,7 @@ package com.wanandroid.compose.module
 import android.util.Log
 import com.wanandroid.compose.coin.CoinApi
 import com.wanandroid.compose.collect.CollectApi
+import com.wanandroid.compose.history.HistoryApi
 import com.wanandroid.compose.http.OkHttpHelper
 import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.main.api.HomeApi
@@ -89,6 +90,13 @@ object AppModule {
     fun provideShareApi(retrofit: Retrofit): ShareApi {
         Log.e("AppModule", "provideShareApi$retrofit")
         return retrofit.create(ShareApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHistoryApi(retrofit: Retrofit): HistoryApi {
+        Log.e("AppModule", "provideHistoryApi$retrofit")
+        return retrofit.create(HistoryApi::class.java)
     }
 
 }

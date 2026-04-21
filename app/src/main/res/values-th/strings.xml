@@ -43,4 +43,6 @@
     <string name="string_share_add_invalid">กรุณากรอกหัวข้อและลิงก์ที่ถูกต้อง</string>
     <string name="string_share_delete">ลบ</string>
     <string name="string_share_delete_success">ลบสำเร็จ</string>
+    <string name="string_delete">ลบ</string>
+    <string name="string_history_empty">ยังไม่มีประวัติการอ่าน</string>
 </resources>

@@ -43,4 +43,6 @@
     <string name="string_share_add_invalid">Bitte gültigen Titel und Link eingeben</string>
     <string name="string_share_delete">Löschen</string>
     <string name="string_share_delete_success">Erfolgreich gelöscht</string>
+    <string name="string_delete">Löschen</string>
+    <string name="string_history_empty">Noch kein Leseverlauf</string>
 </resources>
