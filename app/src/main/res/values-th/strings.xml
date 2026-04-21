@@ -30,4 +30,9 @@
     <string name="string_password">รหัสผ่าน</string>
     <string name="string_login">เข้าสู่ระบบ</string>
     <string name="string_welcome">ยินดีต้อนรับ</string>
+    <string name="string_message">ข้อความ</string>
+    <string name="string_unread">ยังไม่ได้อ่าน</string>
+    <string name="string_read">อ่านแล้ว</string>
+    <string name="string_message_empty_unread">ไม่มีข้อความที่ยังไม่ได้อ่าน</string>
+    <string name="string_message_empty_read">ไม่มีข้อความที่อ่านแล้ว</string>
 </resources>

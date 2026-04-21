@@ -30,4 +30,9 @@
     <string name="string_password">Passwort</string>
     <string name="string_login">Anmelden</string>
     <string name="string_welcome">Willkommen</string>
+    <string name="string_message">Nachrichten</string>
+    <string name="string_unread">Ungelesen</string>
+    <string name="string_read">Gelesen</string>
+    <string name="string_message_empty_unread">Keine ungelesenen Nachrichten</string>
+    <string name="string_message_empty_read">Keine gelesenen Nachrichten</string>
 </resources>

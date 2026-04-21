@@ -10,6 +10,8 @@ import com.wanandroid.compose.main.repository.NavigationRepository
 import com.wanandroid.compose.main.repository.impl.NetworkNavigationRepository
 import com.wanandroid.compose.main.repository.impl.NetworkQuestionAnswerRepository
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
+import com.wanandroid.compose.message.MessageRepository
+import com.wanandroid.compose.message.NetworkMessageRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -42,4 +44,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindNavigationRepository(navigationRepository: NetworkNavigationRepository): NavigationRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMessageRepository(messageRepository: NetworkMessageRepository): MessageRepository
 }

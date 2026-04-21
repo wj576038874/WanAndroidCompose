@@ -8,6 +8,7 @@ import com.wanandroid.compose.login.LoginApi
 import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.main.api.NavigationApi
 import com.wanandroid.compose.main.api.QuestionAnswerApi
+import com.wanandroid.compose.message.MessageApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +27,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder().baseUrl("https://www.wanandroid.com/")
+        return Retrofit.Builder().baseUrl("https://wanandroid.com/")
             .client(OkHttpHelper.instance.getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
@@ -73,6 +74,13 @@ object AppModule {
     fun provideLoginApi(retrofit: Retrofit): LoginApi {
         Log.e("AppModule", "provideLoginApi$retrofit")
         return retrofit.create(LoginApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMessageApi(retrofit: Retrofit): MessageApi {
+        Log.e("AppModule", "provideMessageApi$retrofit")
+        return retrofit.create(MessageApi::class.java)
     }
 
 }
