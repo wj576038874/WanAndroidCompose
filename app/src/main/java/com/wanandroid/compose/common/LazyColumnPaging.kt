@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import com.wanandroid.compose.WanAndroidApplication.Companion.context
 fun <T: Any> LazyColumnPaging(
     modifier: Modifier = Modifier,
     lazyPagingItems: LazyPagingItems<T>,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     content: LazyListScope.() -> Unit,
 ) {
     val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
@@ -44,7 +46,8 @@ fun <T: Any> LazyColumnPaging(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = contentPadding
         ){
             content()
             lazyPagingItems.loadState.apply {

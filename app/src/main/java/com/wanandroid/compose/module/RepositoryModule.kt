@@ -14,6 +14,8 @@ import com.wanandroid.compose.main.repository.impl.NetworkQuestionAnswerReposito
 import com.wanandroid.compose.main.repository.QuestionAnswerRepository
 import com.wanandroid.compose.message.MessageRepository
 import com.wanandroid.compose.message.NetworkMessageRepository
+import com.wanandroid.compose.search.NetworkSearchRepository
+import com.wanandroid.compose.search.SearchRepository
 import com.wanandroid.compose.share.NetworkShareRepository
 import com.wanandroid.compose.share.ShareRepository
 import dagger.Binds
@@ -60,4 +62,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindHistoryRepository(historyRepository: NetworkHistoryRepository): HistoryRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSearchRepository(searchRepository: NetworkSearchRepository): SearchRepository
 }

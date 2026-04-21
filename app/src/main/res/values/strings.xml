@@ -45,4 +45,9 @@
     <string name="string_share_delete_success">Delete successful</string>
     <string name="string_delete">Delete</string>
     <string name="string_history_empty">No reading history yet</string>
+    <string name="string_search_hint">Search articles</string>
+    <string name="string_clear">Clear</string>
+    <string name="string_back">Back</string>
+    <string name="string_search_empty">Enter keywords to search</string>
+    <string name="string_search_no_result">No articles found</string>
 </resources>

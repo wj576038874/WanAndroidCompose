@@ -45,4 +45,9 @@
     <string name="string_share_delete_success">删除成功</string>
     <string name="string_delete">删除</string>
     <string name="string_history_empty">暂无阅读历史</string>
+    <string name="string_search_hint">搜索文章</string>
+    <string name="string_clear">清除</string>
+    <string name="string_back">返回</string>
+    <string name="string_search_empty">请输入关键词搜索</string>
+    <string name="string_search_no_result">没有找到相关文章</string>
 </resources>

@@ -10,6 +10,7 @@ import com.wanandroid.compose.main.api.HomeApi
 import com.wanandroid.compose.main.api.NavigationApi
 import com.wanandroid.compose.main.api.QuestionAnswerApi
 import com.wanandroid.compose.message.MessageApi
+import com.wanandroid.compose.search.SearchApi
 import com.wanandroid.compose.share.ShareApi
 import dagger.Module
 import dagger.Provides
@@ -97,6 +98,13 @@ object AppModule {
     fun provideHistoryApi(retrofit: Retrofit): HistoryApi {
         Log.e("AppModule", "provideHistoryApi$retrofit")
         return retrofit.create(HistoryApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchApi(retrofit: Retrofit): SearchApi {
+        Log.e("AppModule", "provideSearchApi$retrofit")
+        return retrofit.create(SearchApi::class.java)
     }
 
 }
