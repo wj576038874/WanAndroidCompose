@@ -234,7 +234,7 @@ fun CollectionItem(
                         width = Dimension.value(120.dp)
                         height = Dimension.value(90.dp)
                     },
-                model = articleItem.envelopePic,
+                model = articleItem.envelopePic.replace("www.",""),
                 loading = {
                     Box(
                         contentAlignment = Alignment.Center

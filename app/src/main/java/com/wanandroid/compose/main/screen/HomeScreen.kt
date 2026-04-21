@@ -356,7 +356,7 @@ fun Banner(
     ) {
         val position = it % bannerList.size
         AsyncImage(
-            model = bannerList[position].imagePath,
+            model = bannerList[position].imagePath.replace("www.",""),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
