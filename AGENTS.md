@@ -7,6 +7,7 @@ This is an Android project built with:
 - MVVM architecture
 - Hilt for Dependency Injection
 - Retrofit + OkHttp for networking
+- Generate new files and automatically add git.
 
 The project follows a modular feature-based structure.
 
