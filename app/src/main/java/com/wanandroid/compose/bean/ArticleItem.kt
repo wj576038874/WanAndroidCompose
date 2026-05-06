@@ -1,5 +1,6 @@
 package com.wanandroid.compose.bean
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 /**
@@ -7,18 +8,18 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ArticleItem(
-    val id: Int,
-    val title: String,
-    val link: String,
-    val niceDate: String,
-    val author: String,
-    val shareUser: String,
-    val shareDate: Long,
-    val desc: String,
-    val originId: Int,
-    val niceShareDate: String,
-    val superChapterName: String,
-    val chapterName: String,
-    val collect: Boolean,
-    val envelopePic: String? = null
+    @SerializedName("id") val id: Int,
+    @SerializedName("title") val title: String,
+    @SerializedName("link") val link: String,
+    @SerializedName("niceDate") val niceDate: String,
+    @SerializedName("author") val author: String,
+    @SerializedName("shareUser") val shareUser: String,
+    @SerializedName("shareDate") val shareDate: Long,
+    @SerializedName("desc") val desc: String,
+    @SerializedName("originId") val originId: Int,
+    @SerializedName("niceShareDate") val niceShareDate: String,
+    @SerializedName("superChapterName") val superChapterName: String,
+    @SerializedName("chapterName") val chapterName: String,
+    @SerializedName("collect") val collect: Boolean,
+    @SerializedName("envelopePic") val envelopePic: String? = null
 )

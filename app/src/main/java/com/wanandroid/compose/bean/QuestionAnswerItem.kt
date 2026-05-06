@@ -1,23 +1,25 @@
 package com.wanandroid.compose.bean
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Created by wenjie on 2026/01/23.
  */
 data class QuestionAnswerItem(
-    val id: Int,
-    val desc: String? = null,
-    val author: String? = null,
-    val link: String? = null,
-    val title: String? = null,
-    val time: String? = null,
-    val superChapterName: String? = null,
-    val chapterName: String? = null,
-    val collect: Boolean,
-    val niceDate: String? = null,
-    val tags: List<Tag>? = null
+    @SerializedName("id") val id: Int,
+    @SerializedName("desc") val desc: String? = null,
+    @SerializedName("author") val author: String? = null,
+    @SerializedName("link") val link: String? = null,
+    @SerializedName("title") val title: String? = null,
+    @SerializedName("time") val time: String? = null,
+    @SerializedName("superChapterName") val superChapterName: String? = null,
+    @SerializedName("chapterName") val chapterName: String? = null,
+    @SerializedName("collect") val collect: Boolean,
+    @SerializedName("niceDate") val niceDate: String? = null,
+    @SerializedName("tags") val tags: List<Tag>? = null
 )
 
 data class Tag(
-    val name: String? = null,
-    val url: String? = null
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("url") val url: String? = null
 )

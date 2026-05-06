@@ -20,5 +20,3 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.wanandroid.compose.bean.** { *; }
--keep public class * extends androidx.activity.ComponentActivity
