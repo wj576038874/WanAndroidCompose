@@ -53,7 +53,6 @@ import androidx.paging.compose.itemKey
 import coil3.compose.SubcomposeAsyncImage
 import com.wanandroid.compose.R
 import com.wanandroid.compose.bean.ArticleItem
-import com.wanandroid.compose.collect.event.CollectEvent
 import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.utils.ObserveAsEvents
@@ -80,13 +79,9 @@ fun CollectScreen(
     ObserveAsEvents(
         flow = viewmodel.collectEvent,
         onEvent = {
-            when (it) {
-                is CollectEvent -> {
-                    snackbarHostState.showSnackbar(
-                        message = it.message
-                    )
-                }
-            }
+            snackbarHostState.showSnackbar(
+                message = it.message
+            )
         }
     )
 

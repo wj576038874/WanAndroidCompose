@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
@@ -510,16 +509,7 @@ private fun takePhotoPhotoAlbum(
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 Log.d("CameraScreen", "onImageSaved: $outputFileResults")
                 val savedUri = outputFileResults.savedUri ?: return
-                val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    val source = ImageDecoder.createSource(context.contentResolver, savedUri)
-                    ImageDecoder.decodeBitmap(source)
-                } else {
-                    MediaStore.Images.Media.getBitmap(context.contentResolver, savedUri)
-                }
-
-                //byteArray
-                val inputStream = context.contentResolver.openInputStream(savedUri)
-                inputStream?.use {
+                context.contentResolver.openInputStream(savedUri)?.use { inputStream ->
                     val exif = ExifInterface(inputStream)
                     val rotationDegrees = when (exif.getAttributeInt(
                         ExifInterface.TAG_ORIENTATION,
@@ -535,7 +525,11 @@ private fun takePhotoPhotoAlbum(
 //                    onPhotoTaken.invoke(convertedBitmap.toByteArray())
                 }
 
-                onPhotoTaken.invoke(inputStream?.readBytes() ?: byteArrayOf())
+                val imageBytes = context.contentResolver.openInputStream(savedUri)?.use { inputStream ->
+                    inputStream.readBytes()
+                } ?: byteArrayOf()
+
+                onPhotoTaken.invoke(imageBytes)
 
                 // Implicit broadcasts will be ignored for devices running API level >= 24
                 // so if you only target API level 24+ you can remove this statement

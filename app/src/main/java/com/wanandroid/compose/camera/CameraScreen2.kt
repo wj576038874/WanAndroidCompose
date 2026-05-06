@@ -5,11 +5,12 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Surface
 import android.widget.Toast
 import androidx.camera.core.AspectRatio
+import androidx.camera.core.resolutionselector.AspectRatioStrategy
+import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraSelector.LENS_FACING_FRONT
 import androidx.camera.core.ImageAnalysis
@@ -66,9 +67,11 @@ fun CameraScreen2(
     // 设置拍照
     val imageCapture =
         ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            // We request aspect ratio but no resolution to match preview config, but letting
-            // CameraX optimize for whatever specific resolution best fits our use cases
-            .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+            .setResolutionSelector(
+                ResolutionSelector.Builder()
+                    .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+                    .build()
+            )
             // Set initial target rotation, we will have to call this again if rotation changes
             // during the lifecycle of this use case
             .setTargetRotation(Surface.ROTATION_0).setFlashMode(ImageCapture.FLASH_MODE_OFF).build()
@@ -159,8 +162,7 @@ private fun CameraPreview2(
         factory = { context ->
             PreviewView(context).apply {
                 post {
-                    val displayMetrics = DisplayMetrics()
-                    (context as Activity).windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+                    val displayMetrics = context.resources.displayMetrics
                     val screenHeight = displayMetrics.heightPixels.toFloat()
                     val screenWidth = displayMetrics.widthPixels.toFloat()
                     val screenRatio = screenHeight / screenWidth
@@ -233,15 +235,33 @@ private fun bindCameraUseCases(
 
     // 设置预览
     val preview = Preview.Builder()
-        // We request aspect ratio but no resolution
-        .setTargetAspectRatio(screenAspectRatio)
+        .setResolutionSelector(
+            ResolutionSelector.Builder()
+                .setAspectRatioStrategy(
+                    if (screenAspectRatio == AspectRatio.RATIO_16_9) {
+                        AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
+                    } else {
+                        AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY
+                    }
+                )
+                .build()
+        )
         // Set initial target rotation
         .setTargetRotation(rotation).build()
 
     // ImageAnalysis
     val imageAnalyzer = ImageAnalysis.Builder()
-        // We request aspect ratio but no resolution
-        .setTargetAspectRatio(screenAspectRatio)
+        .setResolutionSelector(
+            ResolutionSelector.Builder()
+                .setAspectRatioStrategy(
+                    if (screenAspectRatio == AspectRatio.RATIO_16_9) {
+                        AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
+                    } else {
+                        AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY
+                    }
+                )
+                .build()
+        )
         // Set initial target rotation, we will have to call this again if rotation changes
         // during the lifecycle of this use case
         .setTargetRotation(rotation).build()

@@ -37,7 +37,6 @@ import androidx.paging.compose.itemKey
 import com.wanandroid.compose.WanAndroidApplication
 import com.wanandroid.compose.bean.QuestionAnswerItem
 import com.wanandroid.compose.bean.Tag
-import com.wanandroid.compose.collect.event.CollectEvent
 import com.wanandroid.compose.common.LazyColumnPaging
 import com.wanandroid.compose.main.viemodel.QuestionAnswerViewModel
 import com.wanandroid.compose.utils.ObserveAsEvents
@@ -59,20 +58,16 @@ fun QuestionAnswerScreen(
     ObserveAsEvents(
         flow = viewModel.collectEvent,
         onEvent = {
-            when (it) {
-                is CollectEvent -> {
-                    if(it.id > 0){
-                        reLogin {
-                            viewModel.collectArticle(it.id)
-                        }
-                    }else{
-                        Toast.makeText(
-                            WanAndroidApplication.context,
-                            it.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            if (it.id > 0) {
+                reLogin {
+                    viewModel.collectArticle(it.id)
                 }
+            } else {
+                Toast.makeText(
+                    WanAndroidApplication.context,
+                    it.message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     )

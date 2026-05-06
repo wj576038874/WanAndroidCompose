@@ -1,8 +1,7 @@
+import com.android.tools.r8.graph.fa
+
 plugins {
     alias(libs.plugins.android.application)
-    //从 AGP 9.0 开始，Google 官方引入了 Built-in Kotlin 支持（内置 Kotlin），并且默认开启。
-    //现在 AGP 9.0 自己就带了 Kotlin 支持，不再需要额外应用这个插件
-//    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
@@ -12,13 +11,15 @@ plugins {
 android {
     namespace = "com.wanandroid.compose"
     compileSdk {
-        version = release(36)
+        version = release(37)
+
     }
+    compileSdkMinor = 0
 
     defaultConfig {
         applicationId = "com.wanandroid.compose"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -28,6 +29,10 @@ android {
 //        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lint {
+        disable += "Instantiatable"
     }
 
     signingConfigs {
@@ -86,7 +91,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.accompanist.permissions)
 
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
@@ -98,7 +102,6 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.viewmodel)
     implementation(libs.hilt.viewmodel.compose)
 
     val composeBom = platform(libs.androidx.compose.bom)
