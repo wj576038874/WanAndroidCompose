@@ -1,5 +1,7 @@
 package com.wanandroid.compose.history
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -40,6 +42,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -148,7 +151,6 @@ fun HistoryScreen(
         }
     }
 }
-
 @Composable
 fun HistoryItem(
     modifier: Modifier = Modifier,
@@ -290,4 +292,34 @@ fun HistoryItem(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HistoryItemPreview(modifier: Modifier = Modifier) {
+    HistoryItem(
+        modifier = modifier,
+        articleItem = ArticleItem(
+            id = 0,
+            title = "你可能没有那么了解 RecycleView",
+            link = "link",
+            niceDate = "1天前",
+            author = "panoogunker@gmail.com",
+            shareUser = "panoogunker@gmail.com",
+            shareDate = 0,
+            niceShareDate = "1天前",
+            superChapterName = "广场Tab",
+            chapterName = "自助",
+            desc = "",
+            envelopePic = "https://wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
+            originId = 0,
+            collect = false,
+        ),
+        onArticleItemClick = {
+
+        },
+        onDeleteClick = {
+
+        }
+    )
 }

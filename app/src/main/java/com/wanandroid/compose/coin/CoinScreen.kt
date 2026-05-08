@@ -32,6 +32,7 @@ import com.wanandroid.compose.common.CommonToolbar
 import com.wanandroid.compose.common.LazyColumnPaging
 import java.text.SimpleDateFormat
 import java.util.Locale
+import androidx.compose.ui.platform.LocalLocale
 
 /**
  * Created by wenjie on 2026/01/27.
@@ -154,7 +155,7 @@ fun CoinItem(
     coinItem: CoinItem
 ) {
     val date = SimpleDateFormat(
-        "yyyy-MM-dd HH:mm:ss", Locale.getDefault()
+        "yyyy-MM-dd HH:mm:ss", LocalLocale.current.platformLocale
     ).format(coinItem.date)
     ConstraintLayout(
         modifier = modifier

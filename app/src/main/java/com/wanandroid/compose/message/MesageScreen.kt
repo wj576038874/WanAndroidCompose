@@ -1,5 +1,6 @@
 package com.wanandroid.compose.message
 
+import android.text.Html
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,8 +28,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.AndroidUiModes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -141,7 +145,7 @@ private fun MessageList(
     emptyText: String,
     modifier: Modifier = Modifier,
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
     val toolbarColor = MaterialTheme.colorScheme.primary.toArgb()
     val isEmpty =
         lazyPagingItems.itemCount == 0 && lazyPagingItems.loadState.refresh !is LoadState.Loading
@@ -285,7 +289,7 @@ private fun MessageCard(
 }
 
 private fun buildMessagePreview(item: MessageItem): String {
-    val message = android.text.Html.fromHtml(item.message.orEmpty(), 0).toString().trim()
+    val message = Html.fromHtml(item.message.orEmpty(), 0).toString().trim()
     if (message.isNotBlank()) {
         return message
     }
@@ -300,4 +304,18 @@ private fun formatMessageDate(item: MessageItem): String {
         return ""
     }
     return SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date(item.date))
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MessageCardPreview(modifier: Modifier = Modifier) {
+    MessageCard(
+        item = MessageItem(
+            category = "category",
+            fromUser = "admin",
+            date = System.currentTimeMillis(),
+        ),
+        onClick = {},
+        modifier = modifier
+    )
 }

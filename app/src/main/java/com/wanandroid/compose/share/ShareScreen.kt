@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.DeleteOutline
@@ -38,8 +39,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -75,7 +79,7 @@ fun ShareScreen(
     val isSubmitting by viewModel.isSubmitting.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
     val toolbarColor = MaterialTheme.colorScheme.primary.toArgb()
     val addFailedMsg = stringResource(R.string.string_share_add_invalid)
     val addSuccessMsg = stringResource(R.string.string_share_add_success)
@@ -91,6 +95,7 @@ fun ShareScreen(
                 is ShareEvent.Message -> {
                     snackbarHostState.showSnackbar(event.message)
                 }
+
                 ShareEvent.AddSuccess -> {
                     showAddDialog = false
                     shareTitle = ""
@@ -98,6 +103,7 @@ fun ShareScreen(
                     lazyPagingItems.refresh()
                     snackbarHostState.showSnackbar(addSuccessMsg)
                 }
+
                 ShareEvent.DeleteSuccess -> {
                     snackbarHostState.showSnackbar(deleteSuccessMsg)
                 }
@@ -341,7 +347,8 @@ private fun ShareItem(
             }
         )
         Text(
-            text = HtmlCompat.fromHtml(item.desc.orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT).toString(),
+            text = HtmlCompat.fromHtml(item.desc.orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT)
+                .toString(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary,
             maxLines = 3,
@@ -356,11 +363,15 @@ private fun ShareItem(
         Text(
             text = "${item.superChapterName.orEmpty()} / ${item.chapterName.orEmpty()}",
             style = MaterialTheme.typography.bodySmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.constrainAs(chapterRef) {
                 top.linkTo(descRef.bottom, 8.dp)
                 start.linkTo(titleRef.start)
                 bottom.linkTo(parent.bottom)
+                end.linkTo(deleteRef.start)
+                width = Dimension.fillToConstraints
             }
         )
         IconButton(
@@ -382,4 +393,24 @@ private fun ShareItem(
 
 private fun isValidUrl(url: String): Boolean {
     return url.startsWith("http://") || url.startsWith("https://")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ShareItemPreview(modifier: Modifier = Modifier) {
+    ShareItem(
+        item = ShareArticleItem(
+            title = "title",
+            author = "author",
+            shareUser = "shareUser",
+            niceDate = "2024-02-02",
+            desc = "desc",
+            chapterName = "chapterName",
+            superChapterName = "superChapterName",
+            envelopePic = "https://www.wanandroid.com/resources/image/pc/default_project_img.jpg"
+        ),
+        onClick = { },
+        onDeleteClick = {},
+        modifier = modifier
+    )
 }
