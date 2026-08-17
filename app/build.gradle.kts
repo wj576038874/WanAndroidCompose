@@ -99,6 +99,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
+    debugImplementation(libs.leakcanary)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.viewmodel.compose)
 
@@ -119,7 +120,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    androidTestImplementation(composeBom)
+//    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
