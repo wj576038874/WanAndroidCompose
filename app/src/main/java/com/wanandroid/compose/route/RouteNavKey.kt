@@ -46,7 +46,7 @@ sealed class RouteNavKey(val requiresLogin: Boolean = false) : NavKey {
     data object Collect : RouteNavKey(requiresLogin = true)
 
     @Serializable
-    data object Camera : RouteNavKey(requiresLogin = true)
+    data object Camera : RouteNavKey(requiresLogin = false)
 
     data object Camera2 : RouteNavKey()
 
