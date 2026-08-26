@@ -8,7 +8,7 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
 coilCompose = "3.5.0"
-composeBom = "2026.04.01"
+composeBom = "2026.08.00"
 navigation3 = "1.1.1"
 navigationCompose = "2.9.8"
 # 添加OkHttp和Retrofit版本
