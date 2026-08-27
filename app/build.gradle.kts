@@ -37,13 +37,13 @@ android {
         create("release"){
             keyAlias = "wanandroid"
             keyPassword = "123456"
-            storeFile = file("${rootDir.absolutePath}/wanandroid.jks")
+            storeFile = file("${rootDir.absolutePath}/jks/wanandroid.jks")
             storePassword = "123456"
         }
         getByName("debug"){
             keyAlias = "wanandroid"
             keyPassword = "123456"
-            storeFile = file("${rootDir.absolutePath}/wanandroid.jks")
+            storeFile = file("${rootDir.absolutePath}/jks/wanandroid.jks")
             storePassword = "123456"
         }
     }
