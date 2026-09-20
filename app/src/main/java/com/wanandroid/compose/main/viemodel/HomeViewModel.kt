@@ -149,7 +149,7 @@ class HomeViewModel @Inject constructor(
                     UserManager.instance.removeCollectId(id)
                 }
                 onFailure {
-                    _homeChannel.send(HomeEvent.Error(it.message ?: "Un collect failed"))
+                    _homeChannel.send(HomeEvent.Error(it.message ?: "uncollected failed"))
                 }
             }
         }
