@@ -68,4 +68,12 @@
     <string name="string_bookmark_delete_success">Bookmark deleted</string>
     <string name="string_bookmark_retry">Retry</string>
     <string name="string_bookmark_open_failed">Could not open this website</string>
+    <string name="string_search_submit">Search</string>
+    <string name="string_search_hot">Popular searches</string>
+    <string name="string_search_hot_failed">Could not load popular searches</string>
+    <string name="string_search_hot_empty">No popular searches available</string>
+    <string name="string_search_failed">Search failed. Please retry.</string>
+    <string name="string_search_retry">Retry</string>
+    <string name="string_search_loading">Loading…</string>
+    <string name="string_search_anonymous">Anonymous</string>
 </resources>

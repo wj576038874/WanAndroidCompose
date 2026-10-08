@@ -5,68 +5,80 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.wanandroid.compose.bean.ArticleItem
+import com.wanandroid.compose.search.state.SearchUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
-/**
- * 搜索 ViewModel
- */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository
+    private val searchRepository: SearchRepository,
 ) : ViewModel() {
+    private val _uiState = MutableStateFlow(SearchUiState())
+    val uiState = _uiState.asStateFlow()
+    private val searchRequest = MutableStateFlow(SearchRequest())
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    /**
-     * 搜索关键词流，用于触发搜索
-     */
-    private val _currentKeyword = MutableStateFlow<String?>(null)
-
-    /**
-     * 搜索结果流
-     * 使用 flatMapLatest 实现当关键词变化时自动切换数据源
-     */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchResults: Flow<PagingData<ArticleItem>> = _currentKeyword
-        .flatMapLatest { keyword ->
-            if (keyword.isNullOrBlank()) {
-                flowOf(PagingData.empty())
-            } else {
-                searchRepository.searchArticles(keyword).flow
-            }
+    val searchResults: Flow<PagingData<ArticleItem>> = searchRequest
+        .flatMapLatest { request ->
+            if (request.keyword.isBlank()) flowOf(PagingData.empty())
+            else searchRepository.searchArticles(request.keyword).flow
         }
         .cachedIn(viewModelScope)
 
-    /**
-     * 更新搜索输入框的内容
-     */
-    fun onSearchQueryChange(query: String) {
-        _searchQuery.value = query
+    init {
+        loadHotKeywords()
     }
 
-    /**
-     * 执行搜索
-     */
-    fun search(keyword: String = _searchQuery.value) {
-        if (keyword.isNotBlank()) {
-            _currentKeyword.value = keyword
+    fun onSearchQueryChange(query: String) {
+        if (query.isBlank()) {
+            clearSearch()
+        } else {
+            _uiState.update { it.copy(query = query) }
         }
     }
 
-    /**
-     * 清除搜索
-     */
-    fun clearSearch() {
-        _searchQuery.value = ""
-        _currentKeyword.value = null
+    fun search(keyword: String = _uiState.value.query) {
+        val normalized = keyword.trim()
+        if (normalized.isEmpty()) {
+            clearSearch()
+            return
+        }
+        _uiState.update { it.copy(query = normalized, submittedQuery = normalized) }
+        // A new request also permits retrying the same keyword after a failure.
+        searchRequest.update { SearchRequest(normalized, it.generation + 1) }
     }
+
+    fun clearSearch() {
+        _uiState.update { it.copy(query = "", submittedQuery = "") }
+        searchRequest.update { SearchRequest(generation = it.generation + 1) }
+    }
+
+    fun loadHotKeywords() {
+        if (_uiState.value.isHotKeywordsLoading) return
+        _uiState.update { it.copy(isHotKeywordsLoading = true, hotKeywordsFailed = false) }
+        viewModelScope.launch {
+            searchRepository.getHotSearchKeywords().fold(
+                onSuccess = { keywords ->
+                    _uiState.update {
+                        it.copy(hotKeywords = keywords, isHotKeywordsLoading = false, hotKeywordsFailed = false)
+                    }
+                },
+                onFailure = {
+                    _uiState.update { it.copy(isHotKeywordsLoading = false, hotKeywordsFailed = true) }
+                },
+            )
+        }
+    }
+
+    private data class SearchRequest(val keyword: String = "", val generation: Long = 0)
 }

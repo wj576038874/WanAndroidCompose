@@ -68,4 +68,12 @@
     <string name="string_bookmark_delete_success">书签已删除</string>
     <string name="string_bookmark_retry">重试</string>
     <string name="string_bookmark_open_failed">无法打开此网址</string>
+    <string name="string_search_submit">搜索</string>
+    <string name="string_search_hot">热门搜索</string>
+    <string name="string_search_hot_failed">热门搜索加载失败</string>
+    <string name="string_search_hot_empty">暂无热门搜索</string>
+    <string name="string_search_failed">搜索失败，请重试</string>
+    <string name="string_search_retry">重试</string>
+    <string name="string_search_loading">加载中…</string>
+    <string name="string_search_anonymous">匿名</string>
 </resources>

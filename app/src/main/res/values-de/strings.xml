@@ -63,4 +63,17 @@
     <string name="string_bookmark_delete_success">Lesezeichen gelöscht</string>
     <string name="string_bookmark_retry">Erneut versuchen</string>
     <string name="string_bookmark_open_failed">Diese Website konnte nicht geöffnet werden</string>
+    <string name="string_search_submit">Suchen</string>
+    <string name="string_search_hot">Beliebte Suchbegriffe</string>
+    <string name="string_search_hot_failed">Beliebte Suchbegriffe konnten nicht geladen werden</string>
+    <string name="string_search_hot_empty">Keine beliebten Suchbegriffe verfügbar</string>
+    <string name="string_search_failed">Suche fehlgeschlagen. Bitte erneut versuchen.</string>
+    <string name="string_search_retry">Erneut versuchen</string>
+    <string name="string_search_loading">Wird geladen…</string>
+    <string name="string_search_anonymous">Anonym</string>
+    <string name="string_search_hint">Artikel suchen</string>
+    <string name="string_clear">Löschen</string>
+    <string name="string_back">Zurück</string>
+    <string name="string_search_empty">Suchbegriff eingeben</string>
+    <string name="string_search_no_result">Keine Artikel gefunden</string>
 </resources>
