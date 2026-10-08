@@ -50,4 +50,22 @@
     <string name="string_back">Back</string>
     <string name="string_search_empty">Enter keywords to search</string>
     <string name="string_search_no_result">No articles found</string>
+    <string name="string_bookmark_add">Add bookmark</string>
+    <string name="string_bookmark_edit">Edit bookmark</string>
+    <string name="string_bookmark_name">Name</string>
+    <string name="string_bookmark_link">Website URL</string>
+    <string name="string_bookmark_empty">No bookmarks yet. Add a website to get started.</string>
+    <string name="string_bookmark_name_invalid">Enter a name</string>
+    <string name="string_bookmark_link_invalid">Enter a valid http:// or https:// URL</string>
+    <string name="string_bookmark_load_failed">Could not load bookmarks. Please retry.</string>
+    <string name="string_bookmark_save_failed">Could not save bookmark. Please retry.</string>
+    <string name="string_bookmark_delete_failed">Could not delete bookmark. Please retry.</string>
+    <string name="string_bookmark_delete_confirm">Delete bookmark “%1$s”?</string>
+    <string name="string_bookmark_save">Save</string>
+    <string name="string_bookmark_saving">Saving…</string>
+    <string name="string_bookmark_deleting">Deleting…</string>
+    <string name="string_bookmark_save_success">Bookmark saved</string>
+    <string name="string_bookmark_delete_success">Bookmark deleted</string>
+    <string name="string_bookmark_retry">Retry</string>
+    <string name="string_bookmark_open_failed">Could not open this website</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.wanandroid.compose.module
 
 import android.util.Log
+import com.wanandroid.compose.bookmark.api.BookMarkApi
 import com.wanandroid.compose.coin.CoinApi
 import com.wanandroid.compose.collect.CollectApi
 import com.wanandroid.compose.history.HistoryApi
@@ -26,6 +27,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideBookMarkApi(retrofit: Retrofit): BookMarkApi = retrofit.create(BookMarkApi::class.java)
 
     @Provides
     @Singleton

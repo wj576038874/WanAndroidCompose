@@ -45,4 +45,22 @@
     <string name="string_share_delete_success">Erfolgreich gelöscht</string>
     <string name="string_delete">Löschen</string>
     <string name="string_history_empty">Noch kein Leseverlauf</string>
+    <string name="string_bookmark_add">Lesezeichen hinzufügen</string>
+    <string name="string_bookmark_edit">Lesezeichen bearbeiten</string>
+    <string name="string_bookmark_name">Name</string>
+    <string name="string_bookmark_link">Webadresse</string>
+    <string name="string_bookmark_empty">Noch keine Lesezeichen. Füge eine Website hinzu.</string>
+    <string name="string_bookmark_name_invalid">Bitte einen Namen eingeben</string>
+    <string name="string_bookmark_link_invalid">Bitte eine gültige http://- oder https://-Adresse eingeben</string>
+    <string name="string_bookmark_load_failed">Lesezeichen konnten nicht geladen werden. Bitte erneut versuchen.</string>
+    <string name="string_bookmark_save_failed">Lesezeichen konnte nicht gespeichert werden. Bitte erneut versuchen.</string>
+    <string name="string_bookmark_delete_failed">Lesezeichen konnte nicht gelöscht werden. Bitte erneut versuchen.</string>
+    <string name="string_bookmark_delete_confirm">Lesezeichen „%1$s“ löschen?</string>
+    <string name="string_bookmark_save">Speichern</string>
+    <string name="string_bookmark_saving">Wird gespeichert…</string>
+    <string name="string_bookmark_deleting">Wird gelöscht…</string>
+    <string name="string_bookmark_save_success">Lesezeichen gespeichert</string>
+    <string name="string_bookmark_delete_success">Lesezeichen gelöscht</string>
+    <string name="string_bookmark_retry">Erneut versuchen</string>
+    <string name="string_bookmark_open_failed">Diese Website konnte nicht geöffnet werden</string>
 </resources>

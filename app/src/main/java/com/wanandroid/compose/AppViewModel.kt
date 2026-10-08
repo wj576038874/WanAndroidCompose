@@ -141,7 +141,7 @@ class AppViewModel : ViewModel() {
     }
 
 
-    val _appLocale = MutableStateFlow(AppLocale(Locale.getDefault().language))
+    private val _appLocale = MutableStateFlow(AppLocale(Locale.getDefault().language))
     val appLocale: StateFlow<AppLocale> = _appLocale.asStateFlow()
 
     fun updateAppLocale(languageTag: String) {

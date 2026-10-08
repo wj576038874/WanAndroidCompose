@@ -108,7 +108,7 @@ fun NavigationScreen(
             isRefreshing = navigationUiState.isLoading
         ) {
             BoxWithConstraints(
-                modifier = modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 val density = LocalDensity.current
                 val textMeasurer = rememberTextMeasurer()
@@ -126,7 +126,8 @@ fun NavigationScreen(
                     availableWidthPx,
                     chipHorizontalSpacePx,
                     chipExtraWidthPx,
-                    chipLabelStyle
+                    chipLabelStyle,
+                    textMeasurer,
                 ) {
                     itemList.associate { navigationItem ->
                         val rows = buildFlowRows(
@@ -147,29 +148,30 @@ fun NavigationScreen(
                     }
                 }
                 LazyColumn(
-                    modifier = modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     itemList.forEach { navigationItem ->
                         stickyHeader(
-                            key = "header_${navigationItem.cid}"
+                            key = "header_${navigationItem.cid}",
+                            contentType = "navigation_header",
                         ) {
                             NavigationHeader(
                                 title = navigationItem.name
                             )
                         }
                         val rows = articleRowsByCid[navigationItem.cid].orEmpty()
-                        rows.forEachIndexed { rowIndex, rowArticles ->
-                            item(
-                                key = "row_${navigationItem.cid}_$rowIndex"
-                            ) {
-                                NavigationItemRow(
-                                    articles = rowArticles,
-                                    isFirstRow = rowIndex == 0,
-                                    isLastRow = rowIndex == rows.lastIndex,
-                                    onArticleClick = onArticleClick
-                                )
-                            }
+                        items(
+                            count = rows.size,
+                            key = { rowIndex -> "row_${navigationItem.cid}_$rowIndex" },
+                            // Reuse rows with the same number of chips, never a section header.
+                            contentType = { rowIndex -> rows[rowIndex].size },
+                        ) { rowIndex ->
+                            NavigationItemRow(
+                                articles = rows[rowIndex],
+                                isFirstRow = rowIndex == 0,
+                                isLastRow = rowIndex == rows.lastIndex,
+                                onArticleClick = onArticleClick
+                            )
                         }
                     }
                 }
@@ -187,6 +189,11 @@ fun NavigationItemRow(
     isLastRow: Boolean,
     onArticleClick: (ArticleItem) -> Unit,
 ) {
+    val chipColors = FilterChipDefaults.filterChipColors(
+        containerColor = MaterialTheme.colorScheme.secondary,
+        labelColor = MaterialTheme.colorScheme.onSecondary,
+    )
+    val chipShape = remember { RoundedCornerShape(8.dp) }
     Row(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -201,10 +208,7 @@ fun NavigationItemRow(
     ) {
         articles.forEach { articleItem ->
             FilterChip(
-                colors = FilterChipDefaults.filterChipColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    labelColor = MaterialTheme.colorScheme.onSecondary,
-                ),
+                colors = chipColors,
                 selected = false,
                 onClick = {
                     onArticleClick(articleItem)
@@ -212,11 +216,12 @@ fun NavigationItemRow(
                 label = {
                     Text(
                         text = articleItem.title,
+                        style = MaterialTheme.typography.labelLarge,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
                 },
-                shape = RoundedCornerShape(8.dp)
+                shape = chipShape
             )
         }
     }

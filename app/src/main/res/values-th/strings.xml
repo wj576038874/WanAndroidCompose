@@ -45,4 +45,22 @@
     <string name="string_share_delete_success">ลบสำเร็จ</string>
     <string name="string_delete">ลบ</string>
     <string name="string_history_empty">ยังไม่มีประวัติการอ่าน</string>
+    <string name="string_bookmark_add">เพิ่มบุ๊กมาร์ก</string>
+    <string name="string_bookmark_edit">แก้ไขบุ๊กมาร์ก</string>
+    <string name="string_bookmark_name">ชื่อ</string>
+    <string name="string_bookmark_link">ที่อยู่เว็บไซต์</string>
+    <string name="string_bookmark_empty">ยังไม่มีบุ๊กมาร์ก เพิ่มเว็บไซต์เพื่อเริ่มต้น</string>
+    <string name="string_bookmark_name_invalid">กรุณาป้อนชื่อ</string>
+    <string name="string_bookmark_link_invalid">กรุณาป้อน URL ที่ถูกต้องซึ่งเริ่มต้นด้วย http:// หรือ https://</string>
+    <string name="string_bookmark_load_failed">ไม่สามารถโหลดบุ๊กมาร์กได้ โปรดลองอีกครั้ง</string>
+    <string name="string_bookmark_save_failed">ไม่สามารถบันทึกบุ๊กมาร์กได้ โปรดลองอีกครั้ง</string>
+    <string name="string_bookmark_delete_failed">ไม่สามารถลบบุ๊กมาร์กได้ โปรดลองอีกครั้ง</string>
+    <string name="string_bookmark_delete_confirm">ลบบุ๊กมาร์ก “%1$s” หรือไม่?</string>
+    <string name="string_bookmark_save">บันทึก</string>
+    <string name="string_bookmark_saving">กำลังบันทึก…</string>
+    <string name="string_bookmark_deleting">กำลังลบ…</string>
+    <string name="string_bookmark_save_success">บันทึกบุ๊กมาร์กแล้ว</string>
+    <string name="string_bookmark_delete_success">ลบบุ๊กมาร์กแล้ว</string>
+    <string name="string_bookmark_retry">ลองอีกครั้ง</string>
+    <string name="string_bookmark_open_failed">ไม่สามารถเปิดเว็บไซต์นี้ได้</string>
 </resources>

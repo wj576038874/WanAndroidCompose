@@ -50,4 +50,22 @@
     <string name="string_back">返回</string>
     <string name="string_search_empty">请输入关键词搜索</string>
     <string name="string_search_no_result">没有找到相关文章</string>
+    <string name="string_bookmark_add">添加书签</string>
+    <string name="string_bookmark_edit">编辑书签</string>
+    <string name="string_bookmark_name">名称</string>
+    <string name="string_bookmark_link">网址</string>
+    <string name="string_bookmark_empty">暂无书签，添加一个常用网站吧</string>
+    <string name="string_bookmark_name_invalid">请输入名称</string>
+    <string name="string_bookmark_link_invalid">请输入有效的 http:// 或 https:// 网址</string>
+    <string name="string_bookmark_load_failed">加载书签失败，请重试</string>
+    <string name="string_bookmark_save_failed">保存书签失败，请重试</string>
+    <string name="string_bookmark_delete_failed">删除书签失败，请重试</string>
+    <string name="string_bookmark_delete_confirm">确定删除书签“%1$s”吗？</string>
+    <string name="string_bookmark_save">保存</string>
+    <string name="string_bookmark_saving">正在保存…</string>
+    <string name="string_bookmark_deleting">正在删除…</string>
+    <string name="string_bookmark_save_success">书签已保存</string>
+    <string name="string_bookmark_delete_success">书签已删除</string>
+    <string name="string_bookmark_retry">重试</string>
+    <string name="string_bookmark_open_failed">无法打开此网址</string>
 </resources>

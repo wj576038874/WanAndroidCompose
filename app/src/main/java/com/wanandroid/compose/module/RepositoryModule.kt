@@ -1,5 +1,7 @@
 package com.wanandroid.compose.module
 
+import com.wanandroid.compose.bookmark.repository.BookMarkRepository
+import com.wanandroid.compose.bookmark.repository.impl.NetworkBookMarkRepository
 import com.wanandroid.compose.coin.CoinRepository
 import com.wanandroid.compose.coin.NetworkCoinRepository
 import com.wanandroid.compose.collect.CollectRepository
@@ -30,6 +32,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindBookMarkRepository(repository: NetworkBookMarkRepository): BookMarkRepository
 
     @Binds
     @Singleton
