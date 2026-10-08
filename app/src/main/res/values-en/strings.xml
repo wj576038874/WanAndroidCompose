@@ -76,4 +76,7 @@
     <string name="string_search_retry">Retry</string>
     <string name="string_search_loading">Loading…</string>
     <string name="string_search_anonymous">Anonymous</string>
+    <string name="string_bookmark_add_from_browser">Add to my bookmarks</string>
+    <string name="string_bookmark_already_saved">Already in your bookmarks</string>
+    <string name="string_bookmark_browser_failed">Could not add bookmark. Check your connection and sign-in status, then retry.</string>
 </resources>

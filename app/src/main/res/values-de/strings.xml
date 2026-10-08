@@ -76,4 +76,7 @@
     <string name="string_back">Zurück</string>
     <string name="string_search_empty">Suchbegriff eingeben</string>
     <string name="string_search_no_result">Keine Artikel gefunden</string>
+    <string name="string_bookmark_add_from_browser">Zu meinen Lesezeichen hinzufügen</string>
+    <string name="string_bookmark_already_saved">Bereits in deinen Lesezeichen</string>
+    <string name="string_bookmark_browser_failed">Lesezeichen konnte nicht hinzugefügt werden. Prüfe Verbindung und Anmeldung und versuche es erneut.</string>
 </resources>

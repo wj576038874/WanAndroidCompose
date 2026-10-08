@@ -116,6 +116,7 @@ fun QuestionAnswerItem(
                 launchCustomChromeTab(
                     context = context,
                     uri = item.link?.toUri() ?: return@clickable,
+                    title = item.title,
                     toolbarColor = color
                 )
             }

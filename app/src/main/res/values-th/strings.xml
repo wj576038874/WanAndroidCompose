@@ -76,4 +76,7 @@
     <string name="string_back">กลับ</string>
     <string name="string_search_empty">ป้อนคำค้นหา</string>
     <string name="string_search_no_result">ไม่พบบทความ</string>
+    <string name="string_bookmark_add_from_browser">เพิ่มในบุ๊กมาร์กของฉัน</string>
+    <string name="string_bookmark_already_saved">มีอยู่ในบุ๊กมาร์กของฉันแล้ว</string>
+    <string name="string_bookmark_browser_failed">เพิ่มบุ๊กมาร์กไม่สำเร็จ โปรดตรวจสอบเครือข่ายและสถานะการเข้าสู่ระบบแล้วลองอีกครั้ง</string>
 </resources>

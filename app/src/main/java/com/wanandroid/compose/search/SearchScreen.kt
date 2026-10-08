@@ -88,7 +88,7 @@ fun SearchScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
         onClear = viewModel::clearSearch,
         onRetryHotKeywords = viewModel::loadHotKeywords,
         onBackClick = onBackClick,
-        onArticleClick = { launchCustomChromeTab(context, it.link.toUri(), toolbarColor) },
+        onArticleClick = { launchCustomChromeTab(context = context, uri = it.link.toUri(), title = it.title, toolbarColor = toolbarColor) },
         modifier = modifier,
     )
 }

@@ -139,6 +139,7 @@ fun HistoryScreen(
                             launchCustomChromeTab(
                                 context = context,
                                 uri = item.link.toUri(),
+                                title = item.title,
                                 toolbarColor = toolbarColor.toArgb()
                             )
                         },

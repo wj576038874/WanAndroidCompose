@@ -363,6 +363,7 @@ fun Banner(
                 .clickable {
                     launchCustomChromeTab(
                         context = context,
+                        title = bannerList[position].title,
                         uri = bannerList[position].url.toUri(),
                         toolbarColor = color
                     )

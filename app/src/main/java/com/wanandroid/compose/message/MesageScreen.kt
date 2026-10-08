@@ -167,6 +167,7 @@ private fun MessageList(
                         if (!target.isNullOrBlank()) {
                             launchCustomChromeTab(
                                 context = context,
+                                title = item.title,
                                 uri = target.toUri(),
                                 toolbarColor = toolbarColor,
                             )

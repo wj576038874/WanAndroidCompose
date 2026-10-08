@@ -22,6 +22,7 @@ nav3Lifecycle = "2.10.0"
 composeLifecycle = "2.10.0"
 kotlinxSerializationCore = "1.11.0"
 coroutines = "1.11.0"
+structuredCoroutinesAnnotations = "1.1.1"
 constraintlayoutCompose = "1.1.1"
 accompanistPermissions = "0.37.3"
 splashcreen = "1.2.0"
@@ -36,6 +37,7 @@ leakcanary = "1.0.0"
 
 
 [libraries]
+structured-coroutines-annotations = { module = "io.github.santimattius:structured-coroutines-annotations", version.ref = "structuredCoroutinesAnnotations" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

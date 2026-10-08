@@ -85,6 +85,7 @@ android {
 }
 
 dependencies {
+    compileOnly(libs.structured.coroutines.annotations)
     implementation(libs.bundles.androidx)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.accompanist.permissions)

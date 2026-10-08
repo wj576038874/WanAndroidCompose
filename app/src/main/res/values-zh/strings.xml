@@ -76,4 +76,7 @@
     <string name="string_search_retry">重试</string>
     <string name="string_search_loading">加载中…</string>
     <string name="string_search_anonymous">匿名</string>
+    <string name="string_bookmark_add_from_browser">添加到我的书签</string>
+    <string name="string_bookmark_already_saved">已在我的书签中</string>
+    <string name="string_bookmark_browser_failed">添加失败，请检查网络和登录状态后重试</string>
 </resources>

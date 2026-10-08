@@ -59,6 +59,7 @@ fun NavigationScreen(
             launchCustomChromeTab(
                 context = context,
                 uri = articleItem.link.toUri(),
+                title = articleItem.title,
                 toolbarColor = toolbarColor
             )
         }
