@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="string_oss_compose">Declarative UI toolkit, including Material 3, icons, adaptive navigation, previews and UI testing.</string>
+    <string name="string_oss_core">Android compatibility helpers, Kotlin extensions and the splash screen API.</string>
+    <string name="string_oss_activity">Activity lifecycle, activity result APIs and integration with Compose.</string>
+    <string name="string_oss_appcompat">Backward-compatible Android components, themes and application locale support.</string>
+    <string name="string_oss_lifecycle">Lifecycle-aware state collection and ViewModels, with Compose and Navigation 3 integration.</string>
+    <string name="string_oss_navigation">Compose navigation with application-owned back stacks and entry state management.</string>
+    <string name="string_oss_paging">Loads large lists in pages and integrates paging state with Compose.</string>
+    <string name="string_oss_browser">Custom Tabs support for opening web pages with browser capabilities.</string>
+    <string name="string_oss_constraintlayout">Constraint-based layouts for Android views and Compose.</string>
+    <string name="string_oss_camera">Camera preview, capture, video, lifecycle binding, viewfinders and device extensions.</string>
+    <string name="string_oss_exif">Reads and writes image metadata such as orientation and capture details.</string>
+    <string name="string_oss_hilt">Compile-time dependency injection, Android lifecycle integration and generated dependency wiring.</string>
+    <string name="string_oss_androidx_hilt">Connects Hilt-injected ViewModels to Jetpack and Compose.</string>
+    <string name="string_oss_accompanist">Compose helpers for observing and requesting Android runtime permissions.</string>
+    <string name="string_oss_coil">Image loading and caching for Compose, with an OkHttp network backend.</string>
+    <string name="string_oss_retrofit">Type-safe HTTP API definitions, suspend calls and Gson response conversion.</string>
+    <string name="string_oss_okhttp">HTTP client with connection reuse, caching, interceptors and TLS support.</string>
+    <string name="string_oss_gson">Converts Java and Kotlin data objects to and from JSON.</string>
+    <string name="string_oss_kotlin">Programming language, standard library and compiler plugins used by the application.</string>
+    <string name="string_oss_coroutines">Structured asynchronous work, Flow streams and coroutine testing utilities.</string>
+    <string name="string_oss_serialization">Compiler-assisted serialization for JSON data and typed navigation routes.</string>
+    <string name="string_oss_structured">Compile-time annotations that document managed coroutine scope ownership.</string>
+    <string name="string_oss_leakcanary">Memory leak detection in debug builds, including Android Studio profiler integration.</string>
+    <string name="string_oss_junit">Unit testing framework for assertions, test fixtures and regression tests.</string>
+    <string name="string_oss_android_test">Android device instrumentation, JUnit integration and UI interaction testing.</string>
+    <string name="string_oss_ksp">Processes Kotlin symbols at build time to generate code for libraries such as Hilt.</string>
+    <string name="string_oss_gradle">Build automation used to compile, test and package the application.</string>
+    <string name="string_oss_intro">Made possible by these open source projects.</string>
+    <string name="string_oss_open_failed">Could not open the link. Please install a browser and retry.</string>
+    <string name="string_oss_open">Open %1$s on GitHub</string>
+</resources>

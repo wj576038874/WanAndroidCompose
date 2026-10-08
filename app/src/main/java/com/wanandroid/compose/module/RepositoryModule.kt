@@ -20,6 +20,8 @@ import com.wanandroid.compose.search.NetworkSearchRepository
 import com.wanandroid.compose.search.SearchRepository
 import com.wanandroid.compose.share.NetworkShareRepository
 import com.wanandroid.compose.share.ShareRepository
+import com.wanandroid.compose.opensource.repository.OpenSourceRepository
+import com.wanandroid.compose.opensource.repository.impl.LocalOpenSourceRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -32,6 +34,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindOpenSourceRepository(repository: LocalOpenSourceRepository): OpenSourceRepository
+
 
     @Binds
     @Singleton

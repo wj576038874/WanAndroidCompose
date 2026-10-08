@@ -27,6 +27,7 @@ import com.wanandroid.compose.route.forCameraScreen
 import com.wanandroid.compose.route.forCameraScreen2
 import com.wanandroid.compose.route.forCoinScreen
 import com.wanandroid.compose.route.forCollectScreen
+import com.wanandroid.compose.route.forOpenSourceScreen
 import com.wanandroid.compose.route.forHistoryScreen
 import com.wanandroid.compose.route.forLoginScreen
 import com.wanandroid.compose.route.forMainScreen
@@ -138,6 +139,7 @@ fun WanAndroidApp(modifier: Modifier = Modifier, appViewModel: AppViewModel) {
                     forShareScreen(navigator)
                     forBookMarkScreen(navigator)
                     forHistoryScreen(navigator)
+                    forOpenSourceScreen(navigator)
                 }
             )
         }

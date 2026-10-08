@@ -40,6 +40,9 @@ sealed class RouteNavKey(val requiresLogin: Boolean = false) : NavKey {
     data object Settings : RouteNavKey()
 
     @Serializable
+    data object OpenSource : RouteNavKey(requiresLogin = false)
+
+    @Serializable
     data object Coin : RouteNavKey(requiresLogin = true)
 
     @Serializable

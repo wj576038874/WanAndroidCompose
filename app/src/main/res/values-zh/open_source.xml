@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="string_oss_compose">声明式 UI 工具包，包含 Material 3、图标、自适应导航、预览与界面测试。</string>
+    <string name="string_oss_core">提供 Android 兼容能力、Kotlin 扩展和启动屏幕 API。</string>
+    <string name="string_oss_activity">管理 Activity 生命周期、页面结果回调，并与 Compose 集成。</string>
+    <string name="string_oss_appcompat">提供兼容不同 Android 版本的组件、主题和应用语言支持。</string>
+    <string name="string_oss_lifecycle">提供生命周期感知的状态收集和 ViewModel，支持 Compose 与 Navigation 3 集成。</string>
+    <string name="string_oss_navigation">面向 Compose 的导航库，支持应用管理返回栈及页面状态。</string>
+    <string name="string_oss_paging">按页加载大列表，并将分页状态与 Compose 列表集成。</string>
+    <string name="string_oss_browser">通过 Custom Tabs 打开网页，复用浏览器的加载和浏览能力。</string>
+    <string name="string_oss_constraintlayout">使用约束关系组织布局，支持 Android View 和 Compose。</string>
+    <string name="string_oss_camera">提供相机预览、拍照、录像、生命周期绑定、取景器及设备扩展。</string>
+    <string name="string_oss_exif">读取和写入图片方向、拍摄信息等 EXIF 元数据。</string>
+    <string name="string_oss_hilt">编译期依赖注入框架，支持 Android 生命周期集成和依赖代码生成。</string>
+    <string name="string_oss_androidx_hilt">将 Hilt 注入的 ViewModel 与 Jetpack、Compose 连接。</string>
+    <string name="string_oss_accompanist">在 Compose 中观察并申请 Android 运行时权限。</string>
+    <string name="string_oss_coil">为 Compose 提供图片加载与缓存，使用 OkHttp 加载网络图片。</string>
+    <string name="string_oss_retrofit">类型安全的 HTTP 接口框架，支持挂起调用和 Gson 响应转换。</string>
+    <string name="string_oss_okhttp">HTTP 客户端，支持连接复用、缓存、拦截器与 TLS。</string>
+    <string name="string_oss_gson">实现 Java、Kotlin 数据对象与 JSON 之间的转换。</string>
+    <string name="string_oss_kotlin">应用使用的编程语言、标准库及编译器插件。</string>
+    <string name="string_oss_coroutines">提供结构化异步任务、Flow 数据流及协程测试工具。</string>
+    <string name="string_oss_serialization">由编译器支持的序列化工具，用于 JSON 数据和类型安全的导航路由。</string>
+    <string name="string_oss_structured">通过编译期注解标记协程作用域的管理关系，辅助结构化并发检查。</string>
+    <string name="string_oss_leakcanary">调试版本中的内存泄漏检测及 Android Studio 性能分析器集成。</string>
+    <string name="string_oss_junit">单元测试框架，提供断言、测试环境管理和回归测试支持。</string>
+    <string name="string_oss_android_test">提供 Android 设备测试、JUnit 集成与界面交互测试能力。</string>
+    <string name="string_oss_ksp">在构建时处理 Kotlin 符号，为 Hilt 等库生成代码。</string>
+    <string name="string_oss_gradle">用于编译、测试和打包应用的构建自动化工具。</string>
+    <string name="string_oss_intro">感谢这些开源项目，让应用成为可能。</string>
+    <string name="string_oss_open_failed">无法打开链接，请安装浏览器后重试</string>
+    <string name="string_oss_open">打开 %1$s 的 GitHub 仓库</string>
+</resources>

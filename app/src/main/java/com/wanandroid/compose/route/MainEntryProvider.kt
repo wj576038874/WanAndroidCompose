@@ -38,7 +38,7 @@ fun EntryProviderScope<NavKey>.forMainScreen(navigator: Navigator) {
                     ProfileAction.Collect -> navigator.goTo(RouteNavKey.Collect)
                     ProfileAction.Bookmark -> navigator.goTo(RouteNavKey.BookMark)
                     ProfileAction.History -> navigator.goTo(RouteNavKey.History)
-                    ProfileAction.Code -> {}
+                    ProfileAction.Code -> navigator.goTo(RouteNavKey.OpenSource)
                     ProfileAction.About -> {
                         launchCustomChromeTab(
                             context = context,

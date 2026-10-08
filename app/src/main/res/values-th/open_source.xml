@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="string_oss_compose">ชุดเครื่องมือ UI แบบประกาศ รวม Material 3 ไอคอน การนำทางแบบปรับขนาด ตัวอย่าง และการทดสอบ UI</string>
+    <string name="string_oss_core">เครื่องมือรองรับ Android ส่วนขยาย Kotlin และ API หน้าจอเริ่มต้น</string>
+    <string name="string_oss_activity">จัดการวงจรชีวิต Activity ผลลัพธ์ของ Activity และการเชื่อมต่อกับ Compose</string>
+    <string name="string_oss_appcompat">คอมโพเนนต์ ธีม และภาษาของแอปที่รองรับ Android หลายเวอร์ชัน</string>
+    <string name="string_oss_lifecycle">จัดการสถานะตามวงจรชีวิตและ ViewModel ร่วมกับ Compose และ Navigation 3</string>
+    <string name="string_oss_navigation">การนำทางสำหรับ Compose พร้อมการจัดการสแตกย้อนกลับและสถานะของหน้า</string>
+    <string name="string_oss_paging">โหลดรายการขนาดใหญ่แบบแบ่งหน้าและเชื่อมต่อกับ Compose</string>
+    <string name="string_oss_browser">เปิดหน้าเว็บด้วย Custom Tabs และความสามารถของเบราว์เซอร์</string>
+    <string name="string_oss_constraintlayout">จัดวางองค์ประกอบด้วยเงื่อนไขความสัมพันธ์สำหรับ View และ Compose</string>
+    <string name="string_oss_camera">แสดงตัวอย่างกล้อง ถ่ายภาพ วิดีโอ จัดการวงจรชีวิต และส่วนขยายอุปกรณ์</string>
+    <string name="string_oss_exif">อ่านและเขียนข้อมูลภาพ เช่น ทิศทางและรายละเอียดการถ่ายภาพ</string>
+    <string name="string_oss_hilt">ฉีดการพึ่งพาขณะคอมไพล์ พร้อมการเชื่อมต่อ Android และการสร้างโค้ด</string>
+    <string name="string_oss_androidx_hilt">เชื่อมต่อ ViewModel ที่ใช้ Hilt กับ Jetpack และ Compose</string>
+    <string name="string_oss_accompanist">ตรวจสอบและขอสิทธิ์ Android ภายใน Compose</string>
+    <string name="string_oss_coil">โหลดและแคชภาพสำหรับ Compose โดยใช้เครือข่าย OkHttp</string>
+    <string name="string_oss_retrofit">กำหนด API HTTP แบบปลอดภัยต่อชนิดข้อมูล รองรับ suspend และการแปลง Gson</string>
+    <string name="string_oss_okhttp">ไคลเอนต์ HTTP รองรับการใช้การเชื่อมต่อซ้ำ แคช ตัวดักคำขอ และ TLS</string>
+    <string name="string_oss_gson">แปลงข้อมูล Java และ Kotlin ไปเป็น JSON และแปลงกลับ</string>
+    <string name="string_oss_kotlin">ภาษาโปรแกรม ไลบรารีมาตรฐาน และปลั๊กอินคอมไพเลอร์ของแอป</string>
+    <string name="string_oss_coroutines">งานอะซิงโครนัสแบบมีโครงสร้าง สตรีม Flow และเครื่องมือทดสอบโครูทีน</string>
+    <string name="string_oss_serialization">แปลงข้อมูล JSON และเส้นทางนำทางแบบกำหนดชนิดด้วยความช่วยเหลือจากคอมไพเลอร์</string>
+    <string name="string_oss_structured">แอนโนเทชันระบุผู้จัดการขอบเขตของโครูทีนเพื่อช่วยตรวจสอบการทำงานแบบมีโครงสร้าง</string>
+    <string name="string_oss_leakcanary">ตรวจจับหน่วยความจำรั่วในรุ่นดีบักและเชื่อมต่อกับโปรไฟเลอร์ Android Studio</string>
+    <string name="string_oss_junit">เฟรมเวิร์กทดสอบหน่วย รองรับการตรวจสอบผลและการทดสอบการถดถอย</string>
+    <string name="string_oss_android_test">ทดสอบบนอุปกรณ์ Android เชื่อมต่อ JUnit และทดสอบการโต้ตอบ UI</string>
+    <string name="string_oss_ksp">ประมวลผลสัญลักษณ์ Kotlin ขณะสร้างแอปเพื่อสร้างโค้ดให้ไลบรารี เช่น Hilt</string>
+    <string name="string_oss_gradle">เครื่องมืออัตโนมัติสำหรับคอมไพล์ ทดสอบ และจัดแพ็กเกจแอป</string>
+    <string name="string_oss_intro">แอปนี้เกิดขึ้นได้ด้วยโครงการโอเพนซอร์สเหล่านี้</string>
+    <string name="string_oss_open_failed">เปิดลิงก์ไม่ได้ โปรดติดตั้งเบราว์เซอร์แล้วลองอีกครั้ง</string>
+    <string name="string_oss_open">เปิด %1$s บน GitHub</string>
+</resources>
